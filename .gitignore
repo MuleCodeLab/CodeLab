@@ -1,0 +1,5 @@
+out/
+tests/
+.idea/
+.DS_Store
+JavaFxApplication.iml

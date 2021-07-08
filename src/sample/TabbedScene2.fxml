@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1429.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16">
+  <tabs>
+    <Tab text="JSON">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ScrollPane focusTraversable="false" layoutX="6.0" layoutY="8.0" prefHeight="347.0" prefWidth="584.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="611.0">
+                           <children>
+                              <CheckBox layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Generate course-level files" AnchorPane.leftAnchor="14.0" />
+                              <AnchorPane layoutX="14.0" layoutY="31.0" prefHeight="86.0" prefWidth="597.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="0.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="22.0" text="Course code" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="24.0" />
+                                    <TextField layoutX="93.0" layoutY="20.0" prefHeight="25.0" prefWidth="457.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="20.0" />
+                                    <Line endX="287.66668701171875" endY="-3.0517578125E-5" layoutX="291.0" layoutY="85.0" startX="-273.6666564941406" startY="-3.0517578125E-5" stroke="#0000002b" AnchorPane.bottomAnchor="14.0" />
+                                 </children>
+                              </AnchorPane>
+                              <CheckBox layoutX="14.0" layoutY="130.0" mnemonicParsing="false" text="Generate lab-level files" AnchorPane.leftAnchor="14.0" />
+                              <AnchorPane disable="true" layoutX="14.0" layoutY="147.0" prefHeight="297.0" prefWidth="597.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="0.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="22.0" text="Lab title" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="24.0" />
+                                    <TextField layoutX="93.0" layoutY="20.0" prefHeight="25.0" prefWidth="457.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="20.0" />
+                                    <Label layoutX="14.0" layoutY="63.0" text="Lab number" />
+                                    <TextField layoutX="93.0" layoutY="59.0" prefHeight="25.0" prefWidth="457.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.0" />
+                                    <HBox alignment="CENTER_LEFT" layoutX="108.0" layoutY="109.0" prefHeight="29.0" prefWidth="457.0" spacing="5.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.0">
+                                       <children>
+                                          <DatePicker prefHeight="25.0" prefWidth="166.0" />
+                                          <TextField prefHeight="25.0" prefWidth="29.0" promptText="HH">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Label text=":" />
+                                          <TextField layoutX="279.0" layoutY="10.0" prefHeight="25.0" prefWidth="29.0" promptText="MM">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                    <Label layoutX="14.0" layoutY="115.0" text="Access begins" AnchorPane.leftAnchor="14.0" />
+                                    <HBox alignment="CENTER_LEFT" layoutX="108.0" layoutY="142.0" prefHeight="29.0" prefWidth="457.0" spacing="5.0" AnchorPane.leftAnchor="116.0">
+                                       <children>
+                                          <DatePicker prefHeight="25.0" prefWidth="166.0" />
+                                          <TextField prefHeight="25.0" prefWidth="29.0" promptText="HH">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Label text=":" />
+                                          <TextField layoutX="279.0" layoutY="10.0" prefHeight="25.0" prefWidth="29.0" promptText="MM">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                    <Label layoutX="14.0" layoutY="148.0" text="Access ends" />
+                                    <HBox alignment="CENTER_LEFT" layoutX="108.0" layoutY="195.0" prefHeight="29.0" prefWidth="457.0" spacing="5.0" AnchorPane.leftAnchor="116.0">
+                                       <children>
+                                          <DatePicker prefHeight="25.0" prefWidth="166.0" />
+                                          <TextField prefHeight="25.0" prefWidth="29.0" promptText="HH">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Label text=":" />
+                                          <TextField layoutX="279.0" layoutY="10.0" prefHeight="25.0" prefWidth="29.0" promptText="MM">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                    <Label layoutX="14.0" layoutY="201.0" text="CA eval begins" />
+                                    <HBox alignment="CENTER_LEFT" layoutX="108.0" layoutY="228.0" prefHeight="29.0" prefWidth="457.0" spacing="5.0" AnchorPane.leftAnchor="116.0">
+                                       <children>
+                                          <DatePicker prefHeight="25.0" prefWidth="166.0" />
+                                          <TextField prefHeight="25.0" prefWidth="29.0" promptText="HH">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Label text=":" />
+                                          <TextField layoutX="279.0" layoutY="10.0" prefHeight="25.0" prefWidth="29.0" promptText="MM">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                    <Label layoutX="14.0" layoutY="234.0" text="CA eval ends" />
+                                    <Line endX="287.66668701171875" endY="-3.0517578125E-5" layoutX="299.0" layoutY="295.0" startX="-273.6666564941406" startY="-3.0517578125E-5" stroke="#0000002b" AnchorPane.bottomAnchor="14.0" />
+                                 </children>
+                              </AnchorPane>
+                              <CheckBox layoutX="14.0" layoutY="468.0" mnemonicParsing="false" text="Generate question-level files" AnchorPane.leftAnchor="14.0" />
+                              <AnchorPane layoutX="14.0" layoutY="485.0" prefHeight="832.0" prefWidth="597.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="0.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="22.0" text="Course code" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="24.0" />
+                                    <TextField layoutX="93.0" layoutY="20.0" prefHeight="25.0" prefWidth="457.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="20.0" />
+                                    <Label layoutX="14.0" layoutY="65.0" text="Lab number" AnchorPane.leftAnchor="14.0" />
+                                    <TextField layoutX="108.0" layoutY="61.0" prefHeight="25.0" prefWidth="457.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.0" />
+                                    <Label layoutX="12.0" layoutY="106.0" text="Question number" />
+                                    <TextField layoutX="106.0" layoutY="102.0" prefHeight="25.0" prefWidth="457.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.0" />
+                                    <Label layoutX="14.0" layoutY="147.0" text="Question title" />
+                                    <TextField layoutX="118.0" layoutY="143.0" prefHeight="25.0" prefWidth="457.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.0" />
+                                    <VBox layoutX="14.0" layoutY="187.0" prefHeight="121.0" prefWidth="537.0" spacing="2.5" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                                       <children>
+                                          <Label text="File names">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="250.0" spacing="5.0">
+                                             <children>
+                                                <TextField prefHeight="25.0" prefWidth="483.0" />
+                                                <Button mnemonicParsing="false" text="Add" />
+                                                <Button mnemonicParsing="false" text="Del." />
+                                             </children>
+                                          </HBox>
+                                          <ListView prefHeight="76.0" prefWidth="537.0" />
+                                       </children>
+                                    </VBox>
+                                    <AnchorPane layoutX="14.0" layoutY="358.0" prefHeight="461.0" prefWidth="583.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" layoutX="116.0" layoutY="14.0" prefHeight="29.0" prefWidth="457.0" spacing="5.0" AnchorPane.leftAnchor="116.0" AnchorPane.topAnchor="14.0">
+                                             <children>
+                                                <DatePicker prefHeight="25.0" prefWidth="166.0" />
+                                                <TextField prefHeight="25.0" prefWidth="29.0" promptText="HH">
+                                                   <font>
+                                                      <Font name="Consolas" size="12.0" />
+                                                   </font>
+                                                </TextField>
+                                                <Label text=":" />
+                                                <TextField layoutX="279.0" layoutY="10.0" prefHeight="25.0" prefWidth="29.0" promptText="MM">
+                                                   <font>
+                                                      <Font name="Consolas" size="12.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                          <Label layoutX="14.0" layoutY="25.0" text="PG eval begins" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0" />
+                                          <HBox alignment="CENTER_LEFT" layoutX="116.0" layoutY="52.0" prefHeight="29.0" prefWidth="457.0" spacing="5.0" AnchorPane.leftAnchor="116.0">
+                                             <children>
+                                                <DatePicker prefHeight="25.0" prefWidth="166.0" />
+                                                <TextField prefHeight="25.0" prefWidth="29.0" promptText="HH">
+                                                   <font>
+                                                      <Font name="Consolas" size="12.0" />
+                                                   </font>
+                                                </TextField>
+                                                <Label text=":" />
+                                                <TextField layoutX="279.0" layoutY="10.0" prefHeight="25.0" prefWidth="29.0" promptText="MM">
+                                                   <font>
+                                                      <Font name="Consolas" size="12.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                          <Label layoutX="14.0" layoutY="58.0" text="Access ends" AnchorPane.leftAnchor="14.0" />
+                                          <Label layoutX="14.0" layoutY="111.0" text="Lab length" />
+                                          <HBox alignment="CENTER_LEFT" layoutX="116.0" layoutY="104.0" prefHeight="31.0" prefWidth="246.0" spacing="5.0">
+                                             <children>
+                                                <TextField prefHeight="25.0" prefWidth="41.0" text="1" />
+                                                <Label text="hr" />
+                                                <TextField layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="41.0" text="30" />
+                                                <Label layoutX="51.0" layoutY="10.0" text="min" />
+                                             </children>
+                                          </HBox>
+                                          <VBox layoutX="14.0" layoutY="147.0" prefHeight="267.0" prefWidth="510.0" spacing="5.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                                             <children>
+                                                <Label text="Lab groups" />
+                                                <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="510.0" spacing="5.0">
+                                                   <children>
+                                                      <TextField prefHeight="25.0" prefWidth="215.0" promptText="Group name" />
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="249.0" spacing="5.0">
+                                                         <children>
+                                                            <DatePicker prefHeight="25.0" prefWidth="166.0" promptText="Date of lab session" />
+                                                            <TextField prefHeight="25.0" prefWidth="29.0" promptText="HH">
+                                                               <font>
+                                                                  <Font name="Consolas" size="12.0" />
+                                                               </font>
+                                                            </TextField>
+                                                            <Label text=":" />
+                                                            <TextField layoutX="279.0" layoutY="10.0" prefHeight="25.0" prefWidth="29.0" promptText="MM">
+                                                               <font>
+                                                                  <Font name="Consolas" size="12.0" />
+                                                               </font>
+                                                            </TextField>
+                                                         </children>
+                                                      </HBox>
+                                                      <Button mnemonicParsing="false" text="Add" />
+                                                      <Button layoutX="465.0" layoutY="17.0" mnemonicParsing="false" text="Del." />
+                                                   </children>
+                                                </HBox>
+                                                <TableView prefHeight="200.0" prefWidth="461.0">
+                                                  <columns>
+                                                    <TableColumn prefWidth="126.00000131130219" text="Group name" />
+                                                    <TableColumn prefWidth="183.3333511352539" text="Start date-time" />
+                                                  </columns>
+                                                </TableView>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                    <CheckBox layoutX="14.0" layoutY="341.0" mnemonicParsing="false" text="This is the hidden question" AnchorPane.leftAnchor="14.0" />
+                                    <Line endX="287.66668701171875" endY="-3.0517578125E-5" layoutX="298.0" layoutY="861.0" startX="-273.6666564941406" startY="-3.0517578125E-5" stroke="#0000002b" AnchorPane.bottomAnchor="14.0" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="HTML">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ScrollPane prefHeight="347.0" prefWidth="584.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1047.0" prefWidth="579.0" />
+                     </content>
+                  </ScrollPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
