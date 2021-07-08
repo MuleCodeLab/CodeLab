@@ -1,5 +1,12 @@
 out/
+out/__pycache__/
 tests/
 .idea/
+
+*.sh
+*.txt
+*.class
+*.out
+vpl_execution
 .DS_Store
 JavaFxApplication.iml
