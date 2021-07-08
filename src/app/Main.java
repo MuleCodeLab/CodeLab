@@ -1,4 +1,4 @@
-package sample;
+package app;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,9 +9,18 @@ import javafx.stage.Stage;
 import syed.core.*;
 import syed.JavaLab.*;
 
+import michael.htmltools.*;
+import michael.htmltools.*;
+
+
 public class Main extends Application {
 
-    void test(String path) {
+    void MichaelCodeTest() {
+
+    }
+
+
+    void SyedCodeTest(String path) {
         Code labcode = new JavaCode(path);
         CodeCompiler compiler = new JavaCompiler((JavaCode) labcode);
         CodeRunner runner = new JavaRunner((JavaCompiler) compiler);
@@ -49,7 +58,7 @@ public class Main extends Application {
         primaryStage.show();
 
 
-        test("./tests");
+        SyedCodeTest("./tests");
     }
 
 
