@@ -202,9 +202,9 @@
                                                       <Label prefWidth="128.0" text="Lab session length" />
                                                       <HBox alignment="CENTER_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
                                                          <children>
-                                                            <TextField fx:id="tf_LabSessionLength_hours" onKeyTyped="#setLabSessionLengthHour" prefHeight="25.0" prefWidth="51.0" text="1" />
+                                                            <TextField fx:id="tf_LabSessionLength_hours" onKeyTyped="#setLabSessionLengthHour" prefHeight="25.0" prefWidth="51.0" text="00" />
                                                             <Label text="hr" />
-                                                            <TextField fx:id="tf_LabSessionLength_minutes" onKeyTyped="#setLabSessionLengthMinute" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" text="30" />
+                                                            <TextField fx:id="tf_LabSessionLength_minutes" onKeyTyped="#setLabSessionLengthMinute" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" text="00"/>
                                                             <Label layoutX="67.0" layoutY="10.0" text="min" />
                                                          </children>
                                                       </HBox>
@@ -224,13 +224,13 @@
                                                                   <TextField fx:id="tf_LabSessions_minute" onKeyTyped="#setLabSessionMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
                                                                </children>
                                                             </HBox>
-                                                            <Button fx:id="btn_LabSessions_Add" onMouseReleased="#addToSessionsTable" onMousePressed="#printAll" minWidth="60.0" mnemonicParsing="false" text="Add" />
+                                                            <Button fx:id="btn_LabSessions_Add" onMouseReleased="#addToSessionsTable" onMousePressed="#printJSON" minWidth="60.0" mnemonicParsing="false" text="Add" />
                                                             <Button fx:id="btn_LabSessions_Delete" onMouseReleased="#removeFromSessionsTable" minWidth="60.0" mnemonicParsing="false" text="Del." />
                                                          </children>
                                                       </HBox>
                                                       <TableView fx:id="table_LabSessions" prefHeight="139.0" prefWidth="552.0" VBox.vgrow="ALWAYS">
                                                         <columns>
-                                                          <TableColumn fx:id="tc_GroupColumn" minWidth="50.0" prefWidth="143.33319664001465" text="Group name" />
+                                                          <TableColumn fx:id="tc_GroupColumn" minWidth="50.0" prefWidth="143.33319664001465" text="Group" />
                                                           <TableColumn fx:id="tc_DateColumn" prefWidth="180.66661071777344" text="Date" />
                                                           <TableColumn fx:id="tc_TimeColumn" minWidth="4.0001220703125" prefWidth="98.666748046875" text="Time" />
                                                         </columns>
@@ -366,8 +366,8 @@
                                                 </TextArea>
                                                 <VBox alignment="CENTER" prefHeight="177.0" prefWidth="58.0" spacing="5.0">
                                                    <children>
-                                                      <Button fx:id="btn_SampleIO_Add" onMouseReleased="#addSampleIO" minWidth="60.0" mnemonicParsing="false" text="Add" />
-                                                      <Button fx:id="btn_SampleIO_Delete" onMouseReleased="#removeSampleIO" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                      <Button fx:id="btn_SampleIO_Add" onMousePressed="#addSampleIO" minWidth="60.0" mnemonicParsing="false" text="Add" />
+                                                      <Button fx:id="btn_SampleIO_Delete" onMousePressed="#removeSampleIO" onMouseReleased="#printHTML" minWidth="60.0" mnemonicParsing="false" text="Del." />
                                                    </children>
                                                 </VBox>
                                                 <ListView fx:id="list_SampleIO" onMousePressed="#loadSampleIOIntoEditors" prefHeight="177.0" prefWidth="86.0" />

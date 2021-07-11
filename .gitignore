@@ -8,5 +8,5 @@ tests/
 *.class
 *.out
 vpl_execution
-\.DS_Store
+.DS_Store
 JavaFxApplication.iml

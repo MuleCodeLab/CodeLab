@@ -1,6 +1,7 @@
 package app;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,8 +19,7 @@ import syed.code.core.Util;
 public class Controller {
 
     JSONDataStorage jsonStorage = new JSONDataStorage();
-
-
+    ObservableList<TableData> tableData = FXCollections.observableArrayList();
 
 
     public void hideCourseAndLabPanes(MouseEvent e) {
@@ -157,25 +157,17 @@ public class Controller {
     }
 
     public void setLabSessionLengthHour(KeyEvent e) {
-        String value = tf_LabSessionLength_hours.getText();
+        String value = tf_LabSessionLength_hours.getText().trim();
         if (!value.isBlank()) {
-            int hours = Integer.parseInt(tf_LabSessionLength_hours.getText());
-            jsonStorage.questionData.length += hours * 60;
+            jsonStorage.questionData.lengthHour = value;
         }
     }
 
     public void setLabSessionLengthMinute(KeyEvent e) {
-        String value = tf_LabSessionLength_minutes.getText();
+        String value = tf_LabSessionLength_minutes.getText().trim();
         if (!value.isBlank()) {
-            int minutes = Integer.parseInt(tf_LabSessionLength_hours.getText());
-            jsonStorage.questionData.length += minutes;
+            jsonStorage.questionData.lengthMinute = value;
         }
-
-        if (tf_LabSessionLength_hours.getText().isBlank() &&
-                tf_LabSessionLength_minutes.getText().isBlank()) {
-            jsonStorage.questionData.length = 0;
-        }
-
     }
 
     public void setLabGroup(KeyEvent e) {
@@ -206,7 +198,7 @@ public class Controller {
         }
     }
 
-    public void printAll(MouseEvent e) {
+    public void printJSON(MouseEvent e) {
         Util.ECHO("Key Pressed");
         jsonStorage.print();
     }
@@ -219,48 +211,28 @@ public class Controller {
         Util.DEBUG(group);
         Util.DEBUG(Arrays.toString(dateTime));
 
+
+
         if (!group.isBlank() && dateTime.length == 2) {
             tableData.add(new TableData(group, dateTime[0], dateTime[1]));
-            tc_GroupColumn.setCellValueFactory(new PropertyValueFactory<>("group"));
-            tc_DateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-            tc_TimeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-
             table_LabSessions.setItems(tableData);
+            tc_GroupColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("group"));
+            tc_DateColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("date"));
+            tc_TimeColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("time"));
+
         }
 
     }
 
     public void removeFromSessionsTable(MouseEvent e) {
-
+        int index = table_LabSessions.getSelectionModel().getSelectedIndex();
+        tableData.remove(index);
+        Util.DEBUG(tableData.size() + " - " + tableData);
     }
 
 
-    // used to populate table
-    class TableData {
-        SimpleStringProperty group;
-        SimpleStringProperty date;
-        SimpleStringProperty time;
 
-        TableData(String group, String date, String time) {
-            this.group = new SimpleStringProperty(group);
-            this.date = new SimpleStringProperty(date);
-            this.time = new SimpleStringProperty(time);
-        }
 
-        public String getGroup() {
-            return group.get();
-        }
-
-        public String getDate() {
-            return date.get();
-        }
-
-        public String getTime() {
-            return time.get();
-        }
-    }
-
-    final ObservableList<TableData> tableData = FXCollections.observableArrayList();
 
 
 
@@ -278,6 +250,10 @@ public class Controller {
 
     HTMLDataStorage htmlStorage = new HTMLDataStorage();
 
+    public void printHTML(MouseEvent e) {
+        Util.ECHO("Key Pressed");
+        htmlStorage.print();
+    }
 
     public void setDescription(KeyEvent e) {
         String value = ta_DescriptionBody.getText();
@@ -373,7 +349,7 @@ public class Controller {
         }
     }
 
-    // better to use a table here
+
     public void addSampleIO(MouseEvent e) {
         String input = ta_SampleIO_Input.getText().trim();
         String output = ta_SampleIO_Output.getText().trim();
@@ -406,14 +382,16 @@ public class Controller {
 
     public void loadSampleIOIntoEditors(MouseEvent e) {
         int index = list_SampleIO.getSelectionModel().getSelectedIndex();
-        if (index > -1 && index < list_SampleIO.getItems().size()) {
-            ta_SampleIO_Input.setText(list_SampleIO.getItems().get(index));
-            ta_SampleIO_Output.setText(
-                    list_SampleIO
-                    .getItems()
-                    .get((index % 2 == 0) ? index :index-1)
-            );
-        }
+//        if (index > 0 && index < list_SampleIO.getItems().size()-1) {
+            if (index % 2 == 0) { // input selected
+                ta_SampleIO_Input.setText(list_SampleIO.getItems().get(index));
+                ta_SampleIO_Output.setText(list_SampleIO.getItems().get(index+1));
+            } else { // output selected
+                ta_SampleIO_Input.setText(list_SampleIO.getItems().get(index-1));
+                ta_SampleIO_Output.setText(list_SampleIO.getItems().get(index));
+            }
+
+//        }
     }
 
     public void setSingleOutput(KeyEvent e) {
@@ -584,3 +562,4 @@ public class Controller {
     @FXML
     private TextArea ta_SingleOutput;
 }
+

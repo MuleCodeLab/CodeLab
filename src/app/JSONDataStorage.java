@@ -10,7 +10,7 @@ public class JSONDataStorage {
 
     CourseLevelJSONData courseData = new CourseLevelJSONData();
     LabLevelJSONData labData = new LabLevelJSONData();
-    QuestionLevelJSONData questionData = new QuestionLevelJSONData();
+    QuestionLevelJSONData questionData = new QuestionLevelJSONData(labData);
 
     void print() {
         Util.ECHO("------------------\n");
@@ -115,6 +115,13 @@ class LabLevelJSONData {
 }
 
 class QuestionLevelJSONData {
+    // local use only
+    LabLevelJSONData labData;
+    QuestionLevelJSONData(LabLevelJSONData labData) {
+        this.labData = labData;
+    }
+
+
 	int questionNumber; // int
 	int labNumber; // int
 	String title;
@@ -126,9 +133,8 @@ class QuestionLevelJSONData {
 	boolean hiddenQuestion;
 
     String startDate, startHour, startMinute;
-	int length;
-	LocalDateTime pgStart;
-	LocalDateTime pgEnd;
+	String lengthHour = "0", lengthMinute = "0";
+	LocalDateTime pgStart, pgEnd;
 	String group;
 
 
@@ -156,7 +162,7 @@ class QuestionLevelJSONData {
     }
 
     String getQid() {
-	    return null; // implement
+	    return qid; // implement
     }
 
     boolean isHiddenQuestion() {
@@ -175,15 +181,17 @@ class QuestionLevelJSONData {
     }
 
     int getLength() {
+	    int length = Integer.parseInt(lengthMinute) +
+                     Integer.parseInt(lengthHour) * 60;
 	    return length;
     }
 
 	LocalDateTime getPGStart() {
-	    return pgStart;
+	    return labData.getCAEvalEnd();
     }
 
 	LocalDateTime getPGEnd() {
-	    return pgEnd;
+	    return labData.getAccessEnd();
     }
 
 	String getGroup() {
