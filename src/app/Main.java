@@ -6,63 +6,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import syed.core.*;
-import syed.JavaLab.*;
-
-import michael.htmltools.*;
-import michael.htmltools.*;
-
-
 public class Main extends Application {
 
-    void MichaelCodeTest() {
-
-    }
-
-
-    void SyedCodeTest(String path) {
-        Code labcode = new JavaCode(path);
-        CodeCompiler compiler = new JavaCompiler((JavaCode) labcode);
-        CodeRunner runner = new JavaRunner((JavaCompiler) compiler);
-        CodeEvaluator evaluator = new JavaEvaluator((JavaRunner) runner);
-
-        evaluator.setCompileGrade(10);
-        evaluator.setRegexGrade(30, 2);
-        evaluator.setTestGrade(60, 4);
-
-        evaluator.specifyRegex("DNA",
-                new Regex(".*public\\s\\+static\\s\\+void\\s\\+main\\s*(.*).*",
-                "a main method")
-        );
-        evaluator.specifyRegex("Sequence",
-                new Regex(".*public\\s\\+boolean\\s\\+compareSequence\\s*(.*).*",
-                "a compare sequence method")
-        );
-
-        evaluator.setTestData("johndoe\njohndoe\njohnnoe\n", "No Mutation detected!\n");
-        evaluator.setTestData("syed\nabcd\nefgh\n", "Mutation detected!\n");
-        evaluator.setTestData("jajja\nhajja\niaiia\n", "Mutation detected!\n");
-        evaluator.setTestData("test\ntae0\n1est\n", "No Mutation detected!\n");
-
-        compiler.writeScript();
-        runner.writeScript();
-        evaluator.writeScript();
-    }
-
-
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("TabbedScene2.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+    public void start(Stage primaryStage) throws Exception {
+        String fxml = "TabbedScene3.fxml";
+        Parent root = FXMLLoader.load(getClass().getResource(fxml));
+        primaryStage.setTitle("MULE-CodeLab");
+        primaryStage.setScene(new Scene(root, 740, 600));
         primaryStage.show();
-
-
-        SyedCodeTest("./tests");
     }
 
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }

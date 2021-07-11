@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="720.0">
+         <children>
+            <TabPane prefHeight="1366.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="JSON">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="925.0" prefWidth="600.0">
+                           <children>
+                              <VBox prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox fx:id="vb_Level" alignment="CENTER_LEFT" prefWidth="100.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Levels of files to be generated:" />
+                                          <VBox prefWidth="100.0" spacing="5.0">
+                                             <children>
+                                                <RadioButton fx:id="rb_Level_Question" onMousePressed="#hideCourseAndLabPanes" mnemonicParsing="false" text="Question level">
+                                                   <toggleGroup>
+                                                      <ToggleGroup fx:id="rb_LevelChooser" />
+                                                   </toggleGroup>
+                                                </RadioButton>
+                                                <RadioButton fx:id="rb_Level_Lab" onMousePressed="#hideCoursePane" mnemonicParsing="false" text="Question level, lab level" toggleGroup="$rb_LevelChooser" />
+                                                <RadioButton fx:id="rb_Level_Course" onMousePressed="#unHideAllPanes" mnemonicParsing="false" selected="true" text="Question level, lab level, course level" toggleGroup="$rb_LevelChooser" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets left="24.0" />
+                                             </VBox.margin>
+                                          </VBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <Separator prefWidth="200.0" />
+                                    <VBox fx:id="vb_CourseLevelData" prefWidth="100.0" spacing="20.0">
+                                       <children>
+                                          <StackPane prefWidth="200.0">
+                                             <children>
+                                                <Label text="Course-level data" />
+                                             </children>
+                                          </StackPane>
+                                          <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="128.0" text="Course code" />
+                                                <TextField fx:id="tf_CourseName" onKeyTyped="#setCourseName" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <Separator prefWidth="200.0" />
+                                    <VBox fx:id="vb_LabLevelData" prefWidth="552.0" spacing="10.0">
+                                       <children>
+                                          <StackPane prefWidth="200.0">
+                                             <children>
+                                                <Label text="Lab-level data" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </StackPane>
+                                          <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="128.0" text="Lab label">
+                                                   <tooltip>
+                                                      <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
+                                                   </tooltip>
+                                                </Label>
+                                                <TextField fx:id="tf_LabLabel" onKeyTyped="#setLabLabel" text="Lab" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="128.0" text="Lab number">
+                                                   <tooltip>
+                                                      <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
+                                                   </tooltip>
+                                                </Label>
+                                                <TextField fx:id="tf_LabNumber" onKeyTyped="#setLabNumber" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <Separator layoutX="10.0" layoutY="209.0" prefWidth="200.0" />
+                                    <VBox fx:id="vb_QuestionLevelData" prefHeight="749.0" prefWidth="552.0" spacing="10.0">
+                                       <children>
+                                          <StackPane prefWidth="200.0">
+                                             <children>
+                                                <Label text="Question-level data" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </StackPane>
+                                          <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="128.0" text="Question number" />
+                                                <TextField fx:id="tf_QuestionNumber" onKeyTyped="#setQuestionNumber" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="47.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="128.0" text="Question title" />
+                                                <TextField fx:id="tf_QuestionTitle" onKeyTyped="#setQuestionTitle" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <VBox fx:id="vb_JavaFileNames" prefHeight="153.0" prefWidth="600.0" spacing="5.0">
+                                             <children>
+                                                <Label text="Java file-names" />
+                                                <HBox prefWidth="600.0" spacing="5.0">
+                                                   <children>
+                                                      <TextField fx:id="tf_JavaFileNames" promptText="E.g. 'HelloWorld.java'" HBox.hgrow="ALWAYS" />
+                                                      <Button fx:id="btn_JavaFileNames_Add" onMousePressed="#addCodeFile" minWidth="60.0" mnemonicParsing="false" text="Add" />
+                                                      <Button fx:id="btn_JavaFileNames_Delete" onMousePressed="#removeCodeFile" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                   </children>
+                                                </HBox>
+                                                <ListView fx:id="list_JavaFileNames" fixedCellSize="0.0" prefHeight="56.0" prefWidth="600.0" VBox.vgrow="ALWAYS" />
+                                             </children>
+                                          </VBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label prefWidth="128.0" text="Access start" />
+                                                <HBox prefHeight="25.0" prefWidth="343.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <DatePicker fx:id="dp_AccessStart" onAction="#setAccessStartDate"/>
+                                                      <TextField fx:id="tf_AccessStart_hour" onKeyTyped="#setAccessStartHour" prefHeight="25.0" prefWidth="39.0" promptText="hh" />
+                                                      <Label text=":" />
+                                                      <TextField fx:id="tf_AccessStart_minute" onKeyTyped="#setAccessStartMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label prefWidth="128.0" text="Access end" />
+                                                <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="343.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <DatePicker fx:id="dp_AccessEnd" onAction="#setAccessEndDate"/>
+                                                      <TextField fx:id="tf_AccessEnd_hour" onKeyTyped="#setAccessEndHour" prefHeight="25.0" prefWidth="39.0" promptText="hh" />
+                                                      <Label text=":" />
+                                                      <TextField fx:id="tf_AccessEnd_minute" onKeyTyped="#setAccessEndMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label prefWidth="128.0" text="CA eval start" />
+                                                <HBox prefHeight="25.0" prefWidth="343.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <DatePicker fx:id="dp_CaEvalStart" onAction="#setCAStartDate" />
+                                                      <TextField fx:id="tf_CaEvalStart_hour" onKeyTyped="#setCAStartHour" prefHeight="25.0" prefWidth="39.0" promptText="hh" />
+                                                      <Label text=":" />
+                                                      <TextField fx:id="tf_CaEvalStart_minute" onKeyTyped="#setCAStartMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label prefWidth="128.0" text="CA eval end" />
+                                                <HBox prefHeight="25.0" prefWidth="343.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <DatePicker fx:id="dp_CaEvalEnd" onAction="#setCAEndDate" />
+                                                      <TextField fx:id="tf_CaEvalEnd_hour" onKeyTyped="#setCAEndHour" prefHeight="25.0" prefWidth="39.0" promptText="hh" />
+                                                      <Label text=":" />
+                                                      <TextField fx:id="tf_CaEvalEnd_minute" onKeyTyped="#setCAEndMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                          <VBox fx:id="vb_HiddenQuestionData" prefWidth="552.0" spacing="10.0">
+                                             <children>
+                                                <CheckBox fx:id="cb_IsHiddenQuestion" onAction="#setQuestionHidden" mnemonicParsing="false" prefHeight="30.0" text="This is a hidden question" />
+                                                <HBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <Label prefWidth="128.0" text="Lab session length" />
+                                                      <HBox alignment="CENTER_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <TextField fx:id="tf_LabSessionLength_hours" onKeyTyped="#setLabSessionLengthHour" prefHeight="25.0" prefWidth="51.0" text="1" />
+                                                            <Label text="hr" />
+                                                            <TextField fx:id="tf_LabSessionLength_minutes" onKeyTyped="#setLabSessionLengthMinute" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" text="30" />
+                                                            <Label layoutX="67.0" layoutY="10.0" text="min" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>
+                                                <VBox fx:id="vb_LabSessions" prefHeight="233.0" prefWidth="552.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Lab sessions" />
+                                                      <HBox alignment="CENTER_LEFT" prefWidth="600.0" spacing="5.0">
+                                                         <children>
+                                                            <TextField fx:id="tf_LabSessions_Group" onKeyTyped="#setLabGroup" prefHeight="25.0" prefWidth="144.0" promptText="Group name e.g. 'red'" HBox.hgrow="ALWAYS" />
+                                                            <HBox fx:id="hb_LabSessions" alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="279.0" spacing="5.0">
+                                                               <children>
+                                                                  <DatePicker fx:id="dp_LabSessionDate" onAction="#setLabSessionDate" promptText="Date of lab session" />
+                                                                  <TextField fx:id="tf_LabSessions_hour" onKeyTyped="#setLabSessionHour" prefHeight="25.0" prefWidth="39.0" promptText="hh" />
+                                                                  <Label text=":" />
+                                                                  <TextField fx:id="tf_LabSessions_minute" onKeyTyped="#setLabSessionMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Button fx:id="btn_LabSessions_Add" onMouseReleased="#addToSessionsTable" onMousePressed="#printAll" minWidth="60.0" mnemonicParsing="false" text="Add" />
+                                                            <Button fx:id="btn_LabSessions_Delete" onMouseReleased="#removeFromSessionsTable" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                         </children>
+                                                      </HBox>
+                                                      <TableView fx:id="table_LabSessions" prefHeight="139.0" prefWidth="552.0" VBox.vgrow="ALWAYS">
+                                                        <columns>
+                                                          <TableColumn fx:id="tc_GroupColumn" minWidth="50.0" prefWidth="143.33319664001465" text="Group name" />
+                                                          <TableColumn fx:id="tc_DateColumn" prefWidth="180.66661071777344" text="Date" />
+                                                          <TableColumn fx:id="tc_TimeColumn" minWidth="4.0001220703125" prefWidth="98.666748046875" text="Time" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </VBox>
+                                                <HBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <Label prefWidth="128.0" text="PG eval start" />
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="343.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <DatePicker fx:id="dp_PgEvalStart" />
+                                                            <TextField fx:id="tf_PgEvalStart_hour" prefHeight="25.0" prefWidth="39.0" promptText="hh" />
+                                                            <Label text=":" />
+                                                            <TextField fx:id="tf_PgEvalStart_minute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="32.0" left="24.0" right="24.0" top="32.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="HTML">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <padding>
+                                    <Insets bottom="32.0" left="24.0" right="24.0" top="32.0" />
+                                 </padding>
+                                 <children>
+                                    <StackPane prefWidth="200.0">
+                                       <children>
+                                          <Label text="Question-level data" />
+                                       </children>
+                                    </StackPane>
+                                    <VBox fx:id="vb_DescriptionBody" prefWidth="552.0" spacing="5.0">
+                                       <children>
+                                          <Label text="Description body" />
+                                          <TextArea fx:id="ta_DescriptionBody" onKeyTyped="#setDescription" prefHeight="143.0" prefWidth="552.0" promptText="This will represent the main body of your question description. To render text as a sub-heading, wrap it in &lt;h4&gt; HTML tags. E.g. '&lt;h4&gt;Sub-heading Goes Here&lt;/h4&gt;'" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="vb_Images" prefHeight="128.0" prefWidth="552.0" spacing="5.0">
+                                       <children>
+                                          <Label text="Images" />
+                                          <HBox spacing="5.0">
+                                             <children>
+                                                <TextField fx:id="tf_Images" promptText="Enter an image URL (images must be hosted online)" HBox.hgrow="ALWAYS" />
+                                                <Button fx:id="btn_Images_Add" onMouseReleased="#addImage" minWidth="60.0" mnemonicParsing="false" text="Add" />
+                                                <Button fx:id="btn_Images_Delete" onMouseReleased="#removeImage" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                             </children>
+                                          </HBox>
+                                          <ListView fx:id="list_Images" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="vb_Notes" layoutX="34.0" layoutY="252.0" prefHeight="128.0" prefWidth="552.0" spacing="5.0">
+                                       <children>
+                                          <Label text="Notes" />
+                                          <HBox spacing="5.0">
+                                             <children>
+                                                <TextField fx:id="tf_Notes" promptText="Enter a note" HBox.hgrow="ALWAYS" />
+                                                <Button fx:id="btn_Notes_Add" onMouseReleased="#addNote" minWidth="60.0" mnemonicParsing="false" text="Add" />
+                                                <Button fx:id="btn_Notes_Delete" onMouseReleased="#removeNote" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                             </children>
+                                          </HBox>
+                                          <ListView fx:id="list_Notes" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="vb_CodeSamples" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                       <children>
+                                          <Label text="Code samples" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <TextArea fx:id="ta_CodeSamples" prefHeight="200.0" prefWidth="200.0" promptText="Enter a piece of sample code" HBox.hgrow="ALWAYS">
+                                                   <font>
+                                                      <Font name="Consolas" size="12.0" />
+                                                   </font>
+                                                </TextArea>
+                                                <VBox alignment="CENTER" prefHeight="177.0" prefWidth="73.0" spacing="5.0">
+                                                   <children>
+                                                      <Button fx:id="btn_CodeSamples_Add" onMouseReleased="#addCodeSample" minWidth="60.0" mnemonicParsing="false" text="Add" />
+                                                      <Button fx:id="btn_CodeSamples_Delete" onMouseReleased="#removeCodeSample" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                   </children>
+                                                </VBox>
+                                                <ListView fx:id="list_CodeSamples" onMousePressed="#loadCodeSampleIntoEditor" prefHeight="177.0" prefWidth="86.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="vb_OutputType" prefWidth="100.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Type of output to be displayed:" />
+                                          <VBox prefWidth="100.0" spacing="5.0">
+                                             <children>
+                                                <RadioButton fx:id="rb_OutputType_SampleIO" onMouseReleased="#setOutputType" mnemonicParsing="false" text="Sample input/output">
+                                                   <toggleGroup>
+                                                      <ToggleGroup fx:id="rb_TypeOfOutputChooser" />
+                                                   </toggleGroup>
+                                                </RadioButton>
+                                                <RadioButton fx:id="rb_OutputType_Single" onMouseReleased="#setOutputType" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Single expected output" toggleGroup="$rb_TypeOfOutputChooser" />
+                                                <RadioButton fx:id="rb_OutputType_None" onMouseReleased="#setOutputType" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" text="None" toggleGroup="$rb_TypeOfOutputChooser" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets left="24.0" />
+                                             </VBox.margin>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="vb_SampleIO" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                       <children>
+                                          <Label text="Sample input/output" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <TextArea fx:id="ta_SampleIO_Input" prefHeight="200.0" prefWidth="200.0" promptText="Input" HBox.hgrow="ALWAYS">
+                                                   <font>
+                                                      <Font name="Consolas" size="12.0" />
+                                                   </font>
+                                                </TextArea>
+                                                <TextArea fx:id="ta_SampleIO_Output" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" promptText="Output" HBox.hgrow="ALWAYS">
+                                                   <font>
+                                                      <Font name="Consolas" size="12.0" />
+                                                   </font>
+                                                </TextArea>
+                                                <VBox alignment="CENTER" prefHeight="177.0" prefWidth="58.0" spacing="5.0">
+                                                   <children>
+                                                      <Button fx:id="btn_SampleIO_Add" onMouseReleased="#addSampleIO" minWidth="60.0" mnemonicParsing="false" text="Add" />
+                                                      <Button fx:id="btn_SampleIO_Delete" onMouseReleased="#removeSampleIO" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                   </children>
+                                                </VBox>
+                                                <ListView fx:id="list_SampleIO" onMousePressed="#loadSampleIOIntoEditors" prefHeight="177.0" prefWidth="86.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="vb_SingleOutput" prefWidth="552.0" spacing="5.0">
+                                       <children>
+                                          <Label text="Single expected output" />
+                                          <TextArea fx:id="ta_SingleOutput" onKeyTyped="#setSingleOutput" prefHeight="143.0" prefWidth="552.0" promptText="Enter the expected output" VBox.vgrow="ALWAYS">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                          </TextArea>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children></AnchorPane>
+  </content>
+</ScrollPane>
