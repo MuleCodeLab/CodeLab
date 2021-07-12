@@ -23,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
+<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="720.0">
          <children>
@@ -40,13 +40,13 @@
                                           <Label text="Levels of files to be generated:" />
                                           <VBox prefWidth="100.0" spacing="5.0">
                                              <children>
-                                                <RadioButton fx:id="rb_Level_Question" onMousePressed="#hideCourseAndLabPanes" mnemonicParsing="false" text="Question level">
+                                                <RadioButton fx:id="rb_Level_Question" mnemonicParsing="false" onMousePressed="#hideCourseAndLabPanes" text="Question level">
                                                    <toggleGroup>
                                                       <ToggleGroup fx:id="rb_LevelChooser" />
                                                    </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="rb_Level_Lab" onMousePressed="#hideCoursePane" mnemonicParsing="false" text="Question level, lab level" toggleGroup="$rb_LevelChooser" />
-                                                <RadioButton fx:id="rb_Level_Course" onMousePressed="#unHideAllPanes" mnemonicParsing="false" selected="true" text="Question level, lab level, course level" toggleGroup="$rb_LevelChooser" />
+                                                <RadioButton fx:id="rb_Level_Lab" mnemonicParsing="false" onMousePressed="#hideCoursePane" text="Question level, lab level" toggleGroup="$rb_LevelChooser" />
+                                                <RadioButton fx:id="rb_Level_Course" mnemonicParsing="false" onMousePressed="#unHideAllPanes" selected="true" text="Question level, lab level, course level" toggleGroup="$rb_LevelChooser" />
                                              </children>
                                              <VBox.margin>
                                                 <Insets left="24.0" />
@@ -57,22 +57,7 @@
                                           <Insets />
                                        </VBox.margin>
                                     </VBox>
-                                    <Separator prefWidth="200.0" />
-                                    <VBox fx:id="vb_CourseLevelData" prefWidth="100.0" spacing="20.0">
-                                       <children>
-                                          <StackPane prefWidth="200.0">
-                                             <children>
-                                                <Label text="Course-level data" />
-                                             </children>
-                                          </StackPane>
-                                          <HBox alignment="CENTER_LEFT" prefWidth="200.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="128.0" text="Course code" />
-                                                <TextField fx:id="tf_CourseName" onKeyTyped="#setCourseName" HBox.hgrow="ALWAYS" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
+                                    <VBox fx:id="vb_CourseLevelData" prefWidth="100.0" spacing="20.0" />
                                     <Separator prefWidth="200.0" />
                                     <VBox fx:id="vb_LabLevelData" prefWidth="552.0" spacing="10.0">
                                        <children>
@@ -119,6 +104,12 @@
                                           </StackPane>
                                           <HBox alignment="CENTER_LEFT" prefWidth="200.0">
                                              <children>
+                                                <Label prefHeight="17.0" prefWidth="128.0" text="Course code" />
+                                                <TextField fx:id="tf_CourseName" onKeyTyped="#setCourseName" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                             <children>
                                                 <Label prefHeight="17.0" prefWidth="128.0" text="Question number" />
                                                 <TextField fx:id="tf_QuestionNumber" onKeyTyped="#setQuestionNumber" HBox.hgrow="ALWAYS" />
                                              </children>
@@ -135,8 +126,8 @@
                                                 <HBox prefWidth="600.0" spacing="5.0">
                                                    <children>
                                                       <TextField fx:id="tf_JavaFileNames" promptText="E.g. 'HelloWorld.java'" HBox.hgrow="ALWAYS" />
-                                                      <Button fx:id="btn_JavaFileNames_Add" onMousePressed="#addCodeFile" minWidth="60.0" mnemonicParsing="false" text="Add" />
-                                                      <Button fx:id="btn_JavaFileNames_Delete" onMousePressed="#removeCodeFile" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                      <Button fx:id="btn_JavaFileNames_Add" minWidth="60.0" mnemonicParsing="false" onMousePressed="#addCodeFile" text="Add" />
+                                                      <Button fx:id="btn_JavaFileNames_Delete" minWidth="60.0" mnemonicParsing="false" onMousePressed="#removeCodeFile" text="Del." />
                                                    </children>
                                                 </HBox>
                                                 <ListView fx:id="list_JavaFileNames" fixedCellSize="0.0" prefHeight="56.0" prefWidth="600.0" VBox.vgrow="ALWAYS" />
@@ -147,7 +138,7 @@
                                                 <Label prefWidth="128.0" text="Access start" />
                                                 <HBox prefHeight="25.0" prefWidth="343.0" spacing="5.0" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <DatePicker fx:id="dp_AccessStart" onAction="#setAccessStartDate"/>
+                                                      <DatePicker fx:id="dp_AccessStart" onAction="#setAccessStartDate" />
                                                       <TextField fx:id="tf_AccessStart_hour" onKeyTyped="#setAccessStartHour" prefHeight="25.0" prefWidth="39.0" promptText="hh" />
                                                       <Label text=":" />
                                                       <TextField fx:id="tf_AccessStart_minute" onKeyTyped="#setAccessStartMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
@@ -160,7 +151,7 @@
                                                 <Label prefWidth="128.0" text="Access end" />
                                                 <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="343.0" spacing="5.0" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <DatePicker fx:id="dp_AccessEnd" onAction="#setAccessEndDate"/>
+                                                      <DatePicker fx:id="dp_AccessEnd" onAction="#setAccessEndDate" />
                                                       <TextField fx:id="tf_AccessEnd_hour" onKeyTyped="#setAccessEndHour" prefHeight="25.0" prefWidth="39.0" promptText="hh" />
                                                       <Label text=":" />
                                                       <TextField fx:id="tf_AccessEnd_minute" onKeyTyped="#setAccessEndMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
@@ -196,7 +187,7 @@
                                           </HBox>
                                           <VBox fx:id="vb_HiddenQuestionData" prefWidth="552.0" spacing="10.0">
                                              <children>
-                                                <CheckBox fx:id="cb_IsHiddenQuestion" onAction="#setQuestionHidden" mnemonicParsing="false" prefHeight="30.0" text="This is a hidden question" />
+                                                <CheckBox fx:id="cb_IsHiddenQuestion" mnemonicParsing="false" onAction="#setQuestionHidden" prefHeight="30.0" text="This is a hidden question" />
                                                 <HBox alignment="CENTER_LEFT">
                                                    <children>
                                                       <Label prefWidth="128.0" text="Lab session length" />
@@ -204,7 +195,7 @@
                                                          <children>
                                                             <TextField fx:id="tf_LabSessionLength_hours" onKeyTyped="#setLabSessionLengthHour" prefHeight="25.0" prefWidth="51.0" text="00" />
                                                             <Label text="hr" />
-                                                            <TextField fx:id="tf_LabSessionLength_minutes" onKeyTyped="#setLabSessionLengthMinute" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" text="00"/>
+                                                            <TextField fx:id="tf_LabSessionLength_minutes" layoutX="10.0" layoutY="10.0" onKeyTyped="#setLabSessionLengthMinute" prefHeight="25.0" prefWidth="51.0" text="00" />
                                                             <Label layoutX="67.0" layoutY="10.0" text="min" />
                                                          </children>
                                                       </HBox>
@@ -224,8 +215,8 @@
                                                                   <TextField fx:id="tf_LabSessions_minute" onKeyTyped="#setLabSessionMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm" />
                                                                </children>
                                                             </HBox>
-                                                            <Button fx:id="btn_LabSessions_Add" onMouseReleased="#addToSessionsTable" onMousePressed="#printJSON" minWidth="60.0" mnemonicParsing="false" text="Add" />
-                                                            <Button fx:id="btn_LabSessions_Delete" onMouseReleased="#removeFromSessionsTable" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                            <Button fx:id="btn_LabSessions_Add" minWidth="60.0" mnemonicParsing="false" onMousePressed="#printJSON" onMouseReleased="#addToSessionsTable" text="Add" />
+                                                            <Button fx:id="btn_LabSessions_Delete" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeFromSessionsTable" text="Del." />
                                                          </children>
                                                       </HBox>
                                                       <TableView fx:id="table_LabSessions" prefHeight="139.0" prefWidth="552.0" VBox.vgrow="ALWAYS">
@@ -289,8 +280,8 @@
                                           <HBox spacing="5.0">
                                              <children>
                                                 <TextField fx:id="tf_Images" promptText="Enter an image URL (images must be hosted online)" HBox.hgrow="ALWAYS" />
-                                                <Button fx:id="btn_Images_Add" onMouseReleased="#addImage" minWidth="60.0" mnemonicParsing="false" text="Add" />
-                                                <Button fx:id="btn_Images_Delete" onMouseReleased="#removeImage" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                <Button fx:id="btn_Images_Add" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addImage" text="Add" />
+                                                <Button fx:id="btn_Images_Delete" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeImage" text="Del." />
                                              </children>
                                           </HBox>
                                           <ListView fx:id="list_Images" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
@@ -302,8 +293,8 @@
                                           <HBox spacing="5.0">
                                              <children>
                                                 <TextField fx:id="tf_Notes" promptText="Enter a note" HBox.hgrow="ALWAYS" />
-                                                <Button fx:id="btn_Notes_Add" onMouseReleased="#addNote" minWidth="60.0" mnemonicParsing="false" text="Add" />
-                                                <Button fx:id="btn_Notes_Delete" onMouseReleased="#removeNote" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                <Button fx:id="btn_Notes_Add" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addNote" text="Add" />
+                                                <Button fx:id="btn_Notes_Delete" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeNote" text="Del." />
                                              </children>
                                           </HBox>
                                           <ListView fx:id="list_Notes" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
@@ -321,8 +312,8 @@
                                                 </TextArea>
                                                 <VBox alignment="CENTER" prefHeight="177.0" prefWidth="73.0" spacing="5.0">
                                                    <children>
-                                                      <Button fx:id="btn_CodeSamples_Add" onMouseReleased="#addCodeSample" minWidth="60.0" mnemonicParsing="false" text="Add" />
-                                                      <Button fx:id="btn_CodeSamples_Delete" onMouseReleased="#removeCodeSample" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                      <Button fx:id="btn_CodeSamples_Add" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addCodeSample" text="Add" />
+                                                      <Button fx:id="btn_CodeSamples_Delete" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeCodeSample" text="Del." />
                                                    </children>
                                                 </VBox>
                                                 <ListView fx:id="list_CodeSamples" onMousePressed="#loadCodeSampleIntoEditor" prefHeight="177.0" prefWidth="86.0" />
@@ -335,13 +326,13 @@
                                           <Label text="Type of output to be displayed:" />
                                           <VBox prefWidth="100.0" spacing="5.0">
                                              <children>
-                                                <RadioButton fx:id="rb_OutputType_SampleIO" onMouseReleased="#setOutputType" mnemonicParsing="false" text="Sample input/output">
+                                                <RadioButton fx:id="rb_OutputType_SampleIO" mnemonicParsing="false" onMouseReleased="#setOutputType" text="Sample input/output">
                                                    <toggleGroup>
                                                       <ToggleGroup fx:id="rb_TypeOfOutputChooser" />
                                                    </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="rb_OutputType_Single" onMouseReleased="#setOutputType" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Single expected output" toggleGroup="$rb_TypeOfOutputChooser" />
-                                                <RadioButton fx:id="rb_OutputType_None" onMouseReleased="#setOutputType" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" text="None" toggleGroup="$rb_TypeOfOutputChooser" />
+                                                <RadioButton fx:id="rb_OutputType_Single" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseReleased="#setOutputType" text="Single expected output" toggleGroup="$rb_TypeOfOutputChooser" />
+                                                <RadioButton fx:id="rb_OutputType_None" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" onMouseReleased="#setOutputType" text="None" toggleGroup="$rb_TypeOfOutputChooser" />
                                              </children>
                                              <VBox.margin>
                                                 <Insets left="24.0" />
@@ -366,8 +357,8 @@
                                                 </TextArea>
                                                 <VBox alignment="CENTER" prefHeight="177.0" prefWidth="58.0" spacing="5.0">
                                                    <children>
-                                                      <Button fx:id="btn_SampleIO_Add" onMousePressed="#addSampleIO" minWidth="60.0" mnemonicParsing="false" text="Add" />
-                                                      <Button fx:id="btn_SampleIO_Delete" onMousePressed="#removeSampleIO" onMouseReleased="#printHTML" minWidth="60.0" mnemonicParsing="false" text="Del." />
+                                                      <Button fx:id="btn_SampleIO_Add" minWidth="60.0" mnemonicParsing="false" onMousePressed="#addSampleIO" text="Add" />
+                                                      <Button fx:id="btn_SampleIO_Delete" minWidth="60.0" mnemonicParsing="false" onMousePressed="#removeSampleIO" onMouseReleased="#printHTML" text="Del." />
                                                    </children>
                                                 </VBox>
                                                 <ListView fx:id="list_SampleIO" onMousePressed="#loadSampleIOIntoEditors" prefHeight="177.0" prefWidth="86.0" />
