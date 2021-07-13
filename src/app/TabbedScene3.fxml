@@ -449,13 +449,13 @@
                                           <Label text="Question language" />
                                           <VBox prefWidth="100.0" spacing="5.0">
                                              <children>
-                                                <RadioButton fx:id="rb_Lang_Java" mnemonicParsing="false" onMousePressed="#hideCourseAndLabPanes" selected="true" text="Java">
+                                                <RadioButton fx:id="rb_Lang_Java" mnemonicParsing="false" onMousePressed="#setJavaLab" selected="true" text="Java">
                                                    <toggleGroup>
                                                       <ToggleGroup fx:id="rb_Lang" />
                                                    </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="rb_Lang_Python" mnemonicParsing="false" onMousePressed="#hideCoursePane" text="Python" toggleGroup="$rb_Lang" />
-                                                <RadioButton fx:id="rb_Lang_C" mnemonicParsing="false" onMousePressed="#unHideAllPanes" text="C" toggleGroup="$rb_Lang" />
+                                                <RadioButton fx:id="rb_Lang_Python" mnemonicParsing="false" onMousePressed="#setPythonLab" text="Python" toggleGroup="$rb_Lang" />
+                                                <RadioButton fx:id="rb_Lang_C" mnemonicParsing="false" onMousePressed="#setCLab" text="C" toggleGroup="$rb_Lang" />
                                              </children>
                                              <VBox.margin>
                                                 <Insets left="24.0" />
@@ -469,7 +469,7 @@
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                              <children>
                                                 <ListView fx:id="list_MainFile_FileNames" prefHeight="100.0" prefWidth="245.0" />
-                                                <Button fx:id="btn_MainFile_Set" mnemonicParsing="false" text="Set selected as Main file" />
+                                                <Button fx:id="btn_MainFile_Set" onMouseReleased="#selectMainFile" mnemonicParsing="false" text="Set selected as Main file" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5.0">
@@ -488,14 +488,14 @@
                                           <Label text="Starting code" />
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
                                              <children>
-                                                <TextArea fx:id="ta_StartCode" prefHeight="200.0" prefWidth="200.0" promptText="Select a code file on the right to view/edit its starter code" HBox.hgrow="ALWAYS">
+                                                <TextArea fx:id="ta_StartCode" onKeyTyped="#startingCode" prefHeight="200.0" prefWidth="200.0" promptText="Select a code file on the right to view/edit its starter code" HBox.hgrow="ALWAYS">
                                                    <font>
                                                       <Font name="Consolas" size="12.0" />
                                                    </font></TextArea>
-                                                <Button fx:id="btn_StartCode_Set" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Set" />
+                                                <Button fx:id="btn_StartCode_Set" onMouseReleased="#setStartingCode" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Set" />
                                                 <VBox alignment="CENTER" prefHeight="205.0" prefWidth="120.0" spacing="5.0">
                                                    <children>
-                                                      <ListView fx:id="list_StartCode_FileNames" prefHeight="174.0" prefWidth="126.0" VBox.vgrow="ALWAYS" />
+                                                      <ListView fx:id="list_StartCode_FileNames" onMouseReleased="#loadStartingCode" prefHeight="174.0" prefWidth="126.0" VBox.vgrow="ALWAYS" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -515,10 +515,10 @@
                                                             <VBox prefWidth="100.0" spacing="2.0" HBox.hgrow="ALWAYS">
                                                                <children>
                                                                   <Label text="Prefined" />
-                                                                  <ComboBox fx:id="combo_Regex_Predefined" prefHeight="25.0" prefWidth="250.0" />
+                                                                  <ComboBox fx:id="combo_Regex_Predefined" onShowing="#setPredefinedRegex" promptText="Regex" prefHeight="25.0" prefWidth="250.0" />
                                                                </children>
                                                             </VBox>
-                                                            <Button fx:id="btn_Regex_Add_Predefined" minHeight="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" text="Add" />
+                                                            <Button fx:id="btn_Regex_Add_Predefined" onMouseReleased="#addPredefinedRegex" minHeight="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" text="Add" />
                                                          </children>
                                                       </HBox>
                                                       <VBox prefWidth="233.0" spacing="10.0">
