@@ -561,5 +561,77 @@ public class Controller {
     private VBox vb_SingleOutput;
     @FXML
     private TextArea ta_SingleOutput;
-}
+    
 
+    // -------- NEW ITEMS 13/07/2021 -------- //
+    @FXML
+    private Button btn_JSON_Generate;
+    @FXML
+    private Button btn_HTML_Generate;
+    @FXML
+    private VBox vb_Lang;
+    @FXML
+    private RadioButton rb_Lang_Java;
+    @FXML
+    private ToggleGroup rb_Lang;
+    @FXML
+    private RadioButton rb_Lang_Python;
+    @FXML
+    private RadioButton rb_Lang_C;
+    @FXML
+    private VBox vb_MainFile;
+    @FXML
+    private ListView<?> list_MainFile_FileNames;
+    @FXML
+    private Button btn_MainFile_Set;
+    @FXML
+    private TextField tf_MainFile_Uneditable;
+    @FXML
+    private VBox vb_StartCode;
+    @FXML
+    private TextArea ta_StartCode;
+    @FXML
+    private Button btn_StartCode_Set;
+    @FXML
+    private ListView<?> list_StartCode_FileNames;
+    @FXML
+    private VBox vb_Regex;
+    @FXML
+    private ListView<?> list_Regex_FileNames;
+    @FXML
+    private ComboBox<?> combo_Regex_Predefined;
+    @FXML
+    private Button btn_Regex_Add_Predefined;
+    @FXML
+    private TextField tf_Regex_Custom;
+    @FXML
+    private Button btn_Regex_Add_Custom;
+    @FXML
+    private ListView<?> list_Regex_Regexes;
+    @FXML
+    private Button btn_Regex_Delete;
+    @FXML
+    private VBox vb_TestCases;
+    @FXML
+    private TextArea ta_TestCases_Input;
+    @FXML
+    private TextArea ta_TestCases_Output;
+    @FXML
+    private Button btn_TestCases_Add;
+    @FXML
+    private Button btn_TestCases_Delete;
+    @FXML
+    private ListView<?> list_TestCases;
+    @FXML
+    private VBox vb_gradeProportions;
+    @FXML
+    private TextField tf_GradeProportions_Compile;
+    @FXML
+    private TextField tf_GradeProportions_Regex;
+    @FXML
+    private TextField tf_GradeProportions_TestCases;
+    @FXML
+    private TextField tf_GradeProportions_Sum_Uneditable;
+    @FXML
+    private Button btn_Scripts_GenerateAndFinish;
+}
