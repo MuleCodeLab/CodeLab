@@ -679,6 +679,9 @@
                                                                            </font>
                                                                         </Label>
                                                                      </children>
+                                                                     <VBox.margin>
+                                                                        <Insets top="10.0" />
+                                                                     </VBox.margin>
                                                                   </HBox>
                                                                </children>
                                                             </VBox>
@@ -714,40 +717,37 @@
                                                          <children>
                                                             <HBox prefHeight="300.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                <children>
-                                                                  <VBox spacing="15.0">
+                                                                  <VBox prefHeight="187.0" prefWidth="323.0" spacing="5.0">
                                                                      <children>
-                                                                        <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5.0">
+                                                                        <ComboBox fx:id="combo_CodeFileOptions_Regexes_Predefined" prefHeight="25.0" prefWidth="333.0" promptText="Select a predefined regex" />
+                                                                        <VBox prefHeight="200.0" prefWidth="100.0">
                                                                            <children>
-                                                                              <VBox prefWidth="100.0" spacing="2.0" HBox.hgrow="ALWAYS">
-                                                                                 <children>
-                                                                                    <Label text="Predefined" />
-                                                                                    <ComboBox fx:id="combo_CodeFileOptions_Regexes_Predefined" prefHeight="25.0" prefWidth="250.0" />
-                                                                                 </children>
-                                                                              </VBox>
-                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Predefined_Add" minHeight="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" text="Add" />
+                                                                              <Label text="Regex (editable)" />
+                                                                              <TextArea fx:id="ta_CodeFileOptions_Regexes_RegexEditable" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                                 <font>
+                                                                                    <Font name="Consolas" size="12.0" />
+                                                                                 </font>
+                                                                              </TextArea>
                                                                            </children>
-                                                                        </HBox>
-                                                                        <HBox alignment="CENTER_LEFT" prefHeight="98.0" prefWidth="310.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                                                                        </VBox>
+                                                                        <VBox prefWidth="100.0" spacing="2.0">
                                                                            <children>
-                                                                              <VBox prefWidth="100.0" spacing="2.0" HBox.hgrow="ALWAYS">
-                                                                                 <children>
-                                                                                    <Label text="Custom" />
-                                                                                    <TextArea fx:id="ta_CodeFileOptions_Regexes_Custom" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS">
-                                                                                       <font>
-                                                                                          <Font name="Consolas" size="12.0" />
-                                                                                       </font>
-                                                                                    </TextArea>
-                                                                                 </children>
-                                                                              </VBox>
-                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Custom_Add" minHeight="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" text="Add" />
+                                                                              <Label text="Comment" />
+                                                                              <TextField fx:id="tf_CodeOptions_Regexes_Comment" />
                                                                            </children>
-                                                                        </HBox>
+                                                                        </VBox>
+                                                                        <VBox prefWidth="100.0" spacing="2.0" />
                                                                      </children>
                                                                   </VBox>
                                                                   <VBox alignment="CENTER" prefHeight="224.0" prefWidth="219.0" spacing="5.0" HBox.hgrow="ALWAYS">
                                                                      <children>
                                                                         <ListView fx:id="list_CodeFileOptions_Regexes" prefHeight="193.0" prefWidth="219.0" VBox.vgrow="ALWAYS" />
-                                                                        <Button fx:id="btn_CodeFileOptions_Regexes_Delete" mnemonicParsing="false" text="Remove selected Regex" />
+                                                                        <HBox prefWidth="200.0" spacing="5.0">
+                                                                           <children>
+                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Add" mnemonicParsing="false" prefWidth="60.0" text="Add" />
+                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Delete" mnemonicParsing="false" prefWidth="60.0" text="Del." />
+                                                                           </children>
+                                                                        </HBox>
                                                                      </children>
                                                                   </VBox>
                                                                </children>
