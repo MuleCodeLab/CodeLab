@@ -50,6 +50,10 @@ class LabLevelJSONData {
     String accessEndDate, accessEndHour, accessEndMinute;
     String caEvalStartDate, caEvalStartHour, caEvalStartMinute;
     String caEvalEndDate, caEvalEndHour, caEvalEndMinute;
+    String pgStartDate, pgStartHour, pgStartMinute;
+    String pgEndDate, pgEndHour, pgEndMinute;
+
+
 
     int getLabNumber() {
         return labNumber;
@@ -103,6 +107,29 @@ class LabLevelJSONData {
         return LocalDateTime.of(year, month, day, hour, minute);
     }
 
+    LocalDateTime getPGStart() {
+        String[] ddmmyyyy = pgStartDate.split("/");
+        int day = Integer.parseInt(ddmmyyyy[0]);
+        int month = Integer.parseInt(ddmmyyyy[1]);
+        int year = Integer.parseInt(ddmmyyyy[2]);
+        int hour = Integer.parseInt(pgStartHour);
+        int minute = Integer.parseInt(pgStartMinute);
+
+        return LocalDateTime.of(year, month, day, hour, minute);
+    }
+
+    LocalDateTime getPGEnd() {
+        String[] ddmmyyyy = pgEndDate.split("/");
+        int day = Integer.parseInt(ddmmyyyy[0]);
+        int month = Integer.parseInt(ddmmyyyy[1]);
+        int year = Integer.parseInt(ddmmyyyy[2]);
+        int hour = Integer.parseInt(pgEndHour);
+        int minute = Integer.parseInt(pgEndMinute);
+
+        return LocalDateTime.of(year, month, day, hour, minute);
+    }
+
+
     void print() {
         Util.ECHO("Lab Label: "+ getLabLabel());
         Util.ECHO("Lab Number: " + getLabNumber());
@@ -110,6 +137,8 @@ class LabLevelJSONData {
         Util.ECHO("Access End: "+ getAccessEnd().toString());
         Util.ECHO("CA Eval Start: "+ getCAEvalStart().toString());
         Util.ECHO("CA Eval End: "+ getCAEvalEnd().toString());
+        Util.ECHO("PG Start: "+ getPGStart().toString());
+        Util.ECHO("PG End: "+ getPGEnd().toString());
     }
 
 }
@@ -181,18 +210,16 @@ class QuestionLevelJSONData {
     }
 
     int getLength() {
-	    int length = Integer.parseInt(lengthMinute) +
-                     Integer.parseInt(lengthHour) * 60;
-	    return length;
+	    return Integer.parseInt(lengthMinute) + (Integer.parseInt(lengthHour) * 60);
     }
 
-	LocalDateTime getPGStart() {
-	    return labData.getCAEvalEnd();
-    }
-
-	LocalDateTime getPGEnd() {
-	    return labData.getAccessEnd();
-    }
+//	LocalDateTime getPGStart() {
+//	    return labData.getCAEvalEnd();
+//    }
+//
+//	LocalDateTime getPGEnd() {
+//	    return labData.getAccessEnd();
+//    }
 
 	String getGroup() {
         return group;
@@ -205,12 +232,18 @@ class QuestionLevelJSONData {
         Util.ECHO("Course: "+getCourse());
         Util.ECHO("ID: "+ getQid());
         Util.ECHO("Files: "+Arrays.toString(getFiles()));
-        Util.ECHO("Hidden: "+ isHiddenQuestion());
-        Util.ECHO("Group: "+ getGroup());
-        Util.ECHO("Length: "+ getLength());
-        Util.ECHO("Start: "+ getStart());
-        Util.ECHO("PG Start: "+ getPGStart());
-        Util.ECHO("PG End: "+ getPGEnd());
+        Util.ECHO("Access Start: "+ labData.getAccessStart());
+        Util.ECHO("Access End: "+ labData.getAccessEnd());
+        Util.ECHO("CA Eval Start: "+ labData.getCAEvalStart());
+        Util.ECHO("CA Eval End: "+ labData.getCAEvalEnd());
+        if (isHiddenQuestion()) {
+            Util.ECHO("Hidden: " + isHiddenQuestion());
+            Util.ECHO("Group: " + getGroup());
+            Util.ECHO("Length: " + getLength());
+            Util.ECHO("Hidden Q Start: " + getStart());
+            Util.ECHO("PG Start: " + labData.getPGStart());
+            Util.ECHO("PG End: " + labData.getPGEnd());
+        }
     }
 }
 

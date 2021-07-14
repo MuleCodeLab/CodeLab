@@ -139,21 +139,21 @@ public class Controller {
     }
 
     public void addCodeFile(MouseEvent e) {
-        String file = tf_JavaFileNames.getText().trim();
+        String file = tf_CodeFileNames.getText().trim();
         if (!file.isBlank()) {
-            list_JavaFileNames.getItems().add(file);
+            list_CodeFileNames.getItems().add(file);
             list_MainFile_FileNames.getItems().add(file);
-            jsonStorage.questionData.files = new ArrayList<>(list_JavaFileNames.getItems());
+            jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
             scriptData.files = jsonStorage.questionData.files;
         }
     }
 
     public void removeCodeFile(MouseEvent e) {
-        if (list_JavaFileNames.getItems().size() > 0) {
-            int index = list_JavaFileNames.getSelectionModel().getSelectedIndex();
-            list_JavaFileNames.getItems().remove(index);
+        if (list_CodeFileNames.getItems().size() > 0) {
+            int index = list_CodeFileNames.getSelectionModel().getSelectedIndex();
+            list_CodeFileNames.getItems().remove(index);
             list_MainFile_FileNames.getItems().remove(index);
-            jsonStorage.questionData.files = new ArrayList<>(list_JavaFileNames.getItems());
+            jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
             scriptData.files = jsonStorage.questionData.files;
         } else {
             Util.DEBUG("Empty");
@@ -161,47 +161,53 @@ public class Controller {
     }
 
     public void setQuestionHidden(ActionEvent e) {
-        jsonStorage.questionData.hiddenQuestion = cb_IsHiddenQuestion.isSelected();
+        if (cb_IsHiddenQuestion.isSelected()) {
+            jsonStorage.questionData.hiddenQuestion = true;
+            vb_HiddenQuestionData.setDisable(false);
+        } else {
+            jsonStorage.questionData.hiddenQuestion = false;
+            vb_HiddenQuestionData.setDisable(true);
+        }
         Util.ECHO(jsonStorage.questionData.hiddenQuestion);
     }
 
     public void setLabSessionLengthHour(KeyEvent e) {
-        String value = tf_LabSessionLength_hours.getText().trim();
+        String value = tf_Hidden_LabSessionLength_hours.getText().trim();
         if (!value.isBlank()) {
             jsonStorage.questionData.lengthHour = value;
         }
     }
 
     public void setLabSessionLengthMinute(KeyEvent e) {
-        String value = tf_LabSessionLength_minutes.getText().trim();
+        String value = tf_Hidden_LabSessionLength_minutes.getText().trim();
         if (!value.isBlank()) {
             jsonStorage.questionData.lengthMinute = value;
         }
     }
 
     public void setLabGroup(KeyEvent e) {
-        String value = tf_LabSessions_Group.getText().trim();
+        String value = tf_Hidden_LabSessions_Group.getText().trim();
         if (!value.isBlank()) {
             jsonStorage.questionData.group = value;
         }
     }
 
     public void setLabSessionDate(Event e) {
-        String value = dp_LabSessionDate.getEditor().getText().trim();
+        String value = dp_Hidden_LabSessionDate.getEditor().getText().trim();
         if (!value.isBlank()) {
             jsonStorage.questionData.startDate = value;
         }
     }
 
     public void setLabSessionHour(KeyEvent e) {
-        String value = tf_LabSessions_hour.getText().trim();
+        String value = tf_Hidden_LabSessions_hour.getText().trim();
         if (!value.isBlank()) {
             jsonStorage.questionData.startHour = value;
         }
     }
 
     public void setLabSessionMinute(KeyEvent e) {
-        String value = tf_LabSessions_minute.getText().trim();
+        String value = tf_Hidden_LabSessions_minute.getText().trim();
         if (!value.isBlank()) {
             jsonStorage.questionData.startMinute = value;
         }
@@ -220,11 +226,9 @@ public class Controller {
         Util.DEBUG(group);
         Util.DEBUG(Arrays.toString(dateTime));
 
-
-
         if (!group.isBlank() && dateTime.length == 2) {
             tableData.add(new TableData(group, dateTime[0], dateTime[1]));
-            table_LabSessions.setItems(tableData);
+            table_Hidden_LabSessions.setItems(tableData);
             tc_GroupColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("group"));
             tc_DateColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("date"));
             tc_TimeColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("time"));
@@ -234,13 +238,54 @@ public class Controller {
     }
 
     public void removeFromSessionsTable(MouseEvent e) {
-        int index = table_LabSessions.getSelectionModel().getSelectedIndex();
+        int index = table_Hidden_LabSessions.getSelectionModel().getSelectedIndex();
         tableData.remove(index);
         Util.DEBUG(tableData.size() + " - " + tableData);
     }
 
 
 
+    public void setHiddenPgStartDate() {
+        String value = dp_Hidden_PgStart_date.getEditor().getText().trim();
+        if (!value.isBlank()) {
+            jsonStorage.labData.pgStartDate = value;
+        }
+    }
+
+    public void setHiddenPgStartHour() {
+        String value = tf_Hidden_PgStart_hour.getText().trim();
+        if (!value.isBlank()) {
+            jsonStorage.labData.pgStartHour = value;
+        }
+    }
+
+    public void setHiddenPgStartMinute() {
+        String value = tf_Hidden_PgStart_minute.getText().trim();
+        if (!value.isBlank()) {
+            jsonStorage.labData.pgStartMinute = value;
+        }
+    }
+
+    public void setHiddenPgEndDate() {
+        String value = dp_Hidden_PgEnd_date.getEditor().getText().trim();
+        if (!value.isBlank()) {
+            jsonStorage.labData.pgEndDate = value;
+        }
+    }
+
+    public void setHiddenPgEndHour() {
+        String value = tf_Hidden_PgEnd_hour.getText().trim();
+        if (!value.isBlank()) {
+            jsonStorage.labData.pgEndHour = value;
+        }
+    }
+
+    public void setHiddenPgEndMinute() {
+        String value = tf_Hidden_PgEnd_minute.getText().trim();
+        if (!value.isBlank()) {
+            jsonStorage.labData.pgEndMinute = value;
+        }
+    }
 
 
 
@@ -615,13 +660,15 @@ public class Controller {
     @FXML
     private VBox vb_JavaFileNames;
     @FXML
-    private TextField tf_JavaFileNames;
+    private TextField tf_CodeFileNames;
+//    @FXML
+//    private TextField tf_JavaFileNames;
     @FXML
     private Button btn_JavaFileNames_Add;
     @FXML
     private Button btn_JavaFileNames_Delete;
     @FXML
-    private ListView<String> list_JavaFileNames;
+    private ListView<String> list_CodeFileNames;
     @FXML
     private DatePicker dp_AccessEnd;
     @FXML
@@ -633,21 +680,21 @@ public class Controller {
     @FXML
     private CheckBox cb_IsHiddenQuestion;
     @FXML
-    private TextField tf_LabSessionLength_hours;
+    private TextField tf_Hidden_LabSessionLength_hours;
     @FXML
-    private TextField tf_LabSessionLength_minutes;
+    private TextField tf_Hidden_LabSessionLength_minutes;
     @FXML
     private VBox vb_LabSessions;
     @FXML
-    private TextField tf_LabSessions_Group;
+    private TextField tf_Hidden_LabSessions_Group;
     @FXML
     private HBox hb_LabSessions;
     @FXML
-    private DatePicker dp_LabSessionDate;
+    private DatePicker dp_Hidden_LabSessionDate;
     @FXML
-    private TextField tf_LabSessions_hour;
+    private TextField tf_Hidden_LabSessions_hour;
     @FXML
-    private TextField tf_LabSessions_minute;
+    private TextField tf_Hidden_LabSessions_minute;
     @FXML
     private Button btn_LabSessions_Add;
     @FXML
@@ -659,13 +706,19 @@ public class Controller {
     @FXML
     private TableColumn tc_TimeColumn;
     @FXML
-    private TableView table_LabSessions;
+    private TableView table_Hidden_LabSessions;
     @FXML
-    private DatePicker dp_PgEvalStart;
+    private DatePicker dp_Hidden_PgStart_date;
     @FXML
-    private TextField tf_PgEvalStart_hour;
+    private TextField tf_Hidden_PgStart_hour;
     @FXML
-    private TextField tf_PgEvalStart_minute;
+    private TextField tf_Hidden_PgStart_minute;
+    @FXML
+    private DatePicker dp_Hidden_PgEnd_date;
+    @FXML
+    private TextField tf_Hidden_PgEnd_hour;
+    @FXML
+    private TextField tf_Hidden_PgEnd_minute;
     @FXML
     private VBox vb_DescriptionBody;
     @FXML

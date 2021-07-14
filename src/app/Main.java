@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        String fxml = "TabbedScene3.fxml";
+        String fxml = "TabbedScene4.fxml";
         Parent root = FXMLLoader.load(getClass().getResource(fxml));
         primaryStage.setTitle("MULE-CodeLab");
         primaryStage.setScene(new Scene(root, 740, 600));
