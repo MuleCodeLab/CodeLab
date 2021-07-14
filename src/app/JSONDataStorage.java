@@ -5,6 +5,7 @@ import syed.code.core.Util;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class JSONDataStorage {
 
@@ -137,8 +138,8 @@ class LabLevelJSONData {
         Util.ECHO("Access End: "+ getAccessEnd().toString());
         Util.ECHO("CA Eval Start: "+ getCAEvalStart().toString());
         Util.ECHO("CA Eval End: "+ getCAEvalEnd().toString());
-        Util.ECHO("PG Start: "+ getPGStart().toString());
-        Util.ECHO("PG End: "+ getPGEnd().toString());
+//        Util.ECHO("PG Start: "+ getPGStart().toString());
+//        Util.ECHO("PG End: "+ getPGEnd().toString());
     }
 
 }
@@ -148,6 +149,7 @@ class QuestionLevelJSONData {
     LabLevelJSONData labData;
     QuestionLevelJSONData(LabLevelJSONData labData) {
         this.labData = labData;
+        sessions = new ArrayList<>();
     }
 
 
@@ -165,6 +167,9 @@ class QuestionLevelJSONData {
 	String lengthHour = "0", lengthMinute = "0";
 	LocalDateTime pgStart, pgEnd;
 	String group;
+
+	ArrayList<LabSessionTableData> sessions;
+
 
 
 	int getQuestionNumber() {
@@ -213,6 +218,10 @@ class QuestionLevelJSONData {
 	    return Integer.parseInt(lengthMinute) + (Integer.parseInt(lengthHour) * 60);
     }
 
+    public List<LabSessionTableData> getSessions() {
+	    return sessions;
+    }
+
 //	LocalDateTime getPGStart() {
 //	    return labData.getCAEvalEnd();
 //    }
@@ -243,6 +252,9 @@ class QuestionLevelJSONData {
             Util.ECHO("Hidden Q Start: " + getStart());
             Util.ECHO("PG Start: " + labData.getPGStart());
             Util.ECHO("PG End: " + labData.getPGEnd());
+            for (LabSessionTableData s : sessions) {
+                Util.ECHO(s.getDate() + " | "+s.getTime());
+            }
         }
     }
 }

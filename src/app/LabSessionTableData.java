@@ -5,12 +5,12 @@ import javafx.beans.property.StringProperty;
 
 // To populate lab session table
 // do not mess with names !!
-public class TableData {
+public class LabSessionTableData {
         private StringProperty group;
         private StringProperty date;
         private StringProperty time;
 
-        public TableData(String group, String date, String time) {
+        public LabSessionTableData(String group, String date, String time) {
             this.group = new SimpleStringProperty(group);
             this.date = new SimpleStringProperty(date);
             this.time = new SimpleStringProperty(time);

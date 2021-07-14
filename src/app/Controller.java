@@ -1,8 +1,8 @@
 package app;
 
+import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -11,20 +11,23 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 import syed.code.core.Regex;
+import syed.code.core.TestIO;
 import syed.code.core.Util;
 
 public class Controller {
 
     JSONDataStorage jsonStorage = new JSONDataStorage();
-    ObservableList<TableData> tableData = FXCollections.observableArrayList();
+    ObservableList<LabSessionTableData> labSessionTableData = FXCollections.observableArrayList();
 
 
     public void hideCourseAndLabPanes(MouseEvent e) {
@@ -142,7 +145,7 @@ public class Controller {
         String file = tf_CodeFileNames.getText().trim();
         if (!file.isBlank()) {
             list_CodeFileNames.getItems().add(file);
-            list_MainFile_FileNames.getItems().add(file);
+            list_CodeFileOptions_Files.getItems().add(file);
             jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
             scriptData.files = jsonStorage.questionData.files;
         }
@@ -152,7 +155,7 @@ public class Controller {
         if (list_CodeFileNames.getItems().size() > 0) {
             int index = list_CodeFileNames.getSelectionModel().getSelectedIndex();
             list_CodeFileNames.getItems().remove(index);
-            list_MainFile_FileNames.getItems().remove(index);
+            list_CodeFileOptions_Files.getItems().remove(index);
             jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
             scriptData.files = jsonStorage.questionData.files;
         } else {
@@ -227,20 +230,24 @@ public class Controller {
         Util.DEBUG(Arrays.toString(dateTime));
 
         if (!group.isBlank() && dateTime.length == 2) {
-            tableData.add(new TableData(group, dateTime[0], dateTime[1]));
-            table_Hidden_LabSessions.setItems(tableData);
-            tc_GroupColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("group"));
-            tc_DateColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("date"));
-            tc_TimeColumn.setCellValueFactory(new PropertyValueFactory<TableData, String>("time"));
-
+            labSessionTableData.add(new LabSessionTableData(group, dateTime[0], dateTime[1]));
+            jsonStorage.questionData.sessions.clear();
+            jsonStorage.questionData.sessions.addAll(labSessionTableData);
+            table_Hidden_LabSessions.setItems(labSessionTableData);
+            tc_GroupColumn.setCellValueFactory(new PropertyValueFactory<LabSessionTableData, String>("group"));
+            tc_DateColumn.setCellValueFactory(new PropertyValueFactory<LabSessionTableData, String>("date"));
+            tc_TimeColumn.setCellValueFactory(new PropertyValueFactory<LabSessionTableData, String>("time"));
         }
-
     }
 
     public void removeFromSessionsTable(MouseEvent e) {
         int index = table_Hidden_LabSessions.getSelectionModel().getSelectedIndex();
-        tableData.remove(index);
-        Util.DEBUG(tableData.size() + " - " + tableData);
+        if (index > -1) {
+            labSessionTableData.remove(index);
+            jsonStorage.questionData.sessions.clear();
+            jsonStorage.questionData.sessions.addAll(labSessionTableData);
+            Util.DEBUG(labSessionTableData.size() + " - " + labSessionTableData);
+        }
     }
 
 
@@ -472,50 +479,56 @@ public class Controller {
 
 
     ScriptsDataStorage scriptData = new ScriptsDataStorage(jsonStorage.questionData);
+    ObservableList<TestIOTableData> testIOTableData = FXCollections.observableArrayList();
 
 
-    public void setJavaLab(MouseEvent e) {
-        scriptData.labLanguage = "JAVA";
-        Util.DEBUG(scriptData.labLanguage + " Lab selected");
-    }
-
-    public void setPythonLab(MouseEvent e) {
-        scriptData.labLanguage = "PYTHON";
-        Util.DEBUG(scriptData.labLanguage + " Lab selected");
-    }
-
-    public void setCLab(MouseEvent e) {
-        scriptData.labLanguage = "C";
-        Util.DEBUG(scriptData.labLanguage + " Lab selected");
-    }
-
-
-    public void selectMainFile(MouseEvent e) {
-        scriptData.mainFile = list_MainFile_FileNames.getSelectionModel().getSelectedItem();
-        Util.DEBUG("MainFile selected = " + scriptData.getMainFile());
-    }
-
-    public void startingCode(KeyEvent e) {
-        String value = ta_StartCode.getText().trim();
-        if (!value.isBlank()) {
-            scriptData.codeBuffer = value;
-        } else {
-            Util.DEBUG("Code ta is empty");
+    public void setLabLanguage(MouseEvent e) {
+        if (rb_Lang_Java.isSelected()) {
+            scriptData.labLanguage = "JAVA";
+        } else if (rb_Lang_Python.isSelected()) {
+            scriptData.labLanguage = "PYTHON";
+        } else if (rb_Lang_C.isSelected()) {
+            scriptData.labLanguage = "C";
         }
+        Util.DEBUG(scriptData.labLanguage + " Lab selected");
     }
 
-    public void setStartingCode(MouseEvent e) {
-        String code = scriptData.codeBuffer.trim();
-        String file = list_MainFile_FileNames.getSelectionModel().getSelectedItem();
-        if (!code.isBlank()) {
+    public void selectFile(MouseEvent e) {
+        int index = list_CodeFileOptions_Files.getSelectionModel().getSelectedIndex();
+        if (index > -1) {
+            String value = list_CodeFileOptions_Files.getItems().get(index).trim();
+            label_SelectedFileDisplay.setText(value);
+            label_SelectedFileDisplay.setTextFill(Color.BLUE);
+            if (scriptData.getCode().containsKey(value)) {
+                ta_CodeFileOptions_StartCode_StartCode.setText(scriptData.getCode().get(value));
+            } else {
+                ta_CodeFileOptions_StartCode_StartCode.clear();
+            }
+        }
+        Util.DEBUG("File selected = " + label_SelectedFileDisplay.getText());
+    }
+
+    public void selectAsMainFile(MouseEvent e) {
+        int index = list_CodeFileOptions_Files.getSelectionModel().getSelectedIndex();
+        if (index > -1) {
+            String fname = list_CodeFileOptions_Files.getItems().get(index);
+           if (fname.equals(label_SelectedFileDisplay.getText())) {
+               scriptData.mainFile = fname;
+               label_CodeFileOptions_SetAsMain_MainFileDisplay.setText(scriptData.getMainFile());
+               label_CodeFileOptions_SetAsMain_MainFileDisplay.setTextFill(Color.RED);
+           }
+        }
+        Util.DEBUG("Main File = " + scriptData.getMainFile());
+    }
+
+    public void setStartingCode(KeyEvent e) {
+        String code = ta_CodeFileOptions_StartCode_StartCode.getText().trim();
+        String file = label_SelectedFileDisplay.getText();
+        if (!code.isBlank() && !file.isBlank() && !file.equals("Filename.ext")) {
             if (scriptData.code.containsKey(file)) {
                 scriptData.code.remove(file);
             }
             scriptData.code.put(file, code);
-            list_StartCode_FileNames.getItems().clear();
-            for (String f : scriptData.code.keySet()) {
-                list_StartCode_FileNames.getItems().add(f);
-            }
         } else {
             Util.DEBUG(code + " is empty");
         }
@@ -524,14 +537,14 @@ public class Controller {
 
     public void loadStartingCode() {
         String file = list_StartCode_FileNames.getSelectionModel().getSelectedItem();
-        ta_StartCode.setText(scriptData.getCode().get(file));
+        ta_CodeFileOptions_StartCode_StartCode.setText(scriptData.getCode().get(file));
     }
 
 
     public void setPredefinedRegex(Event e) {
 
         ObservableList<Regex> reglist = FXCollections.observableList(scriptData.getPredefinedRegex());
-        combo_Regex_Predefined.setCellFactory(new Callback<>() {
+        combo_CodeFileOptions_Regexes_Predefined.setCellFactory(new Callback<>() {
             @Override
             public ListCell<Regex> call(ListView<Regex> param) {
                 return new ListCell<>() {
@@ -543,12 +556,13 @@ public class Controller {
                 };
             }
         });
-        combo_Regex_Predefined.setItems(reglist);
-        combo_Regex_Predefined.setConverter(new StringConverter<>() {
+        combo_CodeFileOptions_Regexes_Predefined.setItems(reglist);
+        combo_CodeFileOptions_Regexes_Predefined.setConverter(new StringConverter<>() {
             @Override
             public String toString(Regex object) {
-                String comment = object.getComment();
-                tf_Regex_Custom.setText(object.use());
+                String comment = object.getComment(), reg = object.use();
+                ta_CodeFileOptions_Regexes_RegexEditable.setText(reg);
+                tf_CodeOptions_Regexes_Comment.setText(comment);
                 return comment;
             }
 
@@ -559,28 +573,73 @@ public class Controller {
         });
     }
 
+    public void addRegex(MouseEvent e) {
+        String file = label_SelectedFileDisplay.getText();
+        String reg = ta_CodeFileOptions_Regexes_RegexEditable.getText();
+        String comment = tf_CodeOptions_Regexes_Comment.getText();
 
+        if (!file.isBlank() && !reg.isBlank() && !comment.isBlank()) {
+            if (scriptData.regexes.containsKey(file)) {
+                List<Regex> reglist = scriptData.regexes.get(file);
+                reglist.add(new Regex(reg, comment));
+                scriptData.regexes.remove(file);
+                scriptData.regexes.put(file, reglist);
+            } else {
+                scriptData.regexes.put(file, new ArrayList<>());
+                scriptData.regexes.get(file).add(new Regex(reg, comment));
+            }
 
-    public void addPredefinedRegex() {
-        String file = list_MainFile_FileNames.getSelectionModel().getSelectedItem();
-        Regex reg = combo_Regex_Predefined.getSelectionModel().getSelectedItem();
-
-        Util.DEBUG(reg.getComment() + " | " + reg.use());
-
-        if (scriptData.regexes.containsKey(file)) {
-            List<Regex> reglist = scriptData.regexes.get(file);
-            reglist.add(reg);
-            scriptData.regexes.remove(file);
-            scriptData.regexes.put(file, reglist);
-        } else {
-            scriptData.regexes.put(file, new ArrayList<>());
-            scriptData.regexes.get(file).add(reg);
+            List<String> regexes = new ArrayList<>();
+            for (Map.Entry<String, List<Regex>> item : scriptData.getRegex().entrySet()) {
+                for (Regex regex : item.getValue()) {
+                    regexes.add(item.getKey() + "|>  " + regex.use());
+                }
+            }
+            list_CodeFileOptions_Regexes.setItems(FXCollections.observableList(regexes));
+            Util.DEBUG("ADDED -- " + comment + " | " + reg );
         }
     }
 
+    public void removeRegex(MouseEvent e) {
+        int validIndex = list_CodeFileOptions_Regexes.getSelectionModel().getSelectedIndex();
+        if (validIndex > -1) {
+            String selectedItem = list_CodeFileOptions_Regexes.getItems().get(validIndex);
+            int splitIndex = selectedItem.indexOf("|> ");
+            String filename = selectedItem.substring(0, splitIndex);
+            String regex = selectedItem.substring(splitIndex + 4);// 4 for |>
 
-    public void addCustomRegex() {
+            if (!filename.isBlank() && scriptData.getRegex().containsKey(filename)) {
+                List<Regex> regexlist = scriptData.getRegex().get(filename);
+                for (Regex R : regexlist) {
+                    if (R.use().equals(regex)) {
+                        regexlist.remove(R);
+                        list_CodeFileOptions_Regexes.getItems().remove(validIndex);
+                        Util.DEBUG("Regex removed | " + R.use());
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
+    public void loadRegexIntoEditors(MouseEvent e) {
+        int validIndex = list_CodeFileOptions_Regexes.getSelectionModel().getSelectedIndex();
+        if (validIndex > -1) {
+            String selectedItem = list_CodeFileOptions_Regexes.getItems().get(validIndex);
+            int splitIndex = selectedItem.indexOf("|> ");
+            String filename = selectedItem.substring(0, splitIndex);
+            String regex = selectedItem.substring(splitIndex + 4);// 4 for |>
+
+            if (!filename.isBlank() && scriptData.getRegex().containsKey(filename)) {
+                ta_CodeFileOptions_Regexes_RegexEditable.setText(regex);
+                for (Regex R : scriptData.getRegex().get(filename)) {
+                    if (R.use().equals(regex)) {
+                        tf_CodeOptions_Regexes_Comment.setText(R.getComment());
+                        Util.DEBUG("Regex comment found");
+                    }
+                }
+            }
+        }
     }
 
 
@@ -589,24 +648,64 @@ public class Controller {
         String output = ta_TestCases_Output.getText().trim();
 
         if (!output.isBlank()) {
-            if (!input.isBlank()) {
-                scriptData.testCaseIOs.put(input, output);
-            } else {
-                scriptData.testCaseIOs.put("", output);
+            Util.DEBUG("[testIO]\nInput: " + input + " | "+output);
+            testIOTableData.add(new TestIOTableData(input, output));
+            table_TestCases.setItems(testIOTableData);
+            scriptData.testCaseIOs.clear();
+            for (TestIOTableData s : testIOTableData) {
+                scriptData.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
             }
-            Util.DEBUG("[testIO]\nInput: "+input+"| "+scriptData.testCaseIOs.get(output));
+            tc_InputColumn.setCellValueFactory(new PropertyValueFactory<TestIOTableData, String>("input"));
+            tc_OutputColumn.setCellValueFactory(new PropertyValueFactory<TestIOTableData, String>("output"));
+            Util.DEBUG(testIOTableData.size() +" = " +scriptData.getTestCaseIOs().size() + " - " + testIOTableData);
         } else {
             Util.DEBUG("output cannot be empty");
         }
     }
 
     public void removeTestCaseIO(MouseEvent e) {
-
+        int index = table_TestCases.getSelectionModel().getSelectedIndex();
+        if (index > -1) {
+            testIOTableData.remove(index);
+            scriptData.testCaseIOs.clear();
+            for (TestIOTableData s : testIOTableData) {
+                scriptData.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
+            }
+            Util.DEBUG(testIOTableData.size() +" = " +scriptData.getTestCaseIOs().size() + " - " + testIOTableData);
+        } else {
+            Util.DEBUG("item at index " + index + " cannot be removed");
+        }
     }
 
 
+    public void setCompileGrade(KeyEvent e) {
+        String value = tf_GradeProportions_Compile.getText().trim();
+        if (!value.isBlank()) {
+            scriptData.compileGrade = value;
+            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptData.getTotalGrade()));
+        }
+    }
+
+    public void setRegexGrade(KeyEvent e) {
+        String value = tf_GradeProportions_Regex.getText().trim();
+        if (!value.isBlank()) {
+            scriptData.regexGrade = value;
+            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptData.getTotalGrade()));
+        }
+    }
+
+    public void setTestCaseIOGrade(KeyEvent e) {
+        String value = tf_GradeProportions_TestCases.getText().trim();
+        if (!value.isBlank()) {
+            scriptData.tcGrade = value;
+            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptData.getTotalGrade()));
+        }
+    }
 
 
+    public void printSciptData(MouseEvent e) {
+        scriptData.print();
+    }
 
 
     // --------------------------------------------------------------------------------
@@ -799,7 +898,11 @@ public class Controller {
     @FXML
     private VBox vb_MainFile;
     @FXML
-    private ListView<String> list_MainFile_FileNames;
+    private ListView<String> list_CodeFileOptions_Files;
+    @FXML
+    private Label label_SelectedFileDisplay;
+    @FXML
+    private Label label_CodeFileOptions_SetAsMain_MainFileDisplay;
     @FXML
     private Button btn_MainFile_Set;
     @FXML
@@ -807,7 +910,7 @@ public class Controller {
     @FXML
     private VBox vb_StartCode;
     @FXML
-    private TextArea ta_StartCode;
+    private TextArea ta_CodeFileOptions_StartCode_StartCode;
     @FXML
     private Button btn_StartCode_Set;
     @FXML
@@ -815,13 +918,15 @@ public class Controller {
     @FXML
     private VBox vb_Regex;
     @FXML
-    private ListView<?> list_Regex_FileNames;
+    private ListView<String> list_CodeFileOptions_Regexes;
     @FXML
-    private ComboBox<Regex> combo_Regex_Predefined;
+    private ComboBox<Regex> combo_CodeFileOptions_Regexes_Predefined;
     @FXML
     private Button btn_Regex_Add_Predefined;
     @FXML
-    private TextField tf_Regex_Custom;
+    private TextArea ta_CodeFileOptions_Regexes_RegexEditable;
+    @FXML
+    private TextField tf_CodeOptions_Regexes_Comment;
     @FXML
     private Button btn_Regex_Add_Custom;
     @FXML
@@ -839,7 +944,11 @@ public class Controller {
     @FXML
     private Button btn_TestCases_Delete;
     @FXML
-    private ListView<?> list_TestCases;
+    private TableView<TestIOTableData> table_TestCases;
+    @FXML
+    private TableColumn tc_InputColumn;
+    @FXML
+    private TableColumn tc_OutputColumn;
     @FXML
     private VBox vb_gradeProportions;
     @FXML

@@ -303,7 +303,7 @@
                                                 <Insets top="24.0" />
                                              </VBox.margin>
                                           </CheckBox>
-                                          <VBox fx:id="vb_HiddenQuestionData" prefWidth="552.0" spacing="10.0">
+                                          <VBox fx:id="vb_HiddenQuestionData" disable="true" prefWidth="552.0" spacing="10.0">
                                              <children>
                                                 <VBox fx:id="vb_Hidden_LabSessions" prefHeight="233.0" prefWidth="552.0" spacing="5.0">
                                                    <children>
@@ -367,7 +367,7 @@
                                                       <Label prefWidth="128.0" text="Lab session length" />
                                                       <HBox alignment="CENTER_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
                                                          <children>
-                                                            <TextField fx:id="tf_Hidden_LabSessionLength_hours" alignment="CENTER_RIGHT" onKeyTyped="#setLabSessionLengthHour" prefHeight="25.0" prefWidth="51.0" text="1">
+                                                            <TextField fx:id="tf_Hidden_LabSessionLength_hours" alignment="CENTER_RIGHT" onKeyTyped="#setLabSessionLengthHour" prefHeight="25.0" prefWidth="51.0" text="00">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -376,7 +376,7 @@
                                                                </tooltip>
                                                             </TextField>
                                                             <Label text="hr" />
-                                                            <TextField fx:id="tf_Hidden_LabSessionLength_minutes" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" onKeyTyped="#setLabSessionLengthMinute" prefHeight="25.0" prefWidth="51.0" text="30">
+                                                            <TextField fx:id="tf_Hidden_LabSessionLength_minutes" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" onKeyTyped="#setLabSessionLengthMinute" prefHeight="25.0" prefWidth="51.0" text="00">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -461,7 +461,8 @@
                                           <Button fx:id="btn_JSON_Generate" mnemonicParsing="false" onMousePressed="#printJSON" text="Generate">
                                              <tooltip>
                                                 <Tooltip text="When all the details on this tab have been entered and double-checked. Click this to generate the relevant files." />
-                                             </tooltip></Button>
+                                             </tooltip>
+                                          </Button>
                                        </buttons>
                                        <VBox.margin>
                                           <Insets />
@@ -618,13 +619,13 @@
                                           <Label text="Question language" />
                                           <VBox prefWidth="100.0" spacing="5.0">
                                              <children>
-                                                <RadioButton fx:id="rb_Lang_Java" mnemonicParsing="false" onMousePressed="#hideCourseAndLabPanes" selected="true" text="Java">
+                                                <RadioButton fx:id="rb_Lang_Java" mnemonicParsing="false" onMouseReleased="#setLabLanguage" text="Java">
                                                    <toggleGroup>
                                                       <ToggleGroup fx:id="rb_Lang" />
                                                    </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="rb_Lang_Python" mnemonicParsing="false" onMousePressed="#hideCoursePane" text="Python" toggleGroup="$rb_Lang" />
-                                                <RadioButton fx:id="rb_Lang_C" mnemonicParsing="false" onMousePressed="#unHideAllPanes" text="C" toggleGroup="$rb_Lang" />
+                                                <RadioButton fx:id="rb_Lang_Python" mnemonicParsing="false" onMouseReleased="#setLabLanguage" text="Python" toggleGroup="$rb_Lang" />
+                                                <RadioButton fx:id="rb_Lang_C" mnemonicParsing="false" onMouseReleased="#setLabLanguage" text="C" toggleGroup="$rb_Lang" />
                                              </children>
                                              <VBox.margin>
                                                 <Insets left="24.0" />
@@ -645,7 +646,7 @@
                                           </HBox>
                                           <Label text="Select a file from the list below and use the 'accordion' menu to set various options for that file" />
                                           <Label text="Files" />
-                                          <ListView fx:id="list_CodeFileOptions_Files" prefHeight="124.0" prefWidth="672.0" />
+                                          <ListView fx:id="list_CodeFileOptions_Files" onMouseReleased="#selectFile" prefHeight="124.0" prefWidth="672.0" />
                                           <HBox prefWidth="200.0">
                                              <children>
                                                 <Label text="Set options for: ">
@@ -669,7 +670,7 @@
                                                             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                <children>
                                                                   <Label text="For questions where there are multiple code files, one file must be selected as the 'Main' file, or the entry point to the program. For example, in Java questions this will be the file which contains the 'main' method. If your question has only one code file it will automatically be set as the 'Main' file." textAlignment="CENTER" wrapText="true" />
-                                                                  <Button fx:id="btn_CodeFileOptions_SetAsMain_Set" mnemonicParsing="false" text="Set selected file as Main" />
+                                                                  <Button fx:id="btn_CodeFileOptions_SetAsMain_Set" onMouseReleased="#selectAsMainFile" mnemonicParsing="false" text="Set selected file as Main" />
                                                                   <HBox alignment="CENTER" spacing="5.0">
                                                                      <children>
                                                                         <Label text="The Main file is:" />
@@ -700,7 +701,7 @@
                                                                         <Label text="Start code" />
                                                                      </children>
                                                                   </HBox>
-                                                                  <TextArea fx:id="ta_CodeFileOptions_StartCode_StartCode" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                                  <TextArea fx:id="ta_CodeFileOptions_StartCode_StartCode" onKeyTyped="#setStartingCode" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                                                      <font>
                                                                         <Font name="Consolas" size="12.0" />
                                                                      </font>
@@ -719,7 +720,7 @@
                                                                <children>
                                                                   <VBox prefHeight="187.0" prefWidth="323.0" spacing="5.0">
                                                                      <children>
-                                                                        <ComboBox fx:id="combo_CodeFileOptions_Regexes_Predefined" prefHeight="25.0" prefWidth="333.0" promptText="Select a predefined regex" />
+                                                                        <ComboBox fx:id="combo_CodeFileOptions_Regexes_Predefined" onMousePressed="#setPredefinedRegex" prefHeight="25.0" prefWidth="333.0" promptText="Select a predefined regex" />
                                                                         <VBox prefHeight="200.0" prefWidth="100.0">
                                                                            <children>
                                                                               <Label text="Regex (editable)" />
@@ -741,11 +742,11 @@
                                                                   </VBox>
                                                                   <VBox alignment="CENTER" prefHeight="224.0" prefWidth="219.0" spacing="5.0" HBox.hgrow="ALWAYS">
                                                                      <children>
-                                                                        <ListView fx:id="list_CodeFileOptions_Regexes" prefHeight="193.0" prefWidth="219.0" VBox.vgrow="ALWAYS" />
+                                                                        <ListView fx:id="list_CodeFileOptions_Regexes" onMouseReleased="#loadRegexIntoEditors" prefHeight="193.0" prefWidth="219.0" VBox.vgrow="ALWAYS" />
                                                                         <HBox prefWidth="200.0" spacing="5.0">
                                                                            <children>
-                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Add" mnemonicParsing="false" prefWidth="60.0" text="Add" />
-                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Delete" mnemonicParsing="false" prefWidth="60.0" text="Del." />
+                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Add" onMouseReleased="#addRegex" mnemonicParsing="false" prefWidth="60.0" text="Add" />
+                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Delete" onMouseReleased="#removeRegex" mnemonicParsing="false" prefWidth="60.0" text="Del." />
                                                                            </children>
                                                                         </HBox>
                                                                      </children>
@@ -780,14 +781,14 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5.0">
                                              <children>
-                                                <Button fx:id="btn_TestCases_Add" minHeight="30.0" minWidth="60.0" mnemonicParsing="false" prefWidth="60.0" text="Add" />
-                                                <Button fx:id="btn_TestCases_Delete" minHeight="30.0" minWidth="60.0" mnemonicParsing="false" prefWidth="60.0" text="Del." />
+                                                <Button fx:id="btn_TestCases_Add" onMouseReleased="#addTestCaseIO" minHeight="30.0" minWidth="60.0" mnemonicParsing="false" prefWidth="60.0" text="Add" />
+                                                <Button fx:id="btn_TestCases_Delete" onMouseReleased="#removeTestCaseIO" minHeight="30.0" minWidth="60.0" mnemonicParsing="false" prefWidth="60.0" text="Del." />
                                              </children>
                                           </HBox>
                                           <TableView fx:id="table_TestCases" prefHeight="137.0" prefWidth="672.0">
                                             <columns>
-                                              <TableColumn prefWidth="335.3333034515381" text="Sample inputs" />
-                                              <TableColumn minWidth="0.0" prefWidth="335.3333435058594" text="Sample outputs" />
+                                              <TableColumn fx:id="tc_InputColumn" prefWidth="335.3333034515381" text="Sample inputs" />
+                                              <TableColumn fx:id="tc_OutputColumn" minWidth="0.0" prefWidth="335.3333435058594" text="Sample outputs" />
                                             </columns>
                                           </TableView>
                                        </children>
@@ -811,7 +812,7 @@
                                                                   <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                                </tooltip>
                                                             </Label>
-                                                            <TextField fx:id="tf_GradeProportions_Compile" alignment="CENTER_RIGHT" onKeyTyped="#setLabLabel" prefHeight="25.0" prefWidth="49.0" text="33">
+                                                            <TextField fx:id="tf_GradeProportions_Compile" onKeyTyped="#setCompileGrade" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="49.0" text="00">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -830,7 +831,7 @@
                                                                   <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                                </tooltip>
                                                             </Label>
-                                                            <TextField fx:id="tf_GradeProportions_Regex" alignment="CENTER_RIGHT" onKeyTyped="#setLabLabel" prefHeight="25.0" prefWidth="49.0" text="33">
+                                                            <TextField fx:id="tf_GradeProportions_Regex" onKeyTyped="#setRegexGrade" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="49.0" text="00">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -849,7 +850,7 @@
                                                                   <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                                </tooltip>
                                                             </Label>
-                                                            <TextField fx:id="tf_GradeProportions_TestCases" alignment="CENTER_RIGHT" onKeyTyped="#setLabLabel" prefHeight="25.0" prefWidth="49.0" text="34">
+                                                            <TextField fx:id="tf_GradeProportions_TestCases" onKeyTyped="#setTestCaseIOGrade" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="49.0" text="00">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -887,7 +888,7 @@
                                     <Separator prefWidth="200.0" />
                                     <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                       <buttons>
-                                        <Button fx:id="btn_Scripts_GenerateAndFinish" mnemonicParsing="false" text="Generate &amp; Finish" />
+                                        <Button fx:id="btn_Scripts_GenerateAndFinish" onMouseReleased="#printSciptData" mnemonicParsing="false" text="Generate &amp; Finish" />
                                       </buttons>
                                     </ButtonBar>
                                  </children>
@@ -907,7 +908,7 @@
                                  <children>
                                     <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@media/Maynooth%20University%20Logo%20colour%20RGB%20300dpi.png" />
+                                          <Image url="@media/NUIMLogo.png" />
                                        </image>
                                     </ImageView>
                                     <Label text="This program was created by Syed Baryalay and Michael O'Neill as part of the Maynooth University Summer Programme for Undergraduate Research (SPUR 2021) under the mentorship of Dr Aidan Mooney, Amy Thompson, and Mark Noone." textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS" />
