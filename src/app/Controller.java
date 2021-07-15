@@ -498,7 +498,7 @@ public class Controller {
         if (index > -1) {
             String value = list_CodeFileOptions_Files.getItems().get(index).trim();
             label_SelectedFileDisplay.setText(value);
-            label_SelectedFileDisplay.setTextFill(Color.BLUE);
+            label_SelectedFileDisplay.setTextFill(Color.GREY);
             if (scriptData.getCode().containsKey(value)) {
                 ta_CodeFileOptions_StartCode_StartCode.setText(scriptData.getCode().get(value));
             } else {
@@ -515,7 +515,7 @@ public class Controller {
            if (fname.equals(label_SelectedFileDisplay.getText())) {
                scriptData.mainFile = fname;
                label_CodeFileOptions_SetAsMain_MainFileDisplay.setText(scriptData.getMainFile());
-               label_CodeFileOptions_SetAsMain_MainFileDisplay.setTextFill(Color.RED);
+               label_CodeFileOptions_SetAsMain_MainFileDisplay.setTextFill(Color.GREY);
            }
         }
         Util.DEBUG("Main File = " + scriptData.getMainFile());
