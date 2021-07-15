@@ -4,6 +4,9 @@ import syed.code.core.CodeEvaluator;
 import syed.code.core.Regex;
 import syed.code.core.Util;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class JavaEvaluator extends CodeEvaluator {
     
     public JavaEvaluator(JavaRunner runner) {
@@ -49,12 +52,25 @@ public class JavaEvaluator extends CodeEvaluator {
         script.append("\n# --------------------- GLOBAL VARIABLES -------------------\n");
 
         script.append(String.format("declare -a RegexList%d=(", 1));
-        for (Regex regex : this.getRegex().get(this.mainfile())) {
+
+        Util.DEBUG(this.getRegex().size());
+        Util.DEBUG(this.getRegex().containsKey(this.mainfile()));
+        Util.DEBUG(this.mainfile());
+
+        for (Map.Entry<String, ArrayList<Regex>> p : this.getRegex().entrySet()) {
+            Util.DEBUG(p.getKey());
+            Util.DEBUG(p.getValue());
+        }
+
+
+        for (Regex regex : this.getRegex().get(Util.fileTitle(this.mainfile()))) {
+            Util.DEBUG(regex.getComment());
+            Util.DEBUG(regex.use());
             script.append("\""+regex.use()+"\" ");
         }
         script.append(")\n");
         script.append(String.format("declare -a Comment%d=(", 1));
-        for (Regex regex : this.getRegex().get(this.mainfile())) {
+        for (Regex regex : this.getRegex().get(Util.fileTitle(this.mainfile()))) {
             script.append("\""+regex.getComment()+"\" ");
         }
         script.append(")\n");

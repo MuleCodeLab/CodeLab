@@ -11,7 +11,7 @@ public class HTMLDataStorage {
     ArrayList<String> imagesURLs;
     ArrayList<String> notes;
     ArrayList<String> codeSamples;
-    int typeOfOutput; // -1 0 1
+    int typeOfOutput; // 0 1 2
     ArrayList<String> sampleInputs;
     ArrayList<String> sampleOutputs;
     String singleExpectedOutput;
@@ -21,12 +21,24 @@ public class HTMLDataStorage {
         imagesURLs = new ArrayList<>();
         notes = new ArrayList<>();
         codeSamples = new ArrayList<>();
-        typeOfOutput = Integer.MIN_VALUE;
+        typeOfOutput = -1;
         sampleInputs = new ArrayList<>();
         sampleOutputs = new ArrayList<>();
         singleExpectedOutput = "";
     }
 
+
+    public boolean isReady() {
+        boolean ready = getDescription() != null &&
+                        getTypeOfOutput() != -1 &&
+                        getImagesUrls() != null &&
+                        getNotes() != null &&
+                        getCodeSamples() != null;
+        if (singleExpectedOutput.isBlank()) {
+            return ready && getSampleInputs().length > 0 && getSampleOutputs().length > 0;
+        }
+        return ready;
+    }
 
     void print() {
         Util.ECHO("----------------------------\n");

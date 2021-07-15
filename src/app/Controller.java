@@ -15,14 +15,19 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import syed.code.core.Regex;
-import syed.code.core.TestIO;
-import syed.code.core.Util;
+import syed.code.core.*;
+import syed.code.javalab.JavaCode;
+import syed.code.javalab.JavaCompiler;
+import syed.code.javalab.JavaEvaluator;
+import syed.code.javalab.JavaRunner;
 
 public class Controller {
 
@@ -293,15 +298,6 @@ public class Controller {
             jsonStorage.labData.pgEndMinute = value;
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -710,6 +706,87 @@ public class Controller {
 
     // --------------------------------------------------------------------------------
     // ---------------------------------------[SCRIPTS END]----------------------------
+
+
+    // --------------------------------------------------------------------------------
+    // ---------------------------------------[File GENERATION]------------------------
+
+
+    FileStructure fs = new FileStructure("./Labs/");
+
+    public void generateJSONFiles(MouseEvent e) {
+        if (jsonStorage.isReady()) {
+            Util.DEBUG("Writing JSON files");
+            Util.writeToFile(fs.getPath()+"file.txt", "To test a few things");
+
+        } else {
+            Util.DEBUG("JSON data is not ready");
+        }
+    }
+
+//    public void generateHTMLFiles(MouseEvent e) {
+//        if (htmlStorage.isReady()) {
+//            Util.DEBUG("Writing HTML files");
+//        } else {
+//            Util.DEBUG("JSON data is not ready");
+//        }
+//    }
+//
+    public void generateScriptFiles(MouseEvent e) throws IOException {
+        if (scriptData.isReady()) {
+            fs.setJSONData(jsonStorage);
+            fs.setHTMLData(htmlStorage);
+            fs.setScriptsData(scriptData);
+            String path = fs.getQuestionLevelPath();
+            Util.DEBUG("Base Path: "+path);
+            Map<String, String> tempCode = scriptData.getCode();
+            if (tempCode.size() > 0) {
+                for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
+                    Util.writeToFile(path+"/"+fileAndCode.getKey(), fileAndCode.getValue());
+                    Util.DEBUG("Code file written.");
+                }
+            }
+
+            Code labcode;
+            CodeCompiler compiler;
+            CodeRunner runner;
+            CodeEvaluator evaluator;
+
+            if (scriptData.labLanguage.equals("JAVA")) {
+                labcode = new JavaCode(path, Util.fileTitle(scriptData.getMainFile()));
+                compiler = new JavaCompiler((JavaCode) labcode);
+                runner = new JavaRunner((JavaCompiler) compiler);
+                evaluator = new JavaEvaluator((JavaRunner) runner);
+
+                Map<String, List<Regex>> tempRegex = scriptData.getRegex();
+
+                evaluator.setCompileGrade(scriptData.getCompileGrade());
+                evaluator.setRegexGrade(scriptData.getRegexGrade(), tempRegex.size());
+                evaluator.setTestGrade(scriptData.getTCGrade(), scriptData.getTestCaseIOs().size());
+
+                for (Map.Entry<String, List<Regex>> p : tempRegex.entrySet()) {
+                    for (Regex r : p.getValue()) {
+                        evaluator.specifyRegex(Util.fileTitle(p.getKey()), r);
+                        Util.DEBUG("Regex written for file "+ p.getKey());
+                    }
+                }
+
+                compiler.writeScript(path+"/vpl_compile.sh");
+                runner.writeScript(path+"/vpl_runner.sh");
+                evaluator.writeScript(path+"/vpl_evaluate.sh");
+                Util.DEBUG("Script files created successfully.");
+                return;
+            }
+            Util.DEBUG("Could not write script files");
+        } else {
+            Util.DEBUG("JSON data is not ready");
+        }
+    }
+
+
+    // --------------------------------------------------------------------------------
+    // ---------------------------------------[END]------------------------------------
+
 
 
     @FXML

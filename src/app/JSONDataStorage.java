@@ -13,6 +13,11 @@ public class JSONDataStorage {
     LabLevelJSONData labData = new LabLevelJSONData();
     QuestionLevelJSONData questionData = new QuestionLevelJSONData(labData);
 
+
+    public boolean isReady() {
+        return courseData.isReady() && labData.isReady() && questionData.isReady();
+    }
+
     void print() {
         Util.ECHO("------------------\n");
         courseData.print();
@@ -41,11 +46,15 @@ class CourseLevelJSONData {
         Util.ECHO("Title: "+ getTitle());
         Util.ECHO("Visible: "+isVisible());
     }
+
+    public boolean isReady() {
+        return this.title != null;
+    }
 }
 
 class LabLevelJSONData {
 
-	int labNumber;
+	int labNumber = 0;
     String label;
 	String accessStartDate, accessStartHour, accessStartMinute;
     String accessEndDate, accessEndHour, accessEndMinute;
@@ -142,6 +151,18 @@ class LabLevelJSONData {
 //        Util.ECHO("PG End: "+ getPGEnd().toString());
     }
 
+
+    public boolean isReady() {
+        return (
+            getLabLabel() != null &&
+            getLabNumber() != 0 &&
+            getAccessStart() != null &&
+            getAccessEnd() != null &&
+            getCAEvalStart() != null &&
+            getCAEvalEnd() != null
+        );
+    }
+
 }
 
 class QuestionLevelJSONData {
@@ -222,17 +243,34 @@ class QuestionLevelJSONData {
 	    return sessions;
     }
 
-//	LocalDateTime getPGStart() {
-//	    return labData.getCAEvalEnd();
-//    }
-//
-//	LocalDateTime getPGEnd() {
-//	    return labData.getAccessEnd();
-//    }
+	LocalDateTime getPGStart() {
+	    return labData.getCAEvalEnd();
+    }
+
+	LocalDateTime getPGEnd() {
+	    return labData.getAccessEnd();
+    }
 
 	String getGroup() {
         return group;
     }
+
+    public boolean isReady() {
+	    boolean isReady =   labData.isReady() &&
+                            getQuestionNumber() != 0 &&
+                            getLabNumber() != 0 &&
+                            getTitle() != null &&
+                            getCourse() != null &&
+                            getFiles() != null;
+	    if (isHiddenQuestion()) {
+            return isReady && getLength() != 0 &&
+                    getSessions() != null &&
+                    getPGStart() != null &&
+                    getPGEnd() != null;
+        }
+	    return isReady;
+    }
+
 
     void print() {
         Util.ECHO("Question Number: "+getQuestionNumber());

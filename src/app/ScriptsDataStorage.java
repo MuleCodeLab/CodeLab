@@ -26,6 +26,13 @@ public class ScriptsDataStorage {
     }
 
 
+    public boolean isReady() {
+        return true;
+//        return  getLabLanguage() != null && getMainFile() != null &&
+//                getCompileGrade() + getRegexGrade() + getTCGrade() == getTotalGrade() &&
+//                files.size() > 0 && regexes != null && testCaseIOs.size() > 0;
+    }
+
 
     public String getLabLanguage() {
         return labLanguage;
