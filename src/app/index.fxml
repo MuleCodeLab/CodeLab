@@ -458,7 +458,7 @@
                                     <Separator prefWidth="200.0" />
                                     <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                        <buttons>
-                                          <Button fx:id="btn_JSON_Generate" mnemonicParsing="false" onMouseReleased="#generateJSONFiles" onMousePressed="#printJSON" text="Generate">
+                                          <Button fx:id="btn_JSON_Generate" mnemonicParsing="false" onMousePressed="#printJSON" onMouseReleased="#generateJSONFiles" text="Generate">
                                              <tooltip>
                                                 <Tooltip text="When all the details on this tab have been entered and double-checked. Click this to generate the relevant files." />
                                              </tooltip>
@@ -639,7 +639,7 @@
                                     <Separator prefWidth="200.0" />
                                     <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                        <buttons>
-                                          <Button fx:id="btn_HTML_Generate" mnemonicParsing="false" text="Generate" />
+                                          <Button fx:id="btn_HTML_Generate" mnemonicParsing="false" onMousePressed="#generateHTMLFiles" text="Generate" />
                                        </buttons>
                                     </ButtonBar>
                                  </children>
