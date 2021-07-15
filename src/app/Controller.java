@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import michael.code.htmltools.MuleHTML;
 import syed.code.core.*;
 import syed.code.clab.CCode;
 import syed.code.clab.CCompiler;
@@ -721,26 +722,46 @@ public class Controller {
 
     FileStructure fs = new FileStructure("./Labs/");
 
-    public void generateJSONFiles(MouseEvent e) {
+    public void generateJSONFiles(MouseEvent e) throws IOException {
         if (jsonStorage.isReady()) {
-            Util.DEBUG("Writing JSON files");
-            Util.writeToFile(fs.getPath()+"file.txt", "To test a few things");
-
+            String path = fs.getQuestionLevelPath();
         } else {
             Util.DEBUG("JSON data is not ready");
         }
     }
 
-//    public void generateHTMLFiles(MouseEvent e) {
-//        if (htmlStorage.isReady()) {
-//            Util.DEBUG("Writing HTML files");
-//        } else {
-//            Util.DEBUG("JSON data is not ready");
-//        }
-//    }
-//
+    public void generateHTMLFiles(MouseEvent e) throws IOException {
+
+        if (htmlStorage.isReady()) {
+            Util.DEBUG("Writing HTML files");
+            String path = fs.getQuestionLevelPath();
+            fs.setJSONData(jsonStorage);
+            fs.setHTMLData(htmlStorage);
+
+            String body = htmlStorage.getDescription();
+            String[] notes = htmlStorage.getNotes();
+            String[] imageUrls = htmlStorage.getImagesUrls();
+            String[] sampleCodes = htmlStorage.getCodeSamples();
+            String output = htmlStorage.getSingleExpectedOutput();
+            String[] sampleInputs = htmlStorage.getSampleInputs();
+            String[] sampleOutputs = htmlStorage.getSampleOutputs();
+            String[][] sampleIO = new String[sampleInputs.length][2];
+            for(int i = 0; i < sampleIO.length; i++) {
+                sampleIO[i][0] = sampleInputs[i];
+                sampleIO[i][1] = sampleOutputs[i];
+            }
+
+            MuleHTML html = new MuleHTML(jsonStorage.questionData.getTitle(), body, notes, imageUrls, sampleCodes, output, sampleIO);
+            System.out.println("This is a print statement");
+            Util.writeToFile(path+"/description.html", html.toString());
+        } else {
+            Util.DEBUG("JSON data is not ready");
+        }
+    }
+
     public void generateScriptFiles(MouseEvent e) throws IOException {
         if (scriptData.isReady()) {
+
             fs.setJSONData(jsonStorage);
             fs.setHTMLData(htmlStorage);
             fs.setScriptsData(scriptData);
