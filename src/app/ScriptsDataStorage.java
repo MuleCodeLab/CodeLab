@@ -84,8 +84,8 @@ public class ScriptsDataStorage {
     }
 
     public List<Regex> getPredefinedRegex() {
-        String[] comments = Util.readlines("./src/app/media/comments.txt").split("\n");
-        String[] regex = Util.readlines("./src/app/media/regex.txt").split("\n");
+        String[] comments = Util.readlines("./src/app/data/comments.txt").split("\n");
+        String[] regex = Util.readlines("./src/app/data/regex.txt").split("\n");
 
         // [ASSUMPTION] regex and comments are the same length
         // conversion from java to bash format

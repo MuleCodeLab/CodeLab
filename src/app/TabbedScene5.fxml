@@ -295,7 +295,7 @@
                                                    </tooltip></ListView>
                                              </children>
                                           </VBox>
-                                          <CheckBox fx:id="cb_IsHiddenQuestion" allowIndeterminate="false" mnemonicParsing="false" onAction="#setQuestionHidden" prefHeight="30.0" selected="true" text="This is a hidden question">
+                                          <CheckBox fx:id="cb_IsHiddenQuestion" allowIndeterminate="false" mnemonicParsing="false" onAction="#setQuestionHidden" prefHeight="30.0" selected="false" text="This is a hidden question">
                                              <tooltip>
                                                 <Tooltip text="Check this box if the question will only be visible and open to evaluated during a specified lab session." />
                                              </tooltip>
@@ -908,7 +908,7 @@
                                  <children>
                                     <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@media/NUIMLogo.png" />
+                                          <Image url="@data/NUIMLogo.png" />
                                        </image>
                                     </ImageView>
                                     <Label text="This program was created by Syed Baryalay and Michael O'Neill as part of the Maynooth University Summer Programme for Undergraduate Research (SPUR 2021) under the mentorship of Dr Aidan Mooney, Amy Thompson, and Mark Noone." textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS" />
