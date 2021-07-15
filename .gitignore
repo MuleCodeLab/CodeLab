@@ -4,7 +4,6 @@ tests/
 .idea/
 
 *.sh
-*.txt
 *.class
 *.out
 vpl_execution
