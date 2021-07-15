@@ -182,48 +182,45 @@ public class MuleHTML
 		return closingTag;
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		//Returns a String of the contents of the HTML doc
 		String out = "";
 
-		if(css.length() > 0)
-		{
-			out+= "<head>\n";
-			out += addTags("<style>", css)+"\n";
-			out+= "</head>\n";
-			out+= "<body>\n";
+		if (css.length() > 0) {
+			out += "<head>\n";
+			out += addTags("<style>", css) + "\n";
+			out += "</head>\n";
+			out += "<body>\n";
 		}
 
-		if(title.length() > 0)
-			out += addTags("<h3>", addTags("<strong>", title))+"\n<hr />\n";
+		if (title.length() > 0)
+			out += addTags("<h3>", addTags("<strong>", title)) + "\n<hr />\n";
 
-		if(body.length() > 0)
-			out += addTags("<pre class=\"body\">", body)+"\n";
+		if (body.length() > 0)
+			out += addTags("<pre class=\"body\">", body) + "\n";
 
-		if(imageUrls.length > 0)
-			for(String image: imageUrls)
-				out += "<img src=\""+image+"\" onContextMenu=\"return false;\">\n";
+		if (imageUrls.length > 0)
+			for (String image : imageUrls)
+				out += "<img src=\"" + image + "\" onContextMenu=\"return false;\">\n";
 
-		if(notes.length > 0)
-			for(String note: notes)
-				out += addTags("<div class=\"note\">", note)+"\n";
+		if (notes.length > 0)
+			for (String note : notes)
+				out += addTags("<div class=\"note\">", note) + "\n";
 
-		if(sampleCodes.length > 0)
-		{
+		if (sampleCodes.length > 0) {
 			String heading = "Sample code";
-			for(int i = 0; i < sampleCodes.length; i++)
-			{
-				if(sampleCodes.length > 1)
-					heading = "Sample code "+(i+1);
-				out += htmlTable("<table class=\"codeBlock sampleCode\">", heading, sampleCodes[i])+"\n";
+			for (int i = 0; i < sampleCodes.length; i++) {
+				if (sampleCodes.length > 1)
+					heading = "Sample code " + (i + 1);
+				out += htmlTable("<table class=\"codeBlock sampleCode\">", heading, sampleCodes[i]) + "\n";
 			}
 		}
 
-		if(output.length() > 0)
-			out += htmlTable("<table class=\"sampleIO_table\">", "Output", output)+"\n";
-
-		if(sampleIO.length > 0)
+		if (output.length() > 0)
+		{
+			out += htmlTable("<table class=\"sampleIO_table\">", "Output", output) + "\n";
+		}
+		else if(sampleIO.length > 0)
 		{
 			String inputHeading = "Sample input";
 			String outputHeading = "Sample output";
