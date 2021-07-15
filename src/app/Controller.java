@@ -24,10 +24,17 @@ import java.util.List;
 import java.util.Map;
 
 import syed.code.core.*;
+import syed.code.clab.CCode;
+import syed.code.clab.CCompiler;
+import syed.code.clab.CRunner;
+import syed.code.clab.CEvaluator;
 import syed.code.javalab.JavaCode;
 import syed.code.javalab.JavaCompiler;
-import syed.code.javalab.JavaEvaluator;
 import syed.code.javalab.JavaRunner;
+import syed.code.javalab.JavaEvaluator;
+import syed.code.pythonlab.PythonCode;
+import syed.code.pythonlab.PythonRunner;
+import syed.code.pythonlab.PythonEvaluator;
 
 public class Controller {
 
@@ -152,7 +159,7 @@ public class Controller {
             list_CodeFileNames.getItems().add(file);
             list_CodeFileOptions_Files.getItems().add(file);
             jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
-            scriptData.files = jsonStorage.questionData.files;
+            scriptData.files = new ArrayList<>(list_CodeFileNames.getItems());
         }
     }
 
@@ -162,7 +169,7 @@ public class Controller {
             list_CodeFileNames.getItems().remove(index);
             list_CodeFileOptions_Files.getItems().remove(index);
             jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
-            scriptData.files = jsonStorage.questionData.files;
+            scriptData.files = new ArrayList<>(list_CodeFileNames.getItems());
         } else {
             Util.DEBUG("Empty");
         }
@@ -739,6 +746,7 @@ public class Controller {
             fs.setScriptsData(scriptData);
             String path = fs.getQuestionLevelPath();
             Util.DEBUG("Base Path: "+path);
+
             Map<String, String> tempCode = scriptData.getCode();
             if (tempCode.size() > 0) {
                 for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
@@ -747,37 +755,44 @@ public class Controller {
                 }
             }
 
-            Code labcode;
-            CodeCompiler compiler;
-            CodeRunner runner;
-            CodeEvaluator evaluator;
+            Code labcode = null;
+            CodeCompiler compiler = null;
+            CodeRunner runner = null;
+            CodeEvaluator evaluator = null;
 
             if (scriptData.labLanguage.equals("JAVA")) {
                 labcode = new JavaCode(path, Util.fileTitle(scriptData.getMainFile()));
                 compiler = new JavaCompiler((JavaCode) labcode);
                 runner = new JavaRunner((JavaCompiler) compiler);
                 evaluator = new JavaEvaluator((JavaRunner) runner);
-
-                Map<String, List<Regex>> tempRegex = scriptData.getRegex();
-
-                evaluator.setCompileGrade(scriptData.getCompileGrade());
-                evaluator.setRegexGrade(scriptData.getRegexGrade(), tempRegex.size());
-                evaluator.setTestGrade(scriptData.getTCGrade(), scriptData.getTestCaseIOs().size());
-
-                for (Map.Entry<String, List<Regex>> p : tempRegex.entrySet()) {
-                    for (Regex r : p.getValue()) {
-                        evaluator.specifyRegex(Util.fileTitle(p.getKey()), r);
-                        Util.DEBUG("Regex written for file "+ p.getKey());
-                    }
-                }
-
-                compiler.writeScript(path+"/vpl_compile.sh");
-                runner.writeScript(path+"/vpl_runner.sh");
-                evaluator.writeScript(path+"/vpl_evaluate.sh");
-                Util.DEBUG("Script files created successfully.");
-                return;
+            } else if (scriptData.labLanguage.equals("PYTHON")) {
+                labcode = new PythonCode(path, Util.fileTitle(scriptData.getMainFile()));
+                runner = new PythonRunner((PythonCode) labcode);
+                evaluator = new PythonEvaluator((PythonRunner) runner);
+            } else if (scriptData.labLanguage.equals("C")) {
+                labcode = new CCode(path, Util.fileTitle(scriptData.getMainFile()));
+                compiler = new CCompiler((CCode) labcode);
+                runner = new CRunner((CCompiler) compiler);
+                evaluator = new CEvaluator((CRunner) runner);
             }
-            Util.DEBUG("Could not write script files");
+
+            Map<String, List<Regex>> tempRegex = scriptData.getRegex();
+
+            evaluator.setCompileGrade(scriptData.getCompileGrade());
+            evaluator.setRegexGrade(scriptData.getRegexGrade(), tempRegex.size());
+            evaluator.setTestGrade(scriptData.getTCGrade(), scriptData.getTestCaseIOs().size());
+
+            for (Map.Entry<String, List<Regex>> p : tempRegex.entrySet()) {
+                for (Regex r : p.getValue()) {
+                    evaluator.specifyRegex(Util.fileTitle(p.getKey()), r);
+                    Util.DEBUG("Regex written for file "+ p.getKey());
+                }
+            }
+
+            compiler.writeScript(path+"/vpl_compile.sh");
+            runner.writeScript(path+"/vpl_runner.sh");
+            evaluator.writeScript(path+"/vpl_evaluate.sh");
+            Util.DEBUG("Script files created successfully.");
         } else {
             Util.DEBUG("JSON data is not ready");
         }
