@@ -146,7 +146,7 @@ public class MuleQuestionLevelJSON
 		String filesArray = JSONTools.array(files);
 
 		String out =	"{\n"+
-						"\t"+JSONTools.keyValuePair("title", labNumber+". "+title)+",\n"+
+						"\t"+JSONTools.keyValuePair("title", questionNumber+". "+title)+",\n"+
 						"\t"+JSONTools.keyValuePairWithoutQuotes("Requested files", filesArray)+",\n"+
 						"\t"+JSONTools.keyValuePair("qid", qid)+
 						"\n}";

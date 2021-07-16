@@ -2,6 +2,7 @@ package app;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import java.time.LocalDateTime;
 
 // To populate lab session table
 // do not mess with names !!
@@ -38,6 +39,18 @@ public class LabSessionTableData {
 
         public String getTime() {
             return time.get();
+        }
+
+        public LocalDateTime getSessionStartTime() {
+            String[] ddmmyyyy = getDate().split("-");
+            int year = Integer.parseInt(ddmmyyyy[0]);
+            int month = Integer.parseInt(ddmmyyyy[1]);
+            int dayOfMonth = Integer.parseInt(ddmmyyyy[2]);
+
+            int hour = Integer.parseInt(getTime().substring(0,2));
+            int min = Integer.parseInt(getTime().substring(3));
+
+            return LocalDateTime.of(year, month, dayOfMonth, hour, min);
         }
 
         public void setGroup(String group) {

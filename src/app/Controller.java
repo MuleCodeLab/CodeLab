@@ -18,12 +18,15 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import michael.code.htmltools.MuleHTML;
+import michael.code.jsontools.*;
 import syed.code.core.*;
 import syed.code.clab.*;
 import syed.code.javalab.*;
@@ -731,7 +734,62 @@ public class Controller {
 
     public void generateJSONFiles(MouseEvent e) throws IOException {
         if (jsonStorage.isReady()) {
-            Util.DEBUG("JSON data is ready");
+            fs.setJSONData(jsonStorage);
+
+            String coursePath = fs.getCourseLevelPath();
+            String labPath = fs.getLabLevelPath();
+            String questionPath = fs.getQuestionLevelPath();
+
+            MuleCourseLevelJSON courseJson;
+            MuleLabLevelJSON labJson;
+            MuleQuestionLevelJSON questionJson;
+            MuleHiddenQuestionJSON[] hiddenQuestionJson;
+
+            String courseCode = jsonStorage.courseData.getTitle();
+            courseJson = new MuleCourseLevelJSON(courseCode);
+
+            int labNumber = jsonStorage.labData.getLabNumber();
+            String labLabel = jsonStorage.labData.getLabLabel();
+            LocalDateTime accessStart = jsonStorage.labData.getAccessStart();
+            LocalDateTime accessEnd = jsonStorage.labData.getAccessEnd();
+            LocalDateTime caEvalStart = jsonStorage.labData.getCAEvalStart();
+            LocalDateTime caEvalEnd = jsonStorage.labData.getCAEvalEnd();
+            labJson = new MuleLabLevelJSON(labLabel, labNumber, accessStart, accessEnd, caEvalStart, caEvalEnd);
+
+            String questionTitle = jsonStorage.questionData.getTitle();
+            String courseCodeQ = jsonStorage.questionData.getCourse();
+            int labNumberQ = jsonStorage.questionData.getLabNumber();
+            int questionNumber = jsonStorage.questionData.getQuestionNumber();
+            String[] files = jsonStorage.questionData.getFiles();
+            //String qid = jsonStorage.questionData.getQid();
+
+            if(!jsonStorage.questionData.isHiddenQuestion()) {
+                //If not hidden question
+                questionJson = new MuleQuestionLevelJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files);
+                Util.writeToFile(questionPath+"/metadata.json", questionJson.toString());
+            } else {
+                List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
+                long sessionLength = jsonStorage.questionData.getLength();
+                LocalDateTime pgStart = jsonStorage.questionData.getPGStart();
+                LocalDateTime pgEnd = jsonStorage.questionData.getPGEnd();
+                hiddenQuestionJson = new MuleHiddenQuestionJSON[sessions.size()];
+
+                for(int i = 0; i < sessions.size(); i++) {
+
+                    LabSessionTableData session = sessions.get(i);
+                    String group = session.getGroup();
+                    LocalDateTime startTime = session.getSessionStartTime();
+
+                    hiddenQuestionJson[i] = new MuleHiddenQuestionJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files, startTime, sessionLength, pgStart, pgEnd, group);
+
+
+                    questionPath = fs.getQuestionLevelPath()+"-"+group;
+                    Path questionPathObj = Paths.get(questionPath);
+                    Files.createDirectories(questionPathObj);
+                    Util.writeToFile(questionPath+"/metadata.json", hiddenQuestionJson[i].toString());
+                }
+            }
+
         } else {
             Util.DEBUG("JSON data is not ready");
         }
