@@ -52,22 +52,10 @@ public class JavaEvaluator extends CodeEvaluator {
         script.append("\n# --------------------- GLOBAL VARIABLES -------------------\n");
 
         script.append(String.format("declare -a RegexList%d=(", 1));
-
-        Util.DEBUG(this.getRegex().size());
-        Util.DEBUG(this.getRegex().containsKey(this.mainfile()));
-        Util.DEBUG(this.mainfile());
-
-        for (Map.Entry<String, ArrayList<Regex>> p : this.getRegex().entrySet()) {
-            Util.DEBUG(p.getKey());
-            Util.DEBUG(p.getValue());
-        }
-
-
         for (Regex regex : this.getRegex().get(Util.fileTitle(this.mainfile()))) {
-            Util.DEBUG(regex.getComment());
-            Util.DEBUG(regex.use());
             script.append("\""+regex.use()+"\" ");
         }
+
         script.append(")\n");
         script.append(String.format("declare -a Comment%d=(", 1));
         for (Regex regex : this.getRegex().get(Util.fileTitle(this.mainfile()))) {
@@ -160,7 +148,7 @@ public class JavaEvaluator extends CodeEvaluator {
         for (int i = 0; i < this.getTests().size(); i++) {
             script.append(String.format("cat > data%d.txt <<EOF\n", i+1));
             script.append(this.getTestIOs().get(i).getInput());
-            script.append("EOF\n");
+            script.append("\nEOF\n");
         }
 
         script.append("\n");
@@ -169,7 +157,7 @@ public class JavaEvaluator extends CodeEvaluator {
         for (int i = 0; i < this.getTests().size(); i++) {
             script.append(String.format("cat > data%d.out <<EOF\n", i+1));
             script.append(this.getTestIOs().get(i).getOutput());
-            script.append("EOF\n");
+            script.append("\nEOF\n");
         }
 
         script.append("\n");

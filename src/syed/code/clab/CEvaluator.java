@@ -141,7 +141,7 @@ public class CEvaluator extends CodeEvaluator {
         for (int i = 0; i < this.getTests().size(); i++) {
             script.append(String.format("cat > data%d.txt <<EOF\n", i+1));
             script.append(this.getTestIOs().get(i).getInput());
-            script.append("EOF\n");
+            script.append("\nEOF\n");
         }
 
         script.append("\n");
@@ -150,7 +150,7 @@ public class CEvaluator extends CodeEvaluator {
         for (int i = 0; i < this.getTests().size(); i++) {
             script.append(String.format("cat > data%d.out <<EOF\n", i+1));
             script.append(this.getTestIOs().get(i).getOutput());
-            script.append("EOF\n");
+            script.append("\nEOF\n");
         }
 
         script.append("\n");

@@ -810,6 +810,13 @@ public class Controller {
                     Util.DEBUG("Regex written for file "+ p.getKey());
                 }
             }
+
+            // set TestIO after namaz
+
+            for (TestIO tc : scriptData.getTestCaseIOs()) {
+                evaluator.setTestData(tc.getInput(), tc.getOutput());
+            }
+
             if (!scriptData.getLabLanguage().equals("PYTHON")) {
                 compiler.writeScript(path + "/vpl_compile.sh");
             }
