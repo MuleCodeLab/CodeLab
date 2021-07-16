@@ -78,8 +78,8 @@ class LabLevelJSONData {
         int day = Integer.parseInt(ddmmyyyy[0]);
         int month = Integer.parseInt(ddmmyyyy[1]);
         int year = Integer.parseInt(ddmmyyyy[2]);
-        int hour = Integer.parseInt(accessStartHour);
-        int minute = Integer.parseInt(accessStartMinute);
+        int hour = Integer.parseInt(accessStartHour == null ? "0" : accessStartHour);
+        int minute = Integer.parseInt(accessStartMinute == null ? "0" : accessStartMinute);
 
         return LocalDateTime.of(year, month, day, hour, minute);
     }
@@ -166,15 +166,14 @@ class LabLevelJSONData {
 }
 
 class QuestionLevelJSONData {
-    // local use only
+    // local use only !!
     LabLevelJSONData labData;
     QuestionLevelJSONData(LabLevelJSONData labData) {
         this.labData = labData;
         sessions = new ArrayList<>();
     }
 
-
-	int questionNumber; // int
+	String questionNumber; // int
 	int labNumber; // int
 	String title;
 	String course;
@@ -183,18 +182,17 @@ class QuestionLevelJSONData {
 
 	// hidden question attributes
 	boolean hiddenQuestion;
+	String group, startDate, startHour, startMinute;
+    ArrayList<LabSessionTableData> sessions;
 
-    String startDate, startHour, startMinute;
 	String lengthHour = "0", lengthMinute = "0";
 	LocalDateTime pgStart, pgEnd;
-	String group;
 
-	ArrayList<LabSessionTableData> sessions;
 
 
 
 	int getQuestionNumber() {
-	    return questionNumber;
+	    return Integer.parseInt(questionNumber);
     }
 
     int getLabNumber() {

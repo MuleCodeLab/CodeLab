@@ -5,7 +5,6 @@ import syed.code.core.Util;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class FileStructure {
 
@@ -14,8 +13,15 @@ public class FileStructure {
     private HTMLDataStorage htmlData;
     private ScriptsDataStorage scriptsData;
 
-    public FileStructure(String path) {
-        this.path = path;
+    public FileStructure(String path) throws IOException {
+        Util.DEBUG("PATH: " + path);
+        Path p = Path.of(path);
+        if (Files.notExists(p)) {
+            Files.createDirectory(p);
+            Util.DEBUG("CourseLevel path created.");
+        }
+        this.path = p.toString();
+        Util.DEBUG("path: " + this.path);
     }
 
     public String getPath() {
@@ -23,7 +29,7 @@ public class FileStructure {
     }
 
     public String getCourseLevelPath() throws IOException {
-        Path path = Path.of(getPath() + jsonData.courseData.getTitle());
+        Path path = Path.of(getPath() +"/"+ jsonData.courseData.getTitle());
         if (Files.notExists(path)) {
             Files.createDirectory(path);
             Util.DEBUG("CourseLevel path created.");
@@ -51,7 +57,16 @@ public class FileStructure {
         return path.toString();
     }
 
-
+//    public static String setPath(String path) throws IOException {
+//        Path p = Path.of(path);
+//        if (Files.notExists(p)) {
+//            Files.createDirectory(p);
+//            Util.DEBUG("File created.");
+//        }
+//        Util.DEBUG("File accessed.");
+//        this.path
+//        return p.toString();
+//    }
 
     public void setJSONData(JSONDataStorage jsonData) {
         this.jsonData = jsonData;
@@ -65,15 +80,4 @@ public class FileStructure {
         this.scriptsData = scriptsData;
     }
 
-    public void writeJSONFiles() {
-
-    }
-
-    public void writeHTMLFiles() {
-
-    }
-
-    public void writeScriptFiles() {
-
-    }
 }

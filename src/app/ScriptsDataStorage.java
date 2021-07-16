@@ -53,6 +53,19 @@ public class ScriptsDataStorage {
     }
 
     public Map<String, String> getCode() {
+        // cleaning before returnning
+        for (Map.Entry<String, String> fc : code.entrySet()) {
+            boolean exist = false;
+            for (String f : getCodeFiles()) {
+                if (f.equals(fc.getKey())) {
+                    exist = true;
+                }
+            }
+            if (!exist) {
+                Util.DEBUG("Extra File Deleted: " + fc.getKey());
+                code.remove(fc.getKey());
+            }
+        }
         return code;
     }
 

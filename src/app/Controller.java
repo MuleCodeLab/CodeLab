@@ -25,22 +25,19 @@ import java.util.Map;
 
 import michael.code.htmltools.MuleHTML;
 import syed.code.core.*;
-import syed.code.clab.CCode;
-import syed.code.clab.CCompiler;
-import syed.code.clab.CRunner;
-import syed.code.clab.CEvaluator;
-import syed.code.javalab.JavaCode;
-import syed.code.javalab.JavaCompiler;
-import syed.code.javalab.JavaRunner;
-import syed.code.javalab.JavaEvaluator;
-import syed.code.pythonlab.PythonCode;
-import syed.code.pythonlab.PythonRunner;
-import syed.code.pythonlab.PythonEvaluator;
+import syed.code.clab.*;
+import syed.code.javalab.*;
+import syed.code.pythonlab.*;
+
+
 
 public class Controller {
 
     JSONDataStorage jsonStorage = new JSONDataStorage();
     ObservableList<LabSessionTableData> labSessionTableData = FXCollections.observableArrayList();
+
+    public Controller() throws IOException {
+    }
 
 
     public void hideCourseAndLabPanes(MouseEvent e) {
@@ -85,8 +82,8 @@ public class Controller {
     }
 
     public void setQuestionNumber(KeyEvent e) {
-        jsonStorage.questionData.questionNumber = Integer.parseInt(tf_QuestionNumber.getText().trim());
-        Util.DEBUG(jsonStorage.questionData.questionNumber);
+        jsonStorage.questionData.questionNumber = tf_QuestionNumber.getText().trim();
+        Util.DEBUG(jsonStorage.questionData.getQuestionNumber());
     }
 
     public void setQuestionTitle(KeyEvent e) {
@@ -96,7 +93,7 @@ public class Controller {
 
     public void setAccessStartDate(Event e) {
         jsonStorage.labData.accessStartDate = dp_AccessStart.getEditor().getText().trim();
-        Util.DEBUG(jsonStorage.labData.accessStartDate);
+        Util.DEBUG(jsonStorage.labData.getAccessStart());
     }
 
     public void setAccessStartHour(KeyEvent e) {
@@ -716,15 +713,19 @@ public class Controller {
     // ---------------------------------------[SCRIPTS END]----------------------------
 
 
+
+
     // --------------------------------------------------------------------------------
     // ---------------------------------------[File GENERATION]------------------------
 
 
-    FileStructure fs = new FileStructure("./Labs/");
+    FileStructure fs = new FileStructure("../MuleCodeLab/");
+
+
 
     public void generateJSONFiles(MouseEvent e) throws IOException {
         if (jsonStorage.isReady()) {
-            String path = fs.getQuestionLevelPath();
+            Util.DEBUG("JSON data is ready");
         } else {
             Util.DEBUG("JSON data is not ready");
         }
@@ -733,10 +734,10 @@ public class Controller {
     public void generateHTMLFiles(MouseEvent e) throws IOException {
 
         if (htmlStorage.isReady()) {
-            Util.DEBUG("Writing HTML files");
-            String path = fs.getQuestionLevelPath();
             fs.setJSONData(jsonStorage);
             fs.setHTMLData(htmlStorage);
+            fs.setScriptsData(scriptData);
+            String path = fs.getQuestionLevelPath();
 
             String body = htmlStorage.getDescription();
             String[] notes = htmlStorage.getNotes();
@@ -754,26 +755,26 @@ public class Controller {
             MuleHTML html = new MuleHTML(jsonStorage.questionData.getTitle(), body, notes, imageUrls, sampleCodes, output, sampleIO);
             System.out.println("This is a print statement");
             Util.writeToFile(path+"/description.html", html.toString());
+            Util.DEBUG("HTML files written successfully.");
         } else {
-            Util.DEBUG("JSON data is not ready");
+            Util.DEBUG("HTML data is not ready");
         }
     }
 
     public void generateScriptFiles(MouseEvent e) throws IOException {
         if (scriptData.isReady()) {
-
             fs.setJSONData(jsonStorage);
             fs.setHTMLData(htmlStorage);
             fs.setScriptsData(scriptData);
+
             String path = fs.getQuestionLevelPath();
             Util.DEBUG("Base Path: "+path);
 
             Map<String, String> tempCode = scriptData.getCode();
-            if (tempCode.size() > 0) {
-                for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
-                    Util.writeToFile(path+"/"+fileAndCode.getKey(), fileAndCode.getValue());
-                    Util.DEBUG("Code file written.");
-                }
+
+            for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
+                Util.writeToFile(path+"/"+fileAndCode.getKey(), fileAndCode.getValue());
+                Util.DEBUG("Code file written.");
             }
 
             Code labcode = null;
@@ -809,8 +810,9 @@ public class Controller {
                     Util.DEBUG("Regex written for file "+ p.getKey());
                 }
             }
-
-            compiler.writeScript(path+"/vpl_compile.sh");
+            if (!scriptData.getLabLanguage().equals("PYTHON")) {
+                compiler.writeScript(path + "/vpl_compile.sh");
+            }
             runner.writeScript(path+"/vpl_runner.sh");
             evaluator.writeScript(path+"/vpl_evaluate.sh");
             Util.DEBUG("Script files created successfully.");
