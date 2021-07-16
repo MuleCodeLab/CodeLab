@@ -781,7 +781,6 @@ public class Controller {
 
                     hiddenQuestionJson[i] = new MuleHiddenQuestionJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files, startTime, sessionLength, pgStart, pgEnd, group);
 
-
                     questionPath = fs.getQuestionLevelPath()+"-"+group;
                     Path questionPathObj = Paths.get(questionPath);
                     Files.createDirectories(questionPathObj);

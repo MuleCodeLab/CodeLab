@@ -42,13 +42,14 @@ public class LabSessionTableData {
         }
 
         public LocalDateTime getSessionStartTime() {
-            String[] ddmmyyyy = getDate().split("-");
-            int year = Integer.parseInt(ddmmyyyy[0]);
-            int month = Integer.parseInt(ddmmyyyy[1]);
-            int dayOfMonth = Integer.parseInt(ddmmyyyy[2]);
+            String[] yyyymmdd = getDate().split("-");
+            int year = Integer.parseInt(yyyymmdd[0]);
+            int month = Integer.parseInt(yyyymmdd[1]);
+            int dayOfMonth = Integer.parseInt(yyyymmdd[2]);
 
-            int hour = Integer.parseInt(getTime().substring(0,2));
-            int min = Integer.parseInt(getTime().substring(3));
+            String time = getTime();
+            int hour = Integer.parseInt(time.substring(0,time.indexOf(':')));
+            int min = Integer.parseInt(getTime().substring(time.indexOf(':')+1));
 
             return LocalDateTime.of(year, month, dayOfMonth, hour, min);
         }

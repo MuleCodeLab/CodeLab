@@ -242,11 +242,11 @@ class QuestionLevelJSONData {
     }
 
 	LocalDateTime getPGStart() {
-	    return labData.getCAEvalEnd();
+	    return labData.getPGStart();
     }
 
 	LocalDateTime getPGEnd() {
-	    return labData.getAccessEnd();
+	    return labData.getPGEnd();
     }
 
 	String getGroup() {
