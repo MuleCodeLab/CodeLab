@@ -747,6 +747,7 @@ public class Controller {
 
             String courseCode = jsonStorage.courseData.getTitle();
             courseJson = new MuleCourseLevelJSON(courseCode);
+            Util.writeToFile(coursePath, courseJson.toString());
 
             int labNumber = jsonStorage.labData.getLabNumber();
             String labLabel = jsonStorage.labData.getLabLabel();
@@ -755,19 +756,17 @@ public class Controller {
             LocalDateTime caEvalStart = jsonStorage.labData.getCAEvalStart();
             LocalDateTime caEvalEnd = jsonStorage.labData.getCAEvalEnd();
             labJson = new MuleLabLevelJSON(labLabel, labNumber, accessStart, accessEnd, caEvalStart, caEvalEnd);
+            Util.writeToFile(labPath, labJson.toString());
 
             String questionTitle = jsonStorage.questionData.getTitle();
             String courseCodeQ = jsonStorage.questionData.getCourse();
             int labNumberQ = jsonStorage.questionData.getLabNumber();
             int questionNumber = jsonStorage.questionData.getQuestionNumber();
             String[] files = jsonStorage.questionData.getFiles();
-            //String qid = jsonStorage.questionData.getQid();
 
-            if(!jsonStorage.questionData.isHiddenQuestion()) {
-                //If not hidden question
-                questionJson = new MuleQuestionLevelJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files);
-                Util.writeToFile(questionPath+"/metadata.json", questionJson.toString());
-            } else {
+
+            if(jsonStorage.questionData.isHiddenQuestion()) {
+                //If question is a hidden question
                 List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
                 long sessionLength = jsonStorage.questionData.getLength();
                 LocalDateTime pgStart = jsonStorage.questionData.getPGStart();
@@ -788,6 +787,12 @@ public class Controller {
                     Files.createDirectories(questionPathObj);
                     Util.writeToFile(questionPath+"/metadata.json", hiddenQuestionJson[i].toString());
                 }
+
+            }
+            else {
+                //Else if question is not a hidden question
+                questionJson = new MuleQuestionLevelJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files);
+                Util.writeToFile(questionPath+"/metadata.json", questionJson.toString());
             }
 
         } else {
@@ -819,8 +824,21 @@ public class Controller {
 
             MuleHTML html = new MuleHTML(css, jsonStorage.questionData.getTitle(), body, notes, imageUrls, sampleCodes, output, sampleIO);
 
-            Util.writeToFile(path+"/description.html", html.toString());
-            Util.DEBUG("HTML files written successfully.");
+            if(jsonStorage.questionData.isHiddenQuestion()) {
+                //If question is a hidden question
+                List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
+
+                for(int i = 0; i < sessions.size(); i++) {
+                    LabSessionTableData session = sessions.get(i);
+                    String group = session.getGroup();
+                    String hqPath = path+"-"+group;
+                    Util.writeToFile(hqPath+"/description.html", html.toString());
+                }
+            }
+            else {
+                //If question is not a hidden question
+                Util.writeToFile(path+"/description.html", html.toString());
+            }
         } else {
             Util.DEBUG("HTML data is not ready");
         }
