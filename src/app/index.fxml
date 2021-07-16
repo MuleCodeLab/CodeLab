@@ -577,7 +577,7 @@
                                                    <tooltip>
                                                       <Tooltip text="Some questions expect a single static output. Such outputs are not dependant on the values of variables or on user input etc. Select this option if you would like to display the expected output to the student." />
                                                    </tooltip></RadioButton>
-                                                <RadioButton fx:id="rb_OutputType_None" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" onMouseReleased="#setOutputType" text="None" toggleGroup="$rb_TypeOfOutputChooser">
+                                                <RadioButton fx:id="rb_OutputType_None" selected="true" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" onMouseReleased="#setOutputType" text="None" toggleGroup="$rb_TypeOfOutputChooser">
                                                    <tooltip>
                                                       <Tooltip text="Select this option if you do not want to display input/output information to the student." />
                                                    </tooltip></RadioButton>
@@ -588,7 +588,7 @@
                                           </VBox>
                                        </children>
                                     </VBox>
-                                    <VBox fx:id="vb_SampleIO" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                    <VBox fx:id="vb_SampleIO" disable="true" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                        <children>
                                           <Label text="Sample input/output" />
                                           <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
@@ -623,7 +623,7 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox fx:id="vb_SingleOutput" prefWidth="552.0" spacing="5.0">
+                                    <VBox fx:id="vb_SingleOutput" disable="true" prefWidth="552.0" spacing="5.0">
                                        <children>
                                           <Label text="Single expected output" />
                                           <TextArea fx:id="ta_SingleOutput" onKeyTyped="#setSingleOutput" prefHeight="143.0" prefWidth="552.0" promptText="Enter the expected output" VBox.vgrow="ALWAYS">

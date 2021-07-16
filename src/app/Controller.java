@@ -399,12 +399,18 @@ public class Controller {
     public void setOutputType(MouseEvent e) {
         if (rb_OutputType_SampleIO.isSelected()) {
             htmlStorage.typeOfOutput = 2;
+            vb_SampleIO.setDisable(false);
+            vb_SingleOutput.setDisable(true);
             Util.DEBUG("2 select");
         } else if (rb_OutputType_Single.isSelected()) {
             htmlStorage.typeOfOutput = 1;
+            vb_SampleIO.setDisable(true);
+            vb_SingleOutput.setDisable(false);
             Util.DEBUG("1 select");
         } else if (rb_OutputType_None.isSelected()) {
             htmlStorage.typeOfOutput = 0;
+            vb_SampleIO.setDisable(true);
+            vb_SingleOutput.setDisable(true);
             Util.DEBUG("0 select");
         } else {
             Util.DEBUG("Invalid select");

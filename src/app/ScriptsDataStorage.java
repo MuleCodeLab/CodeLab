@@ -27,10 +27,9 @@ public class ScriptsDataStorage {
 
 
     public boolean isReady() {
-        return true;
-//        return  getLabLanguage() != null && getMainFile() != null &&
-//                getCompileGrade() + getRegexGrade() + getTCGrade() == getTotalGrade() &&
-//                files.size() > 0 && regexes != null && testCaseIOs.size() > 0;
+        return  getLabLanguage() != null && getMainFile() != null &&
+                getCompileGrade() + getRegexGrade() + getTCGrade() > 0 &&
+                files.size() > 0 && regexes != null && testCaseIOs.size() > 0;
     }
 
 
