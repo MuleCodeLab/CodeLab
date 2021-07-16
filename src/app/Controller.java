@@ -745,6 +745,7 @@ public class Controller {
             fs.setScriptsData(scriptData);
             String path = fs.getQuestionLevelPath();
 
+            String css = htmlStorage.getCss();
             String body = htmlStorage.getDescription();
             String[] notes = htmlStorage.getNotes();
             String[] imageUrls = htmlStorage.getImagesUrls();
@@ -758,8 +759,8 @@ public class Controller {
                 sampleIO[i][1] = sampleOutputs[i];
             }
 
-            MuleHTML html = new MuleHTML(jsonStorage.questionData.getTitle(), body, notes, imageUrls, sampleCodes, output, sampleIO);
-            System.out.println("This is a print statement");
+            MuleHTML html = new MuleHTML(css, jsonStorage.questionData.getTitle(), body, notes, imageUrls, sampleCodes, output, sampleIO);
+
             Util.writeToFile(path+"/description.html", html.toString());
             Util.DEBUG("HTML files written successfully.");
         } else {

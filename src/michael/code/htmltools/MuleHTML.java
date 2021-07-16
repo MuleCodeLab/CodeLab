@@ -1,7 +1,9 @@
 package michael.code.htmltools;
 
-public class MuleHTML
-{
+import java.io.*;
+
+public class MuleHTML {
+
 	private String css;
 	private String title;
 	private String body;
@@ -14,9 +16,9 @@ public class MuleHTML
 
 	// Constructors
 
-	public MuleHTML(String title, String body, String[] notes, String[] imageUrls, String[] sampleCodes, String output, String[][] sampleIO)
-	{
-		css = "";
+	public MuleHTML(String css, String title, String body, String[] notes, String[] imageUrls, String[] sampleCodes, String output, String[][] sampleIO) {
+
+		this.css = css;
 		this.title = title;
 		this.body = body;
 		this.imageUrls = imageUrls;
@@ -26,8 +28,8 @@ public class MuleHTML
 		this.sampleIO = sampleIO;
 	}
 
-	public MuleHTML()
-	{
+	public MuleHTML() {
+
 		css = "";
 		title = "";
 		body = "";

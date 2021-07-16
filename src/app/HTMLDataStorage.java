@@ -5,8 +5,14 @@ import syed.code.core.Util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.io.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class HTMLDataStorage {
 
+    String css;
     String description;
     ArrayList<String> imagesURLs;
     ArrayList<String> notes;
@@ -16,7 +22,9 @@ public class HTMLDataStorage {
     ArrayList<String> sampleOutputs;
     String singleExpectedOutput;
 
-    HTMLDataStorage() {
+    HTMLDataStorage() throws IOException {
+        Path cssPath = Path.of("src/michael/code/htmltools/style.css");
+        css = Files.readString(cssPath);
         description = "";
         imagesURLs = new ArrayList<>();
         notes = new ArrayList<>();
@@ -54,6 +62,9 @@ public class HTMLDataStorage {
 
     }
 
+    String getCss() {
+        return css;
+    }
 
     String getDescription() {
         return description;
