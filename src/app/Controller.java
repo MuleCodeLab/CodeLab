@@ -735,6 +735,8 @@ public class Controller {
     public void generateJSONFiles(MouseEvent e) throws IOException {
         if (jsonStorage.isReady()) {
             fs.setJSONData(jsonStorage);
+            fs.setHTMLData(htmlStorage);
+            fs.setScriptsData(scriptData);
 
             String coursePath = fs.getCourseLevelPath();
             String labPath = fs.getLabLevelPath();
@@ -747,7 +749,7 @@ public class Controller {
 
             String courseCode = jsonStorage.courseData.getTitle();
             courseJson = new MuleCourseLevelJSON(courseCode);
-            Util.writeToFile(coursePath, courseJson.toString()); //Error: ..\MuleCodeLab\CSXXX\ (Access denied)
+            Util.writeToFile(coursePath+"/metadata.json", courseJson.toString()); //Error: ..\MuleCodeLab\CSXXX\ (Access denied)
 
             int labNumber = jsonStorage.labData.getLabNumber();
             String labLabel = jsonStorage.labData.getLabLabel();
@@ -756,7 +758,7 @@ public class Controller {
             LocalDateTime caEvalStart = jsonStorage.labData.getCAEvalStart();
             LocalDateTime caEvalEnd = jsonStorage.labData.getCAEvalEnd();
             labJson = new MuleLabLevelJSON(labLabel, labNumber, accessStart, accessEnd, caEvalStart, caEvalEnd);
-            Util.writeToFile(labPath, labJson.toString()); //Error: ..\MuleCodeLab\CSXXX\LabX (Access denied)
+            Util.writeToFile(labPath+"/metadata.json", labJson.toString()); //Error: ..\MuleCodeLab\CSXXX\LabX (Access denied)
 
             String questionTitle = jsonStorage.questionData.getTitle();
             String courseCodeQ = jsonStorage.questionData.getCourse();
