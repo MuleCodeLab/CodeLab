@@ -29,7 +29,7 @@ public class JavaEvaluator extends CodeEvaluator {
         StringBuilder script = new StringBuilder();
 
         script.append("#! /bin/bash\n");
-        script.append("\n");
+        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("cat > vpl_execution <<EEOOFF\n");
         script.append("#! /bin/bash\n");
         script.append("\n");
@@ -40,7 +40,7 @@ public class JavaEvaluator extends CodeEvaluator {
         script.append(String.format("prog1=%s\n", this.mainfile()));  
         for (int i = 0; i < N; i++) {
             if (!titles[i].equals(this.mainfile())) {
-                script.append(String.format("prog%d=%s", index, titles[i]));
+                script.append(String.format("prog%d=%s\n", index, titles[i]));
                 index++;
             }
         }  
@@ -76,6 +76,7 @@ public class JavaEvaluator extends CodeEvaluator {
                     script.append("\""+regex.getComment()+"\" ");
                 }
                 script.append(")\n");
+                index++;
             }
         }     
 
@@ -201,11 +202,11 @@ public class JavaEvaluator extends CodeEvaluator {
         script.append("fi\n");
         script.append("\n");
         script.append("if (( count == numberOfTestCases )); then\n");
-        // script.append("  if (( grade < 100 )); then\n");
-        // script.append("    grade=100\n");
+        script.append("  if (( grade < 100 )); then\n");
+        script.append("    grade=100\n");
         script.append("    echo \"------------------------\"\n");
         script.append("    echo \"As you have passed all Test Cases, you have been given full marks\"\n");
-        // script.append("  fi\n");
+        script.append("  fi\n");
         script.append("fi\n");
         script.append("\n");
         script.append("if (( grade > 100 )); then\n");

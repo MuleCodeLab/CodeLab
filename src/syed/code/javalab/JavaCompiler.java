@@ -23,8 +23,8 @@ public class JavaCompiler extends CodeCompiler {
 
         String[] titles = this.getCode().getFileTitles();
         StringBuilder script = new StringBuilder();
-        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("#! /bin/bash\n");
+        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("cat > vpl_execution <<EEOOFF\n");
         script.append("#! /bin/bash\n");
         script.append("EXIT_CODE=-1\n");

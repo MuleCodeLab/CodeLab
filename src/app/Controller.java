@@ -544,13 +544,6 @@ public class Controller {
         }
     }
 
-
-    public void loadStartingCode() {
-        String file = list_StartCode_FileNames.getSelectionModel().getSelectedItem();
-        ta_CodeFileOptions_StartCode_StartCode.setText(scriptData.getCode().get(file));
-    }
-
-
     public void setPredefinedRegex(Event e) {
 
         ObservableList<Regex> reglist = FXCollections.observableList(scriptData.getPredefinedRegex());
@@ -856,6 +849,12 @@ public class Controller {
 
             Map<String, String> tempCode = scriptData.getCode();
 
+            for (String filename : scriptData.getCodeFiles()) {
+                if (!tempCode.containsKey(filename)) {
+                    scriptData.code.put(filename, ""); // no code in the given file basically
+                }
+            }
+
             for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
                 Util.writeToFile(path+"/"+fileAndCode.getKey(), fileAndCode.getValue());
                 Util.DEBUG("Code file written.");
@@ -895,8 +894,6 @@ public class Controller {
                 }
             }
 
-            // set TestIO after namaz
-
             for (TestIO tc : scriptData.getTestCaseIOs()) {
                 evaluator.setTestData(tc.getInput(), tc.getOutput());
             }
@@ -904,7 +901,7 @@ public class Controller {
             if (!scriptData.getLabLanguage().equals("PYTHON")) {
                 compiler.writeScript(path + "/vpl_compile.sh");
             }
-            runner.writeScript(path+"/vpl_runner.sh");
+            runner.writeScript(path+"/vpl_run.sh");
             evaluator.writeScript(path+"/vpl_evaluate.sh");
             Util.DEBUG("Script files created successfully.");
         } else {

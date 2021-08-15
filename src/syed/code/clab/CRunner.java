@@ -24,8 +24,8 @@ public class CRunner extends CodeRunner {
         String runFmt = "%s\\${run1}\n";
 
         StringBuilder script = new StringBuilder();
-        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("#! /bin/bash\n");
+        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("cat > vpl_execution <<EEOOFF\n");
         script.append("#! /bin/bash\n");
         script.append("EXIT_CODE=-1\n");

@@ -11,7 +11,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Util {
@@ -69,12 +72,12 @@ public class Util {
         try {
             writer = new BufferedWriter(new OutputStreamWriter(out));
             writer.write(data);
+            DEBUG("data write successful");
         } catch (IOException e) {
             ERROR(e.getMessage());
         } finally {
             try {
                 writer.close();
-                DEBUG("data write successful");
             } catch (IOException e) {
                 ERROR(e.getMessage());
             }
@@ -97,8 +100,15 @@ public class Util {
         String[] files = getFilePaths(path, filter);
         String[] names = new String[files.length];
         for (int i = 0; i < files.length; i++) {
-            String[] tokens = files[i].split("/");
-            names[i] = tokens[tokens.length-1];
+            if (isLinuxOS()) {
+                Util.DEBUG("OS = UNIX");
+                String[] tokens = files[i].split("/");
+                names[i] = tokens[tokens.length-1];
+            } else if (isWindowsOS()) {
+                Util.DEBUG("OS = WINDOWS");
+                String[] tokens = files[i].split("\\\\");
+                names[i] = tokens[tokens.length-1];
+            }
         }
         return names;
     } 
@@ -109,6 +119,8 @@ public class Util {
         for (int i = 0; i < files.length; i++) {
             paths[i] = files[i].getPath();
         }
+        Util.DEBUG("File List size = "+files.length);
+        Util.DEBUG("Paths = "+Arrays.toString(paths));
         return paths;
     } 
 
@@ -121,7 +133,7 @@ public class Util {
                 }
             }
         }
-        return files.toArray(new File[0]); // don't ask why String[0], trust the code
+        return files.toArray(new File[0]); // don't ask why File[0], trust the code
     }
 
     public static String fileTitle(String fileName) {
@@ -137,5 +149,19 @@ public class Util {
     public static boolean isDirectory(String path) {
         if (isValidPath(path)) return new File(path).isDirectory();
         return false;
+    }
+
+    public static String detectOS() {
+        String os = System.getProperty("os.name");
+        Util.DEBUG(os);
+        return os;
+    }
+
+    public static boolean isLinuxOS() {
+        return detectOS().startsWith("Linux");
+    }
+
+    public static boolean isWindowsOS() {
+        return detectOS().startsWith("Windows");
     }
 }

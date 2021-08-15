@@ -1,5 +1,6 @@
 package syed.code.core;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,8 +51,11 @@ public abstract class Code {
     public String[] getFileTitles() {
         String[] names = this.getFileNames();
         String[] titles = new String[names.length];
+        Util.DEBUG("Files = " + Arrays.toString(names));
+        Util.DEBUG("TITLES = " + Arrays.toString(titles));
         for (int i = 0; i < names.length; i++) {
             titles[i] = Util.fileTitle(names[i]);
+            Util.DEBUG(titles[i]);
         }
         return titles;
     }

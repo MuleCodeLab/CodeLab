@@ -16,8 +16,8 @@ public class PythonRunner extends CodeRunner {
         @Override 
         protected String scriptify() {
             StringBuilder script = new StringBuilder();
-            script.append("# +++++++++++++++++++++++++++++++++\n");
             script.append("#! /bin/bash\n");
+            script.append("# +++++++++++++++++++++++++++++++++\n");
             script.append("cat > vpl_execution <<EEOOFF\n");
             script.append("#! /bin/bash\n");
             script.append("echo \"Run the file.\"\n");
@@ -51,8 +51,8 @@ public class PythonRunner extends CodeRunner {
         String runFmt = "%s \\${prog1}%s\n";
 
         StringBuilder script = new StringBuilder();
-        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("#! /bin/bash\n");
+        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("cat > vpl_execution <<EEOOFF\n");
         script.append("#! /bin/bash\n");
         script.append("EXIT_CODE=-1\n");

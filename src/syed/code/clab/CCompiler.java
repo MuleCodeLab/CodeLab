@@ -17,7 +17,7 @@ public class CCompiler extends CodeCompiler {
     protected String scriptify() {
         final int count = this.getCode().getCount();
         if (count == 0) {
-            Util.ERROR("Cannnot compile 0 files");
+            Util.ERROR("Cannot compile 0 files");
             return null;
         }
 
@@ -25,8 +25,8 @@ public class CCompiler extends CodeCompiler {
         final String extension = this.getLanguage().getExtension();
 
         StringBuilder script = new StringBuilder();
-        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("#! /bin/bash\n");
+        script.append("# +++++++++++++++++++++++++++++++++\n");
         script.append("cat > vpl_execution <<EEOOFF\n");
         script.append("#! /bin/bash\n");
         script.append("EXIT_CODE=-1\n");
