@@ -91,11 +91,11 @@ public class MuleLabLevelJSON
 	public String toString()
 	{
 		return  "{\n"+
-				"\t"+JSONTools.keyValuePair("title", String.format("%s %02d", label, labNumber))+"\n"+
-				"\t"+JSONTools.keyValuePair("Run", true)+"\n"+
-				"\t"+JSONTools.keyValuePair("visible", getVisibleKeyValue())+"\n"+
-				"\t"+JSONTools.keyValuePair("Evaluate", getEvaluateKeyValue())+"\n"+
-				"\t"+JSONTools.keyValuePair("copy", "(((ingroup('demonstrator','lecturer')))?'workbook':'system')")+"\n"+
+				"\t"+JSONTools.keyValuePair("title", String.format("%s %02d", label, labNumber))+",\n"+
+				"\t"+JSONTools.keyValuePair("Run", true)+",\n"+
+				"\t"+JSONTools.keyValuePair("visible", getVisibleKeyValue())+",\n"+
+				"\t"+JSONTools.keyValuePair("Evaluate", getEvaluateKeyValue())+",\n"+
+				"\t"+JSONTools.keyValuePair("copy", "(((ingroup('demonstrator','lecturer')))?'workbook':'system')")+",\n"+
 				"\t"+JSONTools.keyValuePair("paste", "(((ingroup('demonstrator','lecturer')))?'workbook':'system')")+"\n"+
 				"}";
 	}

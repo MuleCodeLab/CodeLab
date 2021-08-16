@@ -11,7 +11,13 @@ public final class Grade {
         this.acheived = 0;
         this.total = total;
         this.count = count;
-        this.grade = this.total/this.count;
+        //this.grade = this.total / this.count;
+        if(count == 0) {
+            this.grade = this.total;
+        }
+        else {
+            this.grade = this.total / this.count;
+        }
     }
     
     public void increment() {

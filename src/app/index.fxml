@@ -29,7 +29,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
+<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="720.0">
          <children>
@@ -41,39 +41,7 @@
                            <children>
                               <VBox prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <VBox fx:id="vb_Level" alignment="CENTER_LEFT" prefWidth="100.0" spacing="10.0">
-                                       <children>
-                                          <Label text="Levels of files to be generated:" />
-                                          <VBox prefWidth="100.0" spacing="5.0">
-                                             <children>
-                                                <RadioButton fx:id="rb_Level_Question" mnemonicParsing="false" onMousePressed="#hideCourseAndLabPanes" text="Question level">
-                                                   <toggleGroup>
-                                                      <ToggleGroup fx:id="rb_LevelChooser" />
-                                                   </toggleGroup>
-                                                   <tooltip>
-                                                      <Tooltip text="Generate the files for a single question" />
-                                                   </tooltip>
-                                                </RadioButton>
-                                                <RadioButton fx:id="rb_Level_Lab" mnemonicParsing="false" onMousePressed="#hideCoursePane" text="Question level, lab level" toggleGroup="$rb_LevelChooser">
-                                                   <tooltip>
-                                                      <Tooltip text="Generate the files for a single question and a single lab" />
-                                                   </tooltip></RadioButton>
-                                                <RadioButton fx:id="rb_Level_Course" mnemonicParsing="false" onMousePressed="#unHideAllPanes" selected="true" text="Question level, lab level, course level" toggleGroup="$rb_LevelChooser">
-                                                   <tooltip>
-                                                      <Tooltip text="Generate the files for a single question, a single lab, and a single course" />
-                                                   </tooltip></RadioButton>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets left="24.0" />
-                                             </VBox.margin>
-                                          </VBox>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </VBox>
                                     <VBox fx:id="vb_CourseLevelData" prefWidth="100.0" spacing="20.0" />
-                                    <Separator prefWidth="200.0" />
                                     <VBox fx:id="vb_LabLevelData" prefWidth="552.0" spacing="10.0">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" prefWidth="200.0">
@@ -577,7 +545,7 @@
                                                    <tooltip>
                                                       <Tooltip text="Some questions expect a single static output. Such outputs are not dependant on the values of variables or on user input etc. Select this option if you would like to display the expected output to the student." />
                                                    </tooltip></RadioButton>
-                                                <RadioButton fx:id="rb_OutputType_None" selected="true" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" onMouseReleased="#setOutputType" text="None" toggleGroup="$rb_TypeOfOutputChooser">
+                                                <RadioButton fx:id="rb_OutputType_None" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" onMouseReleased="#setOutputType" selected="true" text="None" toggleGroup="$rb_TypeOfOutputChooser">
                                                    <tooltip>
                                                       <Tooltip text="Select this option if you do not want to display input/output information to the student." />
                                                    </tooltip></RadioButton>
