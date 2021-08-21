@@ -14,14 +14,11 @@ public class FileStructure {
     private ScriptsDataStorage scriptsData;
 
     public FileStructure(String path) throws IOException {
-        Util.DEBUG("PATH: " + path);
         Path p = Path.of(path);
         if (Files.notExists(p)) {
             Files.createDirectory(p);
-            Util.DEBUG("CourseLevel path created.");
         }
         this.path = p.toString();
-        Util.DEBUG("path: " + this.path);
     }
 
     public String getPath() {
@@ -32,7 +29,6 @@ public class FileStructure {
         Path path = Path.of(getPath() +"/"+ jsonData.courseData.getTitle());
         if (Files.notExists(path)) {
             Files.createDirectory(path);
-            Util.DEBUG("CourseLevel path created.");
         }
         return path.toString();
     }
@@ -41,7 +37,6 @@ public class FileStructure {
         Path path = Path.of(getCourseLevelPath()+"/"+jsonData.labData.getLabLabel()+jsonData.labData.getLabNumber());
         if (Files.notExists(path)) {
             Files.createDirectory(path);
-            Util.DEBUG("LabLevel path created.");
         }
         return path.toString();
     }
@@ -52,21 +47,9 @@ public class FileStructure {
                                 jsonData.questionData.getQuestionNumber());
         if (Files.notExists(path)) {
             Files.createDirectory(path);
-            Util.DEBUG("QuestionLevel path created.");
         }
         return path.toString();
     }
-
-//    public static String setPath(String path) throws IOException {
-//        Path p = Path.of(path);
-//        if (Files.notExists(p)) {
-//            Files.createDirectory(p);
-//            Util.DEBUG("File created.");
-//        }
-//        Util.DEBUG("File accessed.");
-//        this.path
-//        return p.toString();
-//    }
 
     public void setJSONData(JSONDataStorage jsonData) {
         this.jsonData = jsonData;

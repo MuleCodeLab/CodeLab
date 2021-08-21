@@ -21,7 +21,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -39,26 +38,22 @@ public class Controller {
     JSONDataStorage jsonStorage = new JSONDataStorage();
     ObservableList<LabSessionTableData> labSessionTableData = FXCollections.observableArrayList();
 
-    public Controller() throws IOException {
-    }
+    public Controller() throws IOException {}
 
 
     public void hideCourseAndLabPanes(MouseEvent e) {
-        Util.DEBUG("question level clicked");
         vb_CourseLevelData.setDisable(true);
         vb_LabLevelData.setDisable(true);
         vb_QuestionLevelData.setDisable(false);
     }
 
     public void hideCoursePane(MouseEvent e) {
-        Util.DEBUG("Lab level clicked");
         vb_CourseLevelData.setDisable(true);
         vb_QuestionLevelData.setDisable(false);
         vb_LabLevelData.setDisable(false);
     }
 
     public void unHideAllPanes(MouseEvent e) {
-        Util.DEBUG("all level clicked");
         vb_CourseLevelData.setDisable(false);
         vb_QuestionLevelData.setDisable(false);
         vb_LabLevelData.setDisable(false);
@@ -67,91 +62,72 @@ public class Controller {
     public void setCourseName(KeyEvent e) {
         jsonStorage.courseData.title = tf_CourseName.getText();
         jsonStorage.questionData.course = tf_CourseName.getText();
-        Util.DEBUG(jsonStorage.courseData.title);
-        Util.DEBUG(jsonStorage.questionData.course);
     }
 
     public void setLabLabel(KeyEvent e) {
         jsonStorage.labData.label = tf_LabLabel.getText().trim();
-        Util.DEBUG(jsonStorage.labData.label);
     }
 
     public void setLabNumber(KeyEvent e) {
         int value = Integer.parseInt(tf_LabNumber.getText().trim());
         jsonStorage.labData.labNumber = value;
         jsonStorage.questionData.labNumber = value;
-        Util.DEBUG(jsonStorage.labData.labNumber);
-        Util.DEBUG(jsonStorage.questionData.labNumber);
     }
 
     public void setQuestionNumber(KeyEvent e) {
         jsonStorage.questionData.questionNumber = tf_QuestionNumber.getText().trim();
-        Util.DEBUG(jsonStorage.questionData.getQuestionNumber());
     }
 
     public void setQuestionTitle(KeyEvent e) {
         jsonStorage.questionData.title = tf_QuestionTitle.getText().trim();
-        Util.DEBUG(jsonStorage.questionData.title);
     }
 
     public void setAccessStartDate(Event e) {
         jsonStorage.labData.accessStartDate = dp_AccessStart.getEditor().getText().trim();
-        Util.DEBUG(jsonStorage.labData.getAccessStart());
     }
 
     public void setAccessStartHour(KeyEvent e) {
         jsonStorage.labData.accessStartHour = tf_AccessStart_hour.getText().trim();
-        Util.DEBUG(jsonStorage.labData.accessStartHour);
     }
 
     public void setAccessStartMinute(KeyEvent e) {
         jsonStorage.labData.accessStartMinute = tf_AccessStart_minute.getText().trim();
-        Util.DEBUG(jsonStorage.labData.accessStartMinute);
     }
 
     public void setAccessEndDate(Event e) {
         jsonStorage.labData.accessEndDate = dp_AccessEnd.getEditor().getText().trim();
-        Util.DEBUG(jsonStorage.labData.accessEndDate);
     }
 
     public void setAccessEndHour(KeyEvent e) {
         jsonStorage.labData.accessEndHour = tf_AccessEnd_hour.getText().trim();
-        Util.DEBUG(jsonStorage.labData.accessEndHour);
     }
 
     public void setAccessEndMinute(KeyEvent e) {
         jsonStorage.labData.accessEndMinute = tf_AccessEnd_minute.getText().trim();
-        Util.DEBUG(jsonStorage.labData.accessEndMinute);
     }
 
     public void setCAStartDate(Event e) {
         jsonStorage.labData.caEvalStartDate = dp_CaEvalStart.getEditor().getText().trim();
-        Util.DEBUG(jsonStorage.labData.caEvalStartDate);
     }
 
     public void setCAStartHour(KeyEvent e) {
         jsonStorage.labData.caEvalStartHour = tf_CaEvalStart_hour.getText().trim();
-        Util.DEBUG(jsonStorage.labData.caEvalStartHour);
     }
 
     public void setCAStartMinute(KeyEvent e) {
         jsonStorage.labData.caEvalStartMinute = tf_CaEvalStart_minute.getText().trim();
-        Util.DEBUG(jsonStorage.labData.caEvalStartMinute);
     }
 
     public void setCAEndDate(Event e) {
         jsonStorage.labData.caEvalEndDate = dp_CaEvalEnd.getEditor().getText().trim();
-        Util.DEBUG(jsonStorage.labData.caEvalEndDate);
     }
 
     public void setCAEndHour(KeyEvent e) {
         jsonStorage.labData.caEvalEndHour = tf_CaEvalEnd_hour.getText().trim();
-        Util.DEBUG(jsonStorage.labData.caEvalEndHour);
     }
 
     public void setCAEndMinute(KeyEvent e) {
         jsonStorage.labData.caEvalEndMinute = tf_CaEvalEnd_minute.getText().trim();
-        Util.DEBUG(jsonStorage.labData.caEvalEndMinute);
     }
 
     public void addCodeFile(MouseEvent e) {
@@ -171,8 +147,6 @@ public class Controller {
             list_CodeFileOptions_Files.getItems().remove(index);
             jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
             scriptData.files = new ArrayList<>(list_CodeFileNames.getItems());
-        } else {
-            Util.DEBUG("Empty");
         }
     }
 
@@ -184,7 +158,6 @@ public class Controller {
             jsonStorage.questionData.hiddenQuestion = false;
             vb_HiddenQuestionData.setDisable(true);
         }
-        Util.ECHO(jsonStorage.questionData.hiddenQuestion);
     }
 
     public void setLabSessionLengthHour(KeyEvent e) {
@@ -230,17 +203,12 @@ public class Controller {
     }
 
     public void printJSON(MouseEvent e) {
-        Util.ECHO("Key Pressed");
         jsonStorage.print();
     }
 
     public void addToSessionsTable(MouseEvent e) {
-
         String group = jsonStorage.questionData.getGroup();
         String[] dateTime = jsonStorage.questionData.getStart().toString().split("T");
-
-        Util.DEBUG(group);
-        Util.DEBUG(Arrays.toString(dateTime));
 
         if (!group.isBlank() && dateTime.length == 2) {
             labSessionTableData.add(new LabSessionTableData(group, dateTime[0], dateTime[1]));
@@ -259,7 +227,6 @@ public class Controller {
             labSessionTableData.remove(index);
             jsonStorage.questionData.sessions.clear();
             jsonStorage.questionData.sessions.addAll(labSessionTableData);
-            Util.DEBUG(labSessionTableData.size() + " - " + labSessionTableData);
         }
     }
 
@@ -316,7 +283,6 @@ public class Controller {
     HTMLDataStorage htmlStorage = new HTMLDataStorage();
 
     public void printHTML(MouseEvent e) {
-        Util.ECHO("Key Pressed");
         htmlStorage.print();
     }
 
@@ -335,7 +301,6 @@ public class Controller {
         if (!url.isBlank()) {
             htmlStorage.imagesURLs.add(url);
             list_Images.getItems().add(url);
-            Util.DEBUG(url);
         }
     }
 
@@ -345,8 +310,6 @@ public class Controller {
             int index = list_Images.getSelectionModel().getSelectedIndex();
             list_Images.getItems().remove(index);
             htmlStorage.imagesURLs.remove(index);
-        } else {
-            Util.DEBUG("Empty");
         }
     }
 
@@ -365,8 +328,6 @@ public class Controller {
             int index = list_Notes.getSelectionModel().getSelectedIndex();
             list_Notes.getItems().remove(index);
             htmlStorage.notes.remove(index);
-        } else {
-            Util.DEBUG("Empty");
         }
     }
 
@@ -384,8 +345,6 @@ public class Controller {
             int index = list_CodeSamples.getSelectionModel().getSelectedIndex();
             list_CodeSamples.getItems().remove(index);
             htmlStorage.codeSamples.remove(index);
-        } else {
-            Util.DEBUG("Empty");
         }
     }
 
@@ -393,8 +352,6 @@ public class Controller {
         if (list_CodeSamples.getItems().size() > 0) {
             int index = list_CodeSamples.getSelectionModel().getSelectedIndex();
             ta_CodeSamples.setText(list_CodeSamples.getItems().get(index));
-        } else {
-            Util.DEBUG("Empty");
         }
     }
 
@@ -404,19 +361,14 @@ public class Controller {
             htmlStorage.typeOfOutput = 2;
             vb_SampleIO.setDisable(false);
             vb_SingleOutput.setDisable(true);
-            Util.DEBUG("2 select");
         } else if (rb_OutputType_Single.isSelected()) {
             htmlStorage.typeOfOutput = 1;
             vb_SampleIO.setDisable(true);
             vb_SingleOutput.setDisable(false);
-            Util.DEBUG("1 select");
         } else if (rb_OutputType_None.isSelected()) {
             htmlStorage.typeOfOutput = 0;
             vb_SampleIO.setDisable(true);
             vb_SingleOutput.setDisable(true);
-            Util.DEBUG("0 select");
-        } else {
-            Util.DEBUG("Invalid select");
         }
     }
 
@@ -431,7 +383,7 @@ public class Controller {
             list_SampleIO.getItems().add(input);
             list_SampleIO.getItems().add(output);
         } else {
-            Util.DEBUG("No input output");
+           Widget.OK("No Input Output");
         }
     }
 
@@ -443,44 +395,28 @@ public class Controller {
                 htmlStorage.sampleOutputs.remove((index/2));
                 list_SampleIO.getItems().remove(index);
                 list_SampleIO.getItems().remove((index % 2 == 0) ? index :index-1);
-                Util.DEBUG(htmlStorage.sampleInputs.toString());
-                Util.DEBUG(htmlStorage.sampleOutputs.toString());
             }
-        } else {
-            Util.DEBUG("Empty");
         }
     }
 
     public void loadSampleIOIntoEditors(MouseEvent e) {
         int index = list_SampleIO.getSelectionModel().getSelectedIndex();
-//        if (index > 0 && index < list_SampleIO.getItems().size()-1) {
-            if (index % 2 == 0) { // input selected
-                ta_SampleIO_Input.setText(list_SampleIO.getItems().get(index));
-                ta_SampleIO_Output.setText(list_SampleIO.getItems().get(index+1));
-            } else { // output selected
-                ta_SampleIO_Input.setText(list_SampleIO.getItems().get(index-1));
-                ta_SampleIO_Output.setText(list_SampleIO.getItems().get(index));
-            }
-
-//        }
+        if (index % 2 == 0) { // input selected
+            ta_SampleIO_Input.setText(list_SampleIO.getItems().get(index));
+            ta_SampleIO_Output.setText(list_SampleIO.getItems().get(index+1));
+        } else { // output selected
+            ta_SampleIO_Input.setText(list_SampleIO.getItems().get(index-1));
+            ta_SampleIO_Output.setText(list_SampleIO.getItems().get(index));
+        }
     }
 
     public void setSingleOutput(KeyEvent e) {
         htmlStorage.singleExpectedOutput = ta_SingleOutput.getText().trim();
-        Util.DEBUG(htmlStorage.singleExpectedOutput);
     }
 
 
     // --------------------------------------------------------------------------------
     // ---------------------------------------[HTML END]-------------------------------
-
-
-
-
-
-
-
-
 
 
 
@@ -500,7 +436,6 @@ public class Controller {
         } else if (rb_Lang_C.isSelected()) {
             scriptData.labLanguage = "C";
         }
-        Util.DEBUG(scriptData.labLanguage + " Lab selected");
     }
 
     public void selectFile(MouseEvent e) {
@@ -515,20 +450,18 @@ public class Controller {
                 ta_CodeFileOptions_StartCode_StartCode.clear();
             }
         }
-        Util.DEBUG("File selected = " + label_SelectedFileDisplay.getText());
     }
 
     public void selectAsMainFile(MouseEvent e) {
         int index = list_CodeFileOptions_Files.getSelectionModel().getSelectedIndex();
         if (index > -1) {
-            String fname = list_CodeFileOptions_Files.getItems().get(index);
-           if (fname.equals(label_SelectedFileDisplay.getText())) {
-               scriptData.mainFile = fname;
+            String filename = list_CodeFileOptions_Files.getItems().get(index);
+           if (filename.equals(label_SelectedFileDisplay.getText())) {
+               scriptData.mainFile = filename;
                label_CodeFileOptions_SetAsMain_MainFileDisplay.setText(scriptData.getMainFile());
                label_CodeFileOptions_SetAsMain_MainFileDisplay.setTextFill(Color.GREY);
            }
         }
-        Util.DEBUG("Main File = " + scriptData.getMainFile());
     }
 
     public void setStartingCode(KeyEvent e) {
@@ -539,13 +472,10 @@ public class Controller {
                 scriptData.code.remove(file);
             }
             scriptData.code.put(file, code);
-        } else {
-            Util.DEBUG(code + " is empty");
         }
     }
 
     public void setPredefinedRegex(Event e) {
-
         ObservableList<Regex> reglist = FXCollections.observableList(scriptData.getPredefinedRegex());
         combo_CodeFileOptions_Regexes_Predefined.setCellFactory(new Callback<>() {
             @Override
@@ -599,7 +529,6 @@ public class Controller {
                 }
             }
             list_CodeFileOptions_Regexes.setItems(FXCollections.observableList(regexes));
-            Util.DEBUG("ADDED -- " + comment + " | " + reg );
         }
     }
 
@@ -617,7 +546,6 @@ public class Controller {
                     if (R.use().equals(regex)) {
                         regexlist.remove(R);
                         list_CodeFileOptions_Regexes.getItems().remove(validIndex);
-                        Util.DEBUG("Regex removed | " + R.use());
                         break;
                     }
                 }
@@ -638,7 +566,6 @@ public class Controller {
                 for (Regex R : scriptData.getRegex().get(filename)) {
                     if (R.use().equals(regex)) {
                         tf_CodeOptions_Regexes_Comment.setText(R.getComment());
-                        Util.DEBUG("Regex comment found");
                     }
                 }
             }
@@ -651,7 +578,6 @@ public class Controller {
         String output = ta_TestCases_Output.getText().trim();
 
         if (!output.isBlank()) {
-            Util.DEBUG("[testIO]\nInput: " + input + " | "+output);
             testIOTableData.add(new TestIOTableData(input, output));
             table_TestCases.setItems(testIOTableData);
             scriptData.testCaseIOs.clear();
@@ -660,9 +586,8 @@ public class Controller {
             }
             tc_InputColumn.setCellValueFactory(new PropertyValueFactory<TestIOTableData, String>("input"));
             tc_OutputColumn.setCellValueFactory(new PropertyValueFactory<TestIOTableData, String>("output"));
-            Util.DEBUG(testIOTableData.size() +" = " +scriptData.getTestCaseIOs().size() + " - " + testIOTableData);
         } else {
-            Util.DEBUG("output cannot be empty");
+            Widget.OK("output cannot be empty");
         }
     }
 
@@ -674,9 +599,8 @@ public class Controller {
             for (TestIOTableData s : testIOTableData) {
                 scriptData.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
             }
-            Util.DEBUG(testIOTableData.size() +" = " +scriptData.getTestCaseIOs().size() + " - " + testIOTableData);
         } else {
-            Util.DEBUG("item at index " + index + " cannot be removed");
+            Widget.OK("item at index " + index + " cannot be removed");
         }
     }
 
@@ -722,7 +646,6 @@ public class Controller {
 
 
     FileStructure fs = new FileStructure("../MuleCodeLab/");
-
 
 
     public void generateJSONFiles(MouseEvent e) throws IOException {
@@ -788,9 +711,10 @@ public class Controller {
                 questionJson = new MuleQuestionLevelJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files);
                 Util.writeToFile(questionPath+"/metadata.json", questionJson.toString());
             }
+            Widget.OK("JSON files created successfully");
 
         } else {
-            Util.DEBUG("JSON data is not ready");
+            Widget.OK("JSON data is not ready");
         }
     }
 
@@ -833,8 +757,9 @@ public class Controller {
                 //If question is not a hidden question
                 Util.writeToFile(path+"/description.html", html.toString());
             }
+            Widget.OK("HTML files created successfully");
         } else {
-            Util.DEBUG("HTML data is not ready");
+            Widget.OK("HTML data is not ready");
         }
     }
 
@@ -845,8 +770,6 @@ public class Controller {
             fs.setScriptsData(scriptData);
 
             String path = fs.getQuestionLevelPath();
-            Util.DEBUG("Base Path: "+path);
-
             Map<String, String> tempCode = scriptData.getCode();
 
             for (String filename : scriptData.getCodeFiles()) {
@@ -857,7 +780,6 @@ public class Controller {
 
             for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
                 Util.writeToFile(path+"/"+fileAndCode.getKey(), fileAndCode.getValue());
-                Util.DEBUG("Code file written.");
             }
 
             Code labcode = null;
@@ -890,7 +812,6 @@ public class Controller {
             for (Map.Entry<String, List<Regex>> p : tempRegex.entrySet()) {
                 for (Regex r : p.getValue()) {
                     evaluator.specifyRegex(Util.fileTitle(p.getKey()), r);
-                    Util.DEBUG("Regex written for file "+ p.getKey());
                 }
             }
 
@@ -903,9 +824,9 @@ public class Controller {
             }
             runner.writeScript(path+"/vpl_run.sh");
             evaluator.writeScript(path+"/vpl_evaluate.sh");
-            Util.DEBUG("Script files created successfully.");
+            Widget.OK("Script files created successfully");
         } else {
-            Util.DEBUG("JSON data is not ready");
+            Widget.OK("Script data is not ready");
         }
     }
 

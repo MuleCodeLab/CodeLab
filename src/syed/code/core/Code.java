@@ -40,7 +40,6 @@ public abstract class Code {
         for (Map.Entry<String, String> pair : this.files.entrySet()) {
             if (Util.checkRegex(regex, pair.getValue())) {
                 String name = pair.getKey();
-                Util.DEBUG("MAIN FILE = " + name);
                 return name;
             }
         }
@@ -51,8 +50,6 @@ public abstract class Code {
     public String[] getFileTitles() {
         String[] names = this.getFileNames();
         String[] titles = new String[names.length];
-        Util.DEBUG("Files = " + Arrays.toString(names));
-        Util.DEBUG("TITLES = " + Arrays.toString(titles));
         for (int i = 0; i < names.length; i++) {
             titles[i] = Util.fileTitle(names[i]);
             Util.DEBUG(titles[i]);

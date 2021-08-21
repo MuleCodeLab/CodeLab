@@ -72,7 +72,6 @@ public class Util {
         try {
             writer = new BufferedWriter(new OutputStreamWriter(out));
             writer.write(data);
-            DEBUG("data write successful");
         } catch (IOException e) {
             ERROR(e.getMessage());
         } finally {
@@ -101,11 +100,9 @@ public class Util {
         String[] names = new String[files.length];
         for (int i = 0; i < files.length; i++) {
             if (isLinuxOS()) {
-                Util.DEBUG("OS = UNIX");
                 String[] tokens = files[i].split("/");
                 names[i] = tokens[tokens.length-1];
             } else if (isWindowsOS()) {
-                Util.DEBUG("OS = WINDOWS");
                 String[] tokens = files[i].split("\\\\");
                 names[i] = tokens[tokens.length-1];
             }
@@ -119,8 +116,6 @@ public class Util {
         for (int i = 0; i < files.length; i++) {
             paths[i] = files[i].getPath();
         }
-        Util.DEBUG("File List size = "+files.length);
-        Util.DEBUG("Paths = "+Arrays.toString(paths));
         return paths;
     } 
 
@@ -153,7 +148,6 @@ public class Util {
 
     public static String detectOS() {
         String os = System.getProperty("os.name");
-        Util.DEBUG(os);
         return os;
     }
 

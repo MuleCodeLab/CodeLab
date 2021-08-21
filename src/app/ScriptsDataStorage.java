@@ -61,7 +61,6 @@ public class ScriptsDataStorage {
                 }
             }
             if (!exist) {
-                Util.DEBUG("Extra File Deleted: " + fc.getKey());
                 code.remove(fc.getKey());
             }
         }
@@ -116,7 +115,6 @@ public class ScriptsDataStorage {
         List<Regex> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             list.add(new Regex(regex[i], comments[i]));
-            Util.DEBUG(regex[i] + " | "+ comments[i]);
         }
         return  list;
     }

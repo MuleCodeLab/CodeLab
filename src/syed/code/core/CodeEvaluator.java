@@ -18,7 +18,6 @@ public abstract class CodeEvaluator {
         this.regex = new HashMap<>();
         this.testIO = new ArrayList<>();
         for (String name : this.getFileTitles()) {
-            Util.DEBUG(name);
             regex.put(name, new ArrayList<>());
         }
     }
