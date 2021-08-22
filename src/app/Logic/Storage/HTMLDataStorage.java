@@ -1,28 +1,26 @@
-package app;
+package app.Logic.Storage;
 
 import syed.code.core.Util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import java.io.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HTMLDataStorage {
 
-    String css;
-    String description;
-    ArrayList<String> imagesURLs;
-    ArrayList<String> notes;
-    ArrayList<String> codeSamples;
-    int typeOfOutput; // 0 1 2
-    ArrayList<String> sampleInputs;
-    ArrayList<String> sampleOutputs;
-    String singleExpectedOutput;
+    public String css;
+    public String description;
+    public ArrayList<String> imagesURLs;
+    public ArrayList<String> notes;
+    public ArrayList<String> codeSamples;
+    public int typeOfOutput; // 0 1 2
+    public ArrayList<String> sampleInputs;
+    public ArrayList<String> sampleOutputs;
+    public String singleExpectedOutput;
 
-    HTMLDataStorage() throws IOException {
+    public HTMLDataStorage() throws IOException {
         Path cssPath = Path.of("src/michael/code/htmltools/style.css");
         css = Files.readString(cssPath);
         description = "";
@@ -48,7 +46,7 @@ public class HTMLDataStorage {
         return ready;
     }
 
-    void print() {
+    public void print() {
         Util.ECHO("----------------------------\n");
         Util.ECHO("Description: "+getDescription());
         Util.ECHO("TypeOfOutput: "+getTypeOfOutput());
@@ -62,51 +60,51 @@ public class HTMLDataStorage {
 
     }
 
-    String getCss() {
+    public String getCss() {
         return css;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    int getTypeOfOutput() {
+    public int getTypeOfOutput() {
         return typeOfOutput;
     }
 
-    String getSingleExpectedOutput() {
+    public String getSingleExpectedOutput() {
         return singleExpectedOutput;
     }
 
-    String[] getImagesUrls() {
+    public String[] getImagesUrls() {
         String[] urls = new String[imagesURLs.size()];
         int i = 0;
         for (String url : imagesURLs) { urls[i++] = url; }
         return urls;
     }
 
-    String[] getNotes() {
+    public String[] getNotes() {
         String[] n = new String[notes.size()];
         int i = 0;
         for (String url : notes) { n[i++] = url; }
         return n;
     }
 
-    String[] getCodeSamples() {
+    public String[] getCodeSamples() {
         String[] n = new String[codeSamples.size()];
         int i = 0;
         for (String url : codeSamples) { n[i++] = url; }
         return n;
     }
 
-    String[] getSampleInputs() {
+    public String[] getSampleInputs() {
         String[] n = new String[sampleInputs.size()];
         int i = 0;
         for (String url : sampleInputs) { n[i++] = url; }
         return n;
     }
 
-    String[] getSampleOutputs() {
+    public String[] getSampleOutputs() {
         String[] n = new String[sampleOutputs.size()];
         int i = 0;
         for (String url : sampleOutputs) { n[i++] = url; }

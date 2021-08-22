@@ -1,4 +1,4 @@
-package app;
+package app.Logic;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

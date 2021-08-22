@@ -1,4 +1,4 @@
-package app;
+package app.UserInterface;
 
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
@@ -24,13 +24,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import michael.code.htmltools.MuleHTML;
+import michael.code.htmltools.*;
 import michael.code.jsontools.*;
 import syed.code.core.*;
 import syed.code.clab.*;
 import syed.code.javalab.*;
 import syed.code.pythonlab.*;
 
+import app.Logic.FileStructure;
+import app.Logic.TestIOTableData;
+import app.Logic.LabSessionTableData;
+import app.Logic.Storage.JSONDataStorage;
+import app.Logic.Storage.HTMLDataStorage;
+import app.Logic.Storage.ScriptsDataStorage;
 
 
 public class Controller {
@@ -39,25 +45,6 @@ public class Controller {
     ObservableList<LabSessionTableData> labSessionTableData = FXCollections.observableArrayList();
 
     public Controller() throws IOException {}
-
-
-    public void hideCourseAndLabPanes(MouseEvent e) {
-        vb_CourseLevelData.setDisable(true);
-        vb_LabLevelData.setDisable(true);
-        vb_QuestionLevelData.setDisable(false);
-    }
-
-    public void hideCoursePane(MouseEvent e) {
-        vb_CourseLevelData.setDisable(true);
-        vb_QuestionLevelData.setDisable(false);
-        vb_LabLevelData.setDisable(false);
-    }
-
-    public void unHideAllPanes(MouseEvent e) {
-        vb_CourseLevelData.setDisable(false);
-        vb_QuestionLevelData.setDisable(false);
-        vb_LabLevelData.setDisable(false);
-    }
 
     public void setCourseName(KeyEvent e) {
         jsonStorage.courseData.title = tf_CourseName.getText();
@@ -383,7 +370,7 @@ public class Controller {
             list_SampleIO.getItems().add(input);
             list_SampleIO.getItems().add(output);
         } else {
-           Widget.OK("No Input Output");
+           Widget.ERROR("Invalid Input/Output.", "Cannot add empty sample input/output.");
         }
     }
 
@@ -396,6 +383,8 @@ public class Controller {
                 list_SampleIO.getItems().remove(index);
                 list_SampleIO.getItems().remove((index % 2 == 0) ? index :index-1);
             }
+        } else {
+            Widget.ERROR("Cannot remove sample IO.", "Sample IO list is empty.");
         }
     }
 
@@ -587,7 +576,7 @@ public class Controller {
             tc_InputColumn.setCellValueFactory(new PropertyValueFactory<TestIOTableData, String>("input"));
             tc_OutputColumn.setCellValueFactory(new PropertyValueFactory<TestIOTableData, String>("output"));
         } else {
-            Widget.OK("output cannot be empty");
+            Widget.ERROR("Invalid Input/Output.", "At-least one output is required.");
         }
     }
 
@@ -600,7 +589,7 @@ public class Controller {
                 scriptData.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
             }
         } else {
-            Widget.OK("item at index " + index + " cannot be removed");
+            Widget.ERROR("Cannot remove testcase IO.", "Testcase IO list is empty.");
         }
     }
 
@@ -711,10 +700,10 @@ public class Controller {
                 questionJson = new MuleQuestionLevelJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files);
                 Util.writeToFile(questionPath+"/metadata.json", questionJson.toString());
             }
-            Widget.OK("JSON files created successfully");
+            Widget.OK("Success!","JSON files created successfully.");
 
         } else {
-            Widget.OK("JSON data is not ready");
+            Widget.ERROR("Failure!","Please provide all required information.");
         }
     }
 
@@ -757,9 +746,9 @@ public class Controller {
                 //If question is not a hidden question
                 Util.writeToFile(path+"/description.html", html.toString());
             }
-            Widget.OK("HTML files created successfully");
+            Widget.OK("Success!","HTML files created successfully.");
         } else {
-            Widget.OK("HTML data is not ready");
+            Widget.ERROR("Failure!","Please provide all required information.");
         }
     }
 
@@ -824,9 +813,9 @@ public class Controller {
             }
             runner.writeScript(path+"/vpl_run.sh");
             evaluator.writeScript(path+"/vpl_evaluate.sh");
-            Widget.OK("Script files created successfully");
+            Widget.OK("Success!","Script files created successfully");
         } else {
-            Widget.OK("Script data is not ready");
+            Widget.ERROR("Failure!","Please provide all required information.");
         }
     }
 

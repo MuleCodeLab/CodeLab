@@ -1,22 +1,22 @@
-package app;
+package app.Logic.Storage;
 
+import java.util.*;
 import syed.code.core.Regex;
 import syed.code.core.TestIO;
 import syed.code.core.Util;
 
-import java.util.*;
 
 public class ScriptsDataStorage {
 
-    String labLanguage;
-    String mainFile;
-    String compileGrade, regexGrade, tcGrade;
-    ArrayList<String> files;
-    HashMap<String, String> code;
-    HashMap<String, List<Regex>> regexes;
-    ArrayList<TestIO> testCaseIOs;
+    public String labLanguage;
+    public String mainFile;
+    public String compileGrade, regexGrade, tcGrade;
+    public ArrayList<String> files;
+    public HashMap<String, String> code;
+    public HashMap<String, List<Regex>> regexes;
+    public ArrayList<TestIO> testCaseIOs;
 
-    ScriptsDataStorage(QuestionLevelJSONData questionData) {
+    public ScriptsDataStorage(QuestionLevelJSONDataStorage questionData) {
         files = new ArrayList<>();
         code = new HashMap<>();
         regexes = new HashMap<>();
