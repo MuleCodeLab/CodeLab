@@ -1,5 +1,6 @@
 package app.UserInterface;
 
+import app.Logic.FileProducer;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,20 +17,11 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import michael.code.htmltools.*;
-import michael.code.jsontools.*;
 import syed.code.core.*;
-import syed.code.clab.*;
-import syed.code.javalab.*;
-import syed.code.pythonlab.*;
 
 import app.Logic.FileStructure;
 import app.Logic.TestIOTableData;
@@ -43,6 +35,9 @@ public class Controller {
 
     JSONDataStorage jsonStorage = new JSONDataStorage();
     ObservableList<LabSessionTableData> labSessionTableData = FXCollections.observableArrayList();
+    ScriptsDataStorage scriptStorage = new ScriptsDataStorage(jsonStorage.questionData);
+    ObservableList<TestIOTableData> testIOTableData = FXCollections.observableArrayList();
+    HTMLDataStorage htmlStorage = new HTMLDataStorage();
 
     public Controller() throws IOException {}
 
@@ -123,7 +118,7 @@ public class Controller {
             list_CodeFileNames.getItems().add(file);
             list_CodeFileOptions_Files.getItems().add(file);
             jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
-            scriptData.files = new ArrayList<>(list_CodeFileNames.getItems());
+            scriptStorage.files = new ArrayList<>(list_CodeFileNames.getItems());
         }
     }
 
@@ -133,7 +128,7 @@ public class Controller {
             list_CodeFileNames.getItems().remove(index);
             list_CodeFileOptions_Files.getItems().remove(index);
             jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
-            scriptData.files = new ArrayList<>(list_CodeFileNames.getItems());
+            scriptStorage.files = new ArrayList<>(list_CodeFileNames.getItems());
         }
     }
 
@@ -217,8 +212,6 @@ public class Controller {
         }
     }
 
-
-
     public void setHiddenPgStartDate() {
         String value = dp_Hidden_PgStart_date.getEditor().getText().trim();
         if (!value.isBlank()) {
@@ -262,12 +255,9 @@ public class Controller {
     }
 
 
-
-
     // --------------------------------------------------------------------------------
     // ---------------------------------------[HTML START]-----------------------------
 
-    HTMLDataStorage htmlStorage = new HTMLDataStorage();
 
     public void printHTML(MouseEvent e) {
         htmlStorage.print();
@@ -282,7 +272,6 @@ public class Controller {
         }
     }
 
-
     public void addImage(MouseEvent e) {
         String url = tf_Images.getText();
         if (!url.isBlank()) {
@@ -290,7 +279,6 @@ public class Controller {
             list_Images.getItems().add(url);
         }
     }
-
 
     public void removeImage(MouseEvent e) {
         if (list_Images.getItems().size() > 0) {
@@ -300,7 +288,6 @@ public class Controller {
         }
     }
 
-
     public void addNote(MouseEvent e) {
         String note = tf_Notes.getText();
         if (!note.isBlank()) {
@@ -309,7 +296,6 @@ public class Controller {
         }
     }
 
-
     public void removeNote(MouseEvent e) {
         if (list_Notes.getItems().size() > 0) {
             int index = list_Notes.getSelectionModel().getSelectedIndex();
@@ -317,7 +303,6 @@ public class Controller {
             htmlStorage.notes.remove(index);
         }
     }
-
 
     public void addCodeSample(MouseEvent e) {
         String code = ta_CodeSamples.getText().trim();
@@ -342,7 +327,6 @@ public class Controller {
         }
     }
 
-
     public void setOutputType(MouseEvent e) {
         if (rb_OutputType_SampleIO.isSelected()) {
             htmlStorage.typeOfOutput = 2;
@@ -358,7 +342,6 @@ public class Controller {
             vb_SingleOutput.setDisable(true);
         }
     }
-
 
     public void addSampleIO(MouseEvent e) {
         String input = ta_SampleIO_Input.getText().trim();
@@ -413,17 +396,13 @@ public class Controller {
     // ---------------------------------------[SCRIPTS Start]--------------------------
 
 
-    ScriptsDataStorage scriptData = new ScriptsDataStorage(jsonStorage.questionData);
-    ObservableList<TestIOTableData> testIOTableData = FXCollections.observableArrayList();
-
-
     public void setLabLanguage(MouseEvent e) {
         if (rb_Lang_Java.isSelected()) {
-            scriptData.labLanguage = "JAVA";
+            scriptStorage.labLanguage = "JAVA";
         } else if (rb_Lang_Python.isSelected()) {
-            scriptData.labLanguage = "PYTHON";
+            scriptStorage.labLanguage = "PYTHON";
         } else if (rb_Lang_C.isSelected()) {
-            scriptData.labLanguage = "C";
+            scriptStorage.labLanguage = "C";
         }
     }
 
@@ -433,8 +412,8 @@ public class Controller {
             String value = list_CodeFileOptions_Files.getItems().get(index).trim();
             label_SelectedFileDisplay.setText(value);
             label_SelectedFileDisplay.setTextFill(Color.GREY);
-            if (scriptData.getCode().containsKey(value)) {
-                ta_CodeFileOptions_StartCode_StartCode.setText(scriptData.getCode().get(value));
+            if (scriptStorage.getCode().containsKey(value)) {
+                ta_CodeFileOptions_StartCode_StartCode.setText(scriptStorage.getCode().get(value));
             } else {
                 ta_CodeFileOptions_StartCode_StartCode.clear();
             }
@@ -446,8 +425,8 @@ public class Controller {
         if (index > -1) {
             String filename = list_CodeFileOptions_Files.getItems().get(index);
            if (filename.equals(label_SelectedFileDisplay.getText())) {
-               scriptData.mainFile = filename;
-               label_CodeFileOptions_SetAsMain_MainFileDisplay.setText(scriptData.getMainFile());
+               scriptStorage.mainFile = filename;
+               label_CodeFileOptions_SetAsMain_MainFileDisplay.setText(scriptStorage.getMainFile());
                label_CodeFileOptions_SetAsMain_MainFileDisplay.setTextFill(Color.GREY);
            }
         }
@@ -457,15 +436,15 @@ public class Controller {
         String code = ta_CodeFileOptions_StartCode_StartCode.getText().trim();
         String file = label_SelectedFileDisplay.getText();
         if (!code.isBlank() && !file.isBlank() && !file.equals("Filename.ext")) {
-            if (scriptData.code.containsKey(file)) {
-                scriptData.code.remove(file);
+            if (scriptStorage.code.containsKey(file)) {
+                scriptStorage.code.remove(file);
             }
-            scriptData.code.put(file, code);
+            scriptStorage.code.put(file, code);
         }
     }
 
     public void setPredefinedRegex(Event e) {
-        ObservableList<Regex> reglist = FXCollections.observableList(scriptData.getPredefinedRegex());
+        ObservableList<Regex> reglist = FXCollections.observableList(scriptStorage.getPredefinedRegex());
         combo_CodeFileOptions_Regexes_Predefined.setCellFactory(new Callback<>() {
             @Override
             public ListCell<Regex> call(ListView<Regex> param) {
@@ -501,18 +480,18 @@ public class Controller {
         String comment = tf_CodeOptions_Regexes_Comment.getText();
 
         if (!file.isBlank() && !reg.isBlank() && !comment.isBlank()) {
-            if (scriptData.regexes.containsKey(file)) {
-                List<Regex> reglist = scriptData.regexes.get(file);
+            if (scriptStorage.regexes.containsKey(file)) {
+                List<Regex> reglist = scriptStorage.regexes.get(file);
                 reglist.add(new Regex(reg, comment));
-                scriptData.regexes.remove(file);
-                scriptData.regexes.put(file, reglist);
+                scriptStorage.regexes.remove(file);
+                scriptStorage.regexes.put(file, reglist);
             } else {
-                scriptData.regexes.put(file, new ArrayList<>());
-                scriptData.regexes.get(file).add(new Regex(reg, comment));
+                scriptStorage.regexes.put(file, new ArrayList<>());
+                scriptStorage.regexes.get(file).add(new Regex(reg, comment));
             }
 
             List<String> regexes = new ArrayList<>();
-            for (Map.Entry<String, List<Regex>> item : scriptData.getRegex().entrySet()) {
+            for (Map.Entry<String, List<Regex>> item : scriptStorage.getRegex().entrySet()) {
                 for (Regex regex : item.getValue()) {
                     regexes.add(item.getKey() + "|>  " + regex.use());
                 }
@@ -529,8 +508,8 @@ public class Controller {
             String filename = selectedItem.substring(0, splitIndex);
             String regex = selectedItem.substring(splitIndex + 4);// 4 for |>
 
-            if (!filename.isBlank() && scriptData.getRegex().containsKey(filename)) {
-                List<Regex> regexlist = scriptData.getRegex().get(filename);
+            if (!filename.isBlank() && scriptStorage.getRegex().containsKey(filename)) {
+                List<Regex> regexlist = scriptStorage.getRegex().get(filename);
                 for (Regex R : regexlist) {
                     if (R.use().equals(regex)) {
                         regexlist.remove(R);
@@ -550,9 +529,9 @@ public class Controller {
             String filename = selectedItem.substring(0, splitIndex);
             String regex = selectedItem.substring(splitIndex + 4);// 4 for |>
 
-            if (!filename.isBlank() && scriptData.getRegex().containsKey(filename)) {
+            if (!filename.isBlank() && scriptStorage.getRegex().containsKey(filename)) {
                 ta_CodeFileOptions_Regexes_RegexEditable.setText(regex);
-                for (Regex R : scriptData.getRegex().get(filename)) {
+                for (Regex R : scriptStorage.getRegex().get(filename)) {
                     if (R.use().equals(regex)) {
                         tf_CodeOptions_Regexes_Comment.setText(R.getComment());
                     }
@@ -569,9 +548,9 @@ public class Controller {
         if (!output.isBlank()) {
             testIOTableData.add(new TestIOTableData(input, output));
             table_TestCases.setItems(testIOTableData);
-            scriptData.testCaseIOs.clear();
+            scriptStorage.testCaseIOs.clear();
             for (TestIOTableData s : testIOTableData) {
-                scriptData.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
+                scriptStorage.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
             }
             tc_InputColumn.setCellValueFactory(new PropertyValueFactory<TestIOTableData, String>("input"));
             tc_OutputColumn.setCellValueFactory(new PropertyValueFactory<TestIOTableData, String>("output"));
@@ -584,9 +563,9 @@ public class Controller {
         int index = table_TestCases.getSelectionModel().getSelectedIndex();
         if (index > -1) {
             testIOTableData.remove(index);
-            scriptData.testCaseIOs.clear();
+            scriptStorage.testCaseIOs.clear();
             for (TestIOTableData s : testIOTableData) {
-                scriptData.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
+                scriptStorage.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
             }
         } else {
             Widget.ERROR("Cannot remove testcase IO.", "Testcase IO list is empty.");
@@ -597,30 +576,30 @@ public class Controller {
     public void setCompileGrade(KeyEvent e) {
         String value = tf_GradeProportions_Compile.getText().trim();
         if (!value.isBlank()) {
-            scriptData.compileGrade = value;
-            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptData.getTotalGrade()));
+            scriptStorage.compileGrade = value;
+            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
         }
     }
 
     public void setRegexGrade(KeyEvent e) {
         String value = tf_GradeProportions_Regex.getText().trim();
         if (!value.isBlank()) {
-            scriptData.regexGrade = value;
-            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptData.getTotalGrade()));
+            scriptStorage.regexGrade = value;
+            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
         }
     }
 
     public void setTestCaseIOGrade(KeyEvent e) {
         String value = tf_GradeProportions_TestCases.getText().trim();
         if (!value.isBlank()) {
-            scriptData.tcGrade = value;
-            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptData.getTotalGrade()));
+            scriptStorage.tcGrade = value;
+            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
         }
     }
 
 
     public void printSciptData(MouseEvent e) {
-        scriptData.print();
+        scriptStorage.print();
     }
 
 
@@ -629,193 +608,43 @@ public class Controller {
 
 
 
-
     // --------------------------------------------------------------------------------
     // ---------------------------------------[File GENERATION]------------------------
 
 
-    FileStructure fs = new FileStructure("../MuleCodeLab/");
-
-
-    public void generateJSONFiles(MouseEvent e) throws IOException {
-        if (jsonStorage.isReady()) {
-            fs.setJSONData(jsonStorage);
-            fs.setHTMLData(htmlStorage);
-            fs.setScriptsData(scriptData);
-
-            String coursePath = fs.getCourseLevelPath();
-            String labPath = fs.getLabLevelPath();
-            String questionPath = fs.getQuestionLevelPath();
-
-            MuleCourseLevelJSON courseJson;
-            MuleLabLevelJSON labJson;
-            MuleQuestionLevelJSON questionJson;
-            MuleHiddenQuestionJSON[] hiddenQuestionJson;
-
-            String courseCode = jsonStorage.courseData.getTitle();
-            courseJson = new MuleCourseLevelJSON(courseCode);
-            Util.writeToFile(coursePath+"/metadata.json", courseJson.toString()); //Error: ..\MuleCodeLab\CSXXX\ (Access denied)
-
-            int labNumber = jsonStorage.labData.getLabNumber();
-            String labLabel = jsonStorage.labData.getLabLabel();
-            LocalDateTime accessStart = jsonStorage.labData.getAccessStart();
-            LocalDateTime accessEnd = jsonStorage.labData.getAccessEnd();
-            LocalDateTime caEvalStart = jsonStorage.labData.getCAEvalStart();
-            LocalDateTime caEvalEnd = jsonStorage.labData.getCAEvalEnd();
-            labJson = new MuleLabLevelJSON(labLabel, labNumber, accessStart, accessEnd, caEvalStart, caEvalEnd);
-            Util.writeToFile(labPath+"/metadata.json", labJson.toString()); //Error: ..\MuleCodeLab\CSXXX\LabX (Access denied)
-
-            String questionTitle = jsonStorage.questionData.getTitle();
-            String courseCodeQ = jsonStorage.questionData.getCourse();
-            int labNumberQ = jsonStorage.questionData.getLabNumber();
-            int questionNumber = jsonStorage.questionData.getQuestionNumber();
-            String[] files = jsonStorage.questionData.getFiles();
-
-
-            if(jsonStorage.questionData.isHiddenQuestion()) {
-                //If question is a hidden question
-                List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
-                long sessionLength = jsonStorage.questionData.getLength();
-                LocalDateTime pgStart = jsonStorage.questionData.getPGStart();
-                LocalDateTime pgEnd = jsonStorage.questionData.getPGEnd();
-                hiddenQuestionJson = new MuleHiddenQuestionJSON[sessions.size()];
-
-                for(int i = 0; i < sessions.size(); i++) {
-
-                    LabSessionTableData session = sessions.get(i);
-                    String group = session.getGroup();
-                    LocalDateTime startTime = session.getSessionStartTime();
-
-                    hiddenQuestionJson[i] = new MuleHiddenQuestionJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files, startTime, sessionLength, pgStart, pgEnd, group);
-
-                    questionPath = fs.getQuestionLevelPath()+"-"+group;
-                    Path questionPathObj = Paths.get(questionPath);
-                    Files.createDirectories(questionPathObj);
-                    Util.writeToFile(questionPath+"/metadata.json", hiddenQuestionJson[i].toString());
-                }
-
+    public void generateJSONFiles(MouseEvent e) {
+        try {
+            if (new FileProducer(jsonStorage, htmlStorage, scriptStorage).json()) {
+                Widget.OK("Success!", "JSON files created successfully.");
+            } else {
+                Widget.ERROR("Failure!","Please provide all required information.");
             }
-            else {
-                //Else if question is not a hidden question
-                questionJson = new MuleQuestionLevelJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files);
-                Util.writeToFile(questionPath+"/metadata.json", questionJson.toString());
-            }
-            Widget.OK("Success!","JSON files created successfully.");
-
-        } else {
-            Widget.ERROR("Failure!","Please provide all required information.");
+        } catch (IOException err) {
+            Widget.ERROR("Unexpected Error!", err.getMessage());
         }
     }
 
-    public void generateHTMLFiles(MouseEvent e) throws IOException {
-
-        if (htmlStorage.isReady()) {
-            fs.setJSONData(jsonStorage);
-            fs.setHTMLData(htmlStorage);
-            fs.setScriptsData(scriptData);
-            String path = fs.getQuestionLevelPath();
-
-            String css = htmlStorage.getCss();
-            String body = htmlStorage.getDescription();
-            String[] notes = htmlStorage.getNotes();
-            String[] imageUrls = htmlStorage.getImagesUrls();
-            String[] sampleCodes = htmlStorage.getCodeSamples();
-            String output = htmlStorage.getSingleExpectedOutput();
-            String[] sampleInputs = htmlStorage.getSampleInputs();
-            String[] sampleOutputs = htmlStorage.getSampleOutputs();
-            String[][] sampleIO = new String[sampleInputs.length][2];
-            for(int i = 0; i < sampleIO.length; i++) {
-                sampleIO[i][0] = sampleInputs[i];
-                sampleIO[i][1] = sampleOutputs[i];
+    public void generateHTMLFiles(MouseEvent e) {
+        try {
+            if (new FileProducer(jsonStorage, htmlStorage, scriptStorage).html()) {
+                Widget.OK("Success!","HTML files created successfully.");
+            } else {
+                Widget.ERROR("Failure!","Please provide all required information.");
             }
-
-            MuleHTML html = new MuleHTML(css, jsonStorage.questionData.getTitle(), body, notes, imageUrls, sampleCodes, output, sampleIO);
-
-            if(jsonStorage.questionData.isHiddenQuestion()) {
-                //If question is a hidden question
-                List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
-
-                for(int i = 0; i < sessions.size(); i++) {
-                    LabSessionTableData session = sessions.get(i);
-                    String group = session.getGroup();
-                    String hqPath = path+"-"+group;
-                    Util.writeToFile(hqPath+"/description.html", html.toString());
-                }
-            }
-            else {
-                //If question is not a hidden question
-                Util.writeToFile(path+"/description.html", html.toString());
-            }
-            Widget.OK("Success!","HTML files created successfully.");
-        } else {
-            Widget.ERROR("Failure!","Please provide all required information.");
+        } catch (IOException err) {
+            Widget.ERROR("Unexpected Error!", err.getMessage());
         }
     }
 
-    public void generateScriptFiles(MouseEvent e) throws IOException {
-        if (scriptData.isReady()) {
-            fs.setJSONData(jsonStorage);
-            fs.setHTMLData(htmlStorage);
-            fs.setScriptsData(scriptData);
-
-            String path = fs.getQuestionLevelPath();
-            Map<String, String> tempCode = scriptData.getCode();
-
-            for (String filename : scriptData.getCodeFiles()) {
-                if (!tempCode.containsKey(filename)) {
-                    scriptData.code.put(filename, ""); // no code in the given file basically
-                }
+    public void generateScriptFiles(MouseEvent e) {
+        try {
+            if (new FileProducer(jsonStorage, htmlStorage, scriptStorage).scripts()) {
+                Widget.OK("Success!","Script files created successfully");
+            } else {
+                Widget.ERROR("Failure!","Please provide all required information.");
             }
-
-            for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
-                Util.writeToFile(path+"/"+fileAndCode.getKey(), fileAndCode.getValue());
-            }
-
-            Code labcode = null;
-            CodeCompiler compiler = null;
-            CodeRunner runner = null;
-            CodeEvaluator evaluator = null;
-
-            if (scriptData.labLanguage.equals("JAVA")) {
-                labcode = new JavaCode(path, Util.fileTitle(scriptData.getMainFile()));
-                compiler = new JavaCompiler((JavaCode) labcode);
-                runner = new JavaRunner((JavaCompiler) compiler);
-                evaluator = new JavaEvaluator((JavaRunner) runner);
-            } else if (scriptData.labLanguage.equals("PYTHON")) {
-                labcode = new PythonCode(path, Util.fileTitle(scriptData.getMainFile()));
-                runner = new PythonRunner((PythonCode) labcode);
-                evaluator = new PythonEvaluator((PythonRunner) runner);
-            } else if (scriptData.labLanguage.equals("C")) {
-                labcode = new CCode(path, Util.fileTitle(scriptData.getMainFile()));
-                compiler = new CCompiler((CCode) labcode);
-                runner = new CRunner((CCompiler) compiler);
-                evaluator = new CEvaluator((CRunner) runner);
-            }
-
-            Map<String, List<Regex>> tempRegex = scriptData.getRegex();
-
-            evaluator.setCompileGrade(scriptData.getCompileGrade());
-            evaluator.setRegexGrade(scriptData.getRegexGrade(), tempRegex.size());
-            evaluator.setTestGrade(scriptData.getTCGrade(), scriptData.getTestCaseIOs().size());
-
-            for (Map.Entry<String, List<Regex>> p : tempRegex.entrySet()) {
-                for (Regex r : p.getValue()) {
-                    evaluator.specifyRegex(Util.fileTitle(p.getKey()), r);
-                }
-            }
-
-            for (TestIO tc : scriptData.getTestCaseIOs()) {
-                evaluator.setTestData(tc.getInput(), tc.getOutput());
-            }
-
-            if (!scriptData.getLabLanguage().equals("PYTHON")) {
-                compiler.writeScript(path + "/vpl_compile.sh");
-            }
-            runner.writeScript(path+"/vpl_run.sh");
-            evaluator.writeScript(path+"/vpl_evaluate.sh");
-            Widget.OK("Success!","Script files created successfully");
-        } else {
-            Widget.ERROR("Failure!","Please provide all required information.");
+        } catch (IOException err) {
+            Widget.ERROR("Unexpected Error!", err.getMessage());
         }
     }
 
