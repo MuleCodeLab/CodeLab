@@ -1,4 +1,4 @@
-package app.Logic.Storage;
+package app.logic.storage;
 
 import java.util.*;
 import syed.code.core.Regex;

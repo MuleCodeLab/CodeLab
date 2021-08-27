@@ -1,6 +1,5 @@
-package app.UserInterface;
+package app.ui;
 
-import app.Logic.FileProducer;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,25 +20,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import syed.code.core.*;
+import syed.code.core.Regex;
+import syed.code.core.TestIO;
 
-import app.Logic.FileStructure;
-import app.Logic.TestIOTableData;
-import app.Logic.LabSessionTableData;
-import app.Logic.Storage.JSONDataStorage;
-import app.Logic.Storage.HTMLDataStorage;
-import app.Logic.Storage.ScriptsDataStorage;
+import app.logic.FileProducer;
+import app.logic.TestIOTableData;
+import app.logic.LabSessionTableData;
+import app.logic.storage.JSONDataStorage;
+import app.logic.storage.HTMLDataStorage;
+import app.logic.storage.ScriptsDataStorage;
 
 
 public class Controller {
 
-    JSONDataStorage jsonStorage = new JSONDataStorage();
-    ObservableList<LabSessionTableData> labSessionTableData = FXCollections.observableArrayList();
-    ScriptsDataStorage scriptStorage = new ScriptsDataStorage(jsonStorage.questionData);
-    ObservableList<TestIOTableData> testIOTableData = FXCollections.observableArrayList();
-    HTMLDataStorage htmlStorage = new HTMLDataStorage();
+    private JSONDataStorage jsonStorage;
+    private HTMLDataStorage htmlStorage;
+    private ScriptsDataStorage scriptStorage;
+    private FileProducer fileProducer;
+    private ObservableList<LabSessionTableData> labSessionTableData;
+    private ObservableList<TestIOTableData> testIOTableData;
 
-    public Controller() throws IOException {}
+    public Controller() throws IOException {
+        jsonStorage = new JSONDataStorage();
+        htmlStorage = new HTMLDataStorage();
+        scriptStorage = new ScriptsDataStorage(jsonStorage.questionData);
+        fileProducer = new FileProducer(jsonStorage, htmlStorage, scriptStorage);
+        labSessionTableData = FXCollections.observableArrayList();
+        testIOTableData = FXCollections.observableArrayList();
+    }
 
     public void setCourseName(KeyEvent e) {
         jsonStorage.courseData.title = tf_CourseName.getText();
@@ -614,7 +622,7 @@ public class Controller {
 
     public void generateJSONFiles(MouseEvent e) {
         try {
-            if (new FileProducer(jsonStorage, htmlStorage, scriptStorage).json()) {
+            if (fileProducer.json()) {
                 Widget.OK("Success!", "JSON files created successfully.");
             } else {
                 Widget.ERROR("Failure!","Please provide all required information.");
@@ -626,7 +634,7 @@ public class Controller {
 
     public void generateHTMLFiles(MouseEvent e) {
         try {
-            if (new FileProducer(jsonStorage, htmlStorage, scriptStorage).html()) {
+            if (fileProducer.html()) {
                 Widget.OK("Success!","HTML files created successfully.");
             } else {
                 Widget.ERROR("Failure!","Please provide all required information.");
@@ -638,7 +646,7 @@ public class Controller {
 
     public void generateScriptFiles(MouseEvent e) {
         try {
-            if (new FileProducer(jsonStorage, htmlStorage, scriptStorage).scripts()) {
+            if (fileProducer.scripts()) {
                 Widget.OK("Success!","Script files created successfully");
             } else {
                 Widget.ERROR("Failure!","Please provide all required information.");

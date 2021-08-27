@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("UserInterface/index.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ui/index.fxml"));
         primaryStage.setTitle("MULE-CodeLab");
         primaryStage.setScene(new Scene(root, 740, 600));
         primaryStage.show();

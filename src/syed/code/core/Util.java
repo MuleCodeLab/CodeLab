@@ -11,10 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Util {
@@ -147,8 +144,7 @@ public class Util {
     }
 
     public static String detectOS() {
-        String os = System.getProperty("os.name");
-        return os;
+        return System.getProperty("os.name");
     }
 
     public static boolean isLinuxOS() {

@@ -1,4 +1,4 @@
-package app.Logic.Storage;
+package app.logic.storage;
 
 import syed.code.core.Util;
 import java.time.LocalDateTime;

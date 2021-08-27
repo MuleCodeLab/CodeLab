@@ -1,6 +1,6 @@
-package app.Logic;
+package app.logic;
 
-import app.Logic.Storage.*;
+import app.logic.storage.*;
 
 import java.io.IOException;
 import java.nio.file.Files;

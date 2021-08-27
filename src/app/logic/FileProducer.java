@@ -1,4 +1,4 @@
-package app.Logic;
+package app.logic;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import app.Logic.Storage.*;
+import app.logic.storage.*;
 import michael.code.htmltools.*;
 import michael.code.jsontools.*;
 import syed.code.core.*;
@@ -24,12 +24,14 @@ public class FileProducer {
     private HTMLDataStorage htmlStorage;
     private ScriptsDataStorage scriptStorage;
 
+    private static final String LOCATION = "../MuleCodeLab/";
+
     public FileProducer(JSONDataStorage jds, HTMLDataStorage htmlds, ScriptsDataStorage sds) {
         this.jsonStorage = jds;
         this.htmlStorage = htmlds;
         this.scriptStorage = sds;
         try {
-            this.fs = new FileStructure("../MuleCodeLab/");
+            this.fs = new FileStructure(LOCATION);
             this.fs.setJSONData(jsonStorage);
             this.fs.setHTMLData(htmlStorage);
             this.fs.setScriptsData(scriptStorage);
