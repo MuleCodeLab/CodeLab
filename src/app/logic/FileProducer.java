@@ -25,7 +25,7 @@ public class FileProducer {
     private HTMLDataStorage htmlStorage;
     private ScriptsDataStorage scriptStorage;
 
-    private static final String LOCATION = "../MuleCodeLab/";
+    private static final String LOCATION = "./Courses/";
 
     public FileProducer(JSONDataStorage jds, HTMLDataStorage htmlds, ScriptsDataStorage sds) {
         this.jsonStorage = jds;

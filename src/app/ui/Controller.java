@@ -6,6 +6,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -15,7 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -585,7 +591,8 @@ public class Controller {
         String value = tf_GradeProportions_Compile.getText().trim();
         if (!value.isBlank()) {
             scriptStorage.compileGrade = value;
-            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
+            //tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
+            showGradeProportionsSum();
         }
     }
 
@@ -593,7 +600,8 @@ public class Controller {
         String value = tf_GradeProportions_Regex.getText().trim();
         if (!value.isBlank()) {
             scriptStorage.regexGrade = value;
-            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
+            //tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
+            showGradeProportionsSum();
         }
     }
 
@@ -601,8 +609,31 @@ public class Controller {
         String value = tf_GradeProportions_TestCases.getText().trim();
         if (!value.isBlank()) {
             scriptStorage.tcGrade = value;
-            tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
+            //tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
+            showGradeProportionsSum();
         }
+    }
+
+    public void showGradeProportionsSum() {
+        int sum = scriptStorage.getTotalGrade();
+        String diff = sumDifference(sum);
+        if(diff.length() > 0) {
+            tf_GradeProportions_Sum_Uneditable.setStyle("-fx-text-fill: red;");
+        }
+        else {
+            tf_GradeProportions_Sum_Uneditable.setStyle("-fx-text-fill: green;");
+        }
+        tf_GradeProportions_Sum_Uneditable.setText(sum + sumDifference(sum));
+    }
+
+    public String sumDifference(int sum) {
+        if(sum > 100) {
+            return String.format(" (+%d)", -1*(100-sum));
+        }
+        else if (sum < 100) {
+            return String.format(" (-%d)", 100-sum);
+        }
+        else return "";
     }
 
 
@@ -653,6 +684,16 @@ public class Controller {
             }
         } catch (IOException err) {
             Widget.ERROR("Unexpected Error!", err.getMessage());
+        }
+    }
+
+    public void openRepository(ActionEvent e) {
+        try {
+            Desktop desktop = java.awt.Desktop.getDesktop();
+            URI url = new URI("https://www.github.com/MuleCodeLab/CodeLab/");
+            desktop.browse(url);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

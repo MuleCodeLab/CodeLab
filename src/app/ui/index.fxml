@@ -29,7 +29,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
+<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="720.0">
          <children>
@@ -51,7 +51,7 @@
                                                       <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                    </tooltip>
                                                 </Label>
-                                                <TextField fx:id="tf_LabLabel" onKeyTyped="#setLabLabel" promptText="Lab" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="tf_LabLabel" onKeyTyped="#setLabLabel" promptText="E.g. 'Lab', 'Week', 'Tutorial'" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="Each course has its own convention for naming its problem sets. This will be the term used for the problem sets in your couse. Common examples include 'Lab', 'Week', etc." />
                                                    </tooltip></TextField>
@@ -238,9 +238,9 @@
                                           <VBox fx:id="vb_JavaFileNames" prefHeight="153.0" prefWidth="600.0" spacing="5.0">
                                              <children>
                                                 <Label text="Code file names" />
-                                                <HBox prefWidth="600.0" spacing="5.0">
+                                                <HBox alignment="CENTER_LEFT" prefWidth="600.0" spacing="5.0">
                                                    <children>
-                                                      <TextField fx:id="tf_CodeFileNames" promptText="E.g. 'HelloWorld.java'" HBox.hgrow="ALWAYS">
+                                                      <TextField fx:id="tf_CodeFileNames" prefWidth="541.0" promptText="E.g. 'HelloWorld.java'" HBox.hgrow="ALWAYS">
                                                          <font>
                                                             <Font name="Consolas" size="12.0" />
                                                          </font>
@@ -335,7 +335,7 @@
                                                       <Label prefWidth="128.0" text="Lab session length" />
                                                       <HBox alignment="CENTER_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
                                                          <children>
-                                                            <TextField fx:id="tf_Hidden_LabSessionLength_hours" alignment="CENTER_RIGHT" onKeyTyped="#setLabSessionLengthHour" prefHeight="25.0" prefWidth="51.0" text="00">
+                                                            <TextField fx:id="tf_Hidden_LabSessionLength_hours" alignment="CENTER_RIGHT" onKeyTyped="#setLabSessionLengthHour" prefHeight="25.0" prefWidth="51.0" text="0">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -344,7 +344,7 @@
                                                                </tooltip>
                                                             </TextField>
                                                             <Label text="hr" />
-                                                            <TextField fx:id="tf_Hidden_LabSessionLength_minutes" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" onKeyTyped="#setLabSessionLengthMinute" prefHeight="25.0" prefWidth="51.0" text="00">
+                                                            <TextField fx:id="tf_Hidden_LabSessionLength_minutes" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" onKeyTyped="#setLabSessionLengthMinute" prefHeight="25.0" prefWidth="51.0" text="0">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -679,7 +679,7 @@
                                                          <children>
                                                             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                <children>
-                                                                  <Label text="For questions where there are multiple code files, one file must be selected as the 'Main' file, or the entry point to the program. For example, in Java questions this will be the file which contains the 'main' method. If your question has only one code file it will automatically be set as the 'Main' file." textAlignment="CENTER" wrapText="true" />
+                                                                  <Label text="For questions where there are multiple code files, one file must be selected as the 'Main' file, or the entry point to the program. For example, in Java questions this will be the file which contains the 'main' method." textAlignment="CENTER" wrapText="true" />
                                                                   <Button fx:id="btn_CodeFileOptions_SetAsMain_Set" mnemonicParsing="false" onMouseReleased="#selectAsMainFile" text="Set selected file as Main" />
                                                                   <HBox alignment="CENTER" spacing="5.0">
                                                                      <children>
@@ -843,7 +843,7 @@
                                                                   <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                                </tooltip>
                                                             </Label>
-                                                            <TextField fx:id="tf_GradeProportions_Compile" alignment="CENTER_RIGHT" onKeyTyped="#setCompileGrade" prefHeight="25.0" prefWidth="49.0" text="00">
+                                                            <TextField fx:id="tf_GradeProportions_Compile" alignment="CENTER_RIGHT" onKeyTyped="#setCompileGrade" prefHeight="25.0" prefWidth="49.0" text="0">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -865,7 +865,7 @@
                                                                   <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                                </tooltip>
                                                             </Label>
-                                                            <TextField fx:id="tf_GradeProportions_Regex" alignment="CENTER_RIGHT" onKeyTyped="#setRegexGrade" prefHeight="25.0" prefWidth="49.0" text="00">
+                                                            <TextField fx:id="tf_GradeProportions_Regex" alignment="CENTER_RIGHT" onKeyTyped="#setRegexGrade" prefHeight="25.0" prefWidth="49.0" text="0">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -887,7 +887,7 @@
                                                                   <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                                </tooltip>
                                                             </Label>
-                                                            <TextField fx:id="tf_GradeProportions_TestCases" alignment="CENTER_RIGHT" onKeyTyped="#setTestCaseIOGrade" prefHeight="25.0" prefWidth="49.0" text="00">
+                                                            <TextField fx:id="tf_GradeProportions_TestCases" alignment="CENTER_RIGHT" onKeyTyped="#setTestCaseIOGrade" prefHeight="25.0" prefWidth="49.0" text="0">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -912,7 +912,7 @@
                                                       <Label text="Sum" />
                                                       <HBox prefWidth="200.0">
                                                          <children>
-                                                            <TextField fx:id="tf_GradeProportions_Sum_Uneditable" editable="false" prefHeight="25.0" prefWidth="64.0">
+                                                            <TextField fx:id="tf_GradeProportions_Sum_Uneditable" editable="false" prefHeight="25.0" prefWidth="96.0">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -957,8 +957,8 @@
                                     <Label text="This program was created by Syed Baryalay and Michael O'Neill as part of the Maynooth University Summer Programme for Undergraduate Research (SPUR 2021) under the mentorship of Dr Aidan Mooney, Amy Thompson, and Mark Noone." textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS" />
                                     <VBox alignment="CENTER" prefWidth="100.0">
                                        <children>
-                                          <Label text="Find the source code and documentation at our online repository:" wrapText="true" />
-                                          <Hyperlink fx:id="link_About_Repo" text="https://github.com/MuleCodeLab/CodeLab" />
+                                          <Label text="Find the source code at our online repository:" wrapText="true" />
+                                          <Hyperlink fx:id="link_About_Repo" onAction="#openRepository" text="https://github.com/MuleCodeLab/CodeLab" />
                                        </children>
                                     </VBox>
                                  </children>
