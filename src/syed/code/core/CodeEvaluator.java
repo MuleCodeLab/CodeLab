@@ -9,8 +9,8 @@ public abstract class CodeEvaluator {
     private final Code code;
     private final CodeRunner runner;
     private final HashMap<String, ArrayList<Regex>> regex;
+    private final ArrayList<TestIO> testIO;
     private Grade cmplGrade, regGrade, tcGrade;
-    private ArrayList<TestIO> testIO;
 
     public CodeEvaluator(CodeRunner runner) {
         this.runner = runner;
@@ -58,9 +58,7 @@ public abstract class CodeEvaluator {
     }
 
     public ArrayList<TestIO> getTests() {
-        ArrayList<TestIO> copy = new ArrayList<>();
-        this.testIO.stream().forEach(test -> copy.add(test));
-        return copy;
+        return new ArrayList<>(this.testIO);
     }
 
     public String[] getFileTitles() {

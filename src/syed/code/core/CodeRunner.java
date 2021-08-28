@@ -2,7 +2,7 @@ package syed.code.core;
 
 public abstract class CodeRunner {
 
-    private CodeCompiler compiler;
+    private final CodeCompiler compiler;
     private String runfile;
 
     public CodeRunner(CodeCompiler compiler) {

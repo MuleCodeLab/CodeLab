@@ -2,10 +2,10 @@ package syed.code.core;
 
 public abstract class Language {
 
-    private String compiler;
-    private String runner;
-    private String extension;
-    private String mainRegex;
+    private final String compiler;
+    private final String runner;
+    private final String extension;
+    private final String mainRegex;
 
     public Language(String cmplr, String rnr, String ext, String mr) {
         this.compiler = cmplr;

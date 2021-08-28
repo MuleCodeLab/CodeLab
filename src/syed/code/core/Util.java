@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Util {
@@ -23,7 +25,7 @@ public class Util {
     }
 
     public static void ERROR(String err) {
-        System.err.println(String.format("Error: %s\n", err));
+        System.err.printf("Error: %s\n%n", err);
     }
 
     public static void DEBUG(Object o) {
@@ -48,7 +50,7 @@ public class Util {
             bfr = new BufferedReader(new InputStreamReader(in));
             String line = "";
             while ((line = bfr.readLine()) != null) {
-                output.append(line + appender);
+                output.append(line).append(appender);
             }
         } catch (IOException e) {
             ERROR(e.getMessage());
@@ -119,13 +121,13 @@ public class Util {
     public static File[] filesInDir(String path, String filter) {
         ArrayList<File> files = new ArrayList<>();
         if (isDirectory(path)) {
-            for (File file : new File(path).listFiles()) {
+            for (File file : Objects.requireNonNull(new File(path).listFiles())) {
                 if (file.getName().endsWith(filter)) {
                     files.add(file);
                 }
             }
         }
-        return files.toArray(new File[0]); // don't ask why File[0], trust the code
+        return files.toArray(new File[0]);
     }
 
     public static String fileTitle(String fileName) {

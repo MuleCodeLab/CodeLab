@@ -1,22 +1,29 @@
 package syed.code.core;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Code {
     
-    private final int count;
-    private final String basePath;
     private final Language language;
     private final HashMap<String, String> files;
+    private String basePath;
     private String mainfile;
 
-    public Code( Language language, String path) {
+    public Code(Language language, Map<String, String> code, String mainfile) {
+        this.language = language;
+        this.mainfile = mainfile;
+        this.files = new HashMap<>();
+        this.files.putAll(code);
+    }
+
+    public Code(Language language, String path) {
         this(language, path, null);
         this.setMainFile(
-            (this.count == 1) ? 
+            (this.getCount() == 1) ?
             this.files.keySet().iterator().next() : 
-            (this.count > 1) ?
+            (this.getCount() > 1) ?
             this.locateMainFile() : 
             null
         );
@@ -27,19 +34,17 @@ public abstract class Code {
         this.language = language;
         this.mainfile = mainfile;
         this.files = new HashMap<>();
-        for (String file : this.getFileTitles()) {
-            String code = Util.readlines(this.basePath+(file+this.language.getExtension()));
-            this.files.put(file, code);
+        File[] filesIn = Util.filesInDir(this.basePath, this.language.getExtension());
+        for (File file : filesIn) {
+            this.files.put(file.getName(), Util.readlines(file.getAbsolutePath()));
         }
-        this.count = this.files.keySet().size();
     }
 
     public String locateMainFile() {
         String regex = this.getLanguage().getMainRegex();
         for (Map.Entry<String, String> pair : this.files.entrySet()) {
             if (Util.checkRegex(regex, pair.getValue())) {
-                String name = pair.getKey();
-                return name;
+                return pair.getKey();
             }
         }
         Util.ERROR("NO file with main method found");
@@ -51,13 +56,12 @@ public abstract class Code {
         String[] titles = new String[names.length];
         for (int i = 0; i < names.length; i++) {
             titles[i] = Util.fileTitle(names[i]);
-            Util.DEBUG(titles[i]);
         }
         return titles;
     }
 
     public String[] getFilePaths() {
-        String[] names = getFileNames();
+        String[] names = this.getFileNames();
         String[] filePaths = new String[names.length];
         for (int i = 0; i < names.length; i++) {
             filePaths[i] = basePath.concat(names[i]);
@@ -94,7 +98,7 @@ public abstract class Code {
     }
     
     public int getCount() {
-        return this.count;
+        return this.files == null ? 0 : this.files.keySet().size();
     }
 
     public Map<String, String> getFileTree() {
@@ -102,7 +106,9 @@ public abstract class Code {
     }
 
     public String[] getFileNames() {
-        return Util.getFileNames(this.basePath, this.language.getExtension());
+        String[] names = new String[this.files.keySet().size()];
+        int i = 0; for (String s : this.files.keySet()) { names[i++] = s; }
+        return names;
     }
 
 }

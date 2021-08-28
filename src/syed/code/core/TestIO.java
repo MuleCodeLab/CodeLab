@@ -1,7 +1,8 @@
 package syed.code.core;
 
 public class TestIO {
-    private String input, output;
+    private final String input;
+    private final String output;
 
     public TestIO(String in, String out) {
         this.input = in;

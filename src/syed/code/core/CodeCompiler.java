@@ -2,7 +2,7 @@ package syed.code.core;
 
 public abstract class CodeCompiler {
 
-    private Code codefiles;
+    private final Code codefiles;
     private String mainfile;
     private String outfile;
 

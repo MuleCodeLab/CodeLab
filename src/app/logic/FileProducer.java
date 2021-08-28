@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -146,25 +147,31 @@ public class FileProducer {
     public boolean scripts() throws IOException {
 
         if (scriptStorage.isReady()) {
-            String path = fs.getQuestionLevelPath();
-            Map<String, String> tempCode = scriptStorage.getCode();
+            Map<String, String> code = scriptStorage.getCode();
             List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
+            Map<String, List<Regex>> regex = scriptStorage.getRegex();
+            List<String> sessionPaths = new ArrayList<>();
+            String path = fs.getQuestionLevelPath();
+
+            for (LabSessionTableData session : sessions) {
+                sessionPaths.add(path+"-"+session.getGroup());
+            }
+
 
             for (String filename : scriptStorage.getCodeFiles()) {
-                if (!tempCode.containsKey(filename)) {
+                if (!code.containsKey(filename)) {
                     scriptStorage.code.put(filename, ""); // no code in the given file basically
                 }
             }
 
             if(jsonStorage.questionData.isHiddenQuestion()) {
-                for (LabSessionTableData session : sessions) {
-                    String hqPath = path + "-" + session.getGroup();
-                    for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
-                        Util.writeToFile(hqPath + "/" + fileAndCode.getKey(), fileAndCode.getValue());
+                for (String sPath : sessionPaths) {
+                    for (Map.Entry<String, String> fileAndCode : code.entrySet()) {
+                        Util.writeToFile(sPath + "/" + fileAndCode.getKey(), fileAndCode.getValue());
                     }
                 }
             } else {
-                for (Map.Entry<String, String> fileAndCode : tempCode.entrySet()) {
+                for (Map.Entry<String, String> fileAndCode : code.entrySet()) {
                     Util.writeToFile(path + "/" + fileAndCode.getKey(), fileAndCode.getValue());
                 }
             }
@@ -174,29 +181,32 @@ public class FileProducer {
             CodeRunner runner = null;
             CodeEvaluator evaluator = null;
 
-            if (scriptStorage.labLanguage.equals("JAVA")) {
-                labcode = new JavaCode(path, Util.fileTitle(scriptStorage.getMainFile()));
-                compiler = new JavaCompiler((JavaCode) labcode);
-                runner = new JavaRunner((JavaCompiler) compiler);
-                evaluator = new JavaEvaluator((JavaRunner) runner);
-            } else if (scriptStorage.labLanguage.equals("PYTHON")) {
-                labcode = new PythonCode(path, Util.fileTitle(scriptStorage.getMainFile()));
-                runner = new PythonRunner((PythonCode) labcode);
-                evaluator = new PythonEvaluator((PythonRunner) runner);
-            } else if (scriptStorage.labLanguage.equals("C")) {
-                labcode = new CCode(path, Util.fileTitle(scriptStorage.getMainFile()));
-                compiler = new CCompiler((CCode) labcode);
-                runner = new CRunner((CCompiler) compiler);
-                evaluator = new CEvaluator((CRunner) runner);
+            switch (scriptStorage.labLanguage) {
+                case "JAVA": {
+                    labcode = new JavaCode(scriptStorage.getCode(), Util.fileTitle(scriptStorage.getMainFile()));
+                    compiler = new JavaCompiler((JavaCode) labcode);
+                    runner = new JavaRunner((JavaCompiler) compiler);
+                    evaluator = new JavaEvaluator((JavaRunner) runner);
+                } break;
+                case "C": {
+                    labcode = new CCode(scriptStorage.getCode(), Util.fileTitle(scriptStorage.getMainFile()));
+                    compiler = new CCompiler((CCode) labcode);
+                    runner = new CRunner((CCompiler) compiler);
+                    evaluator = new CEvaluator((CRunner) runner);
+                } break;
+                case "PYTHON": {
+                    labcode = new PythonCode(scriptStorage.getCode(), Util.fileTitle(scriptStorage.getMainFile()));
+                    runner = new PythonRunner((PythonCode) labcode);
+                    evaluator = new PythonEvaluator((PythonRunner) runner);
+                } break;
+                default: break;
             }
 
-            Map<String, List<Regex>> tempRegex = scriptStorage.getRegex();
-
             evaluator.setCompileGrade(scriptStorage.getCompileGrade());
-            evaluator.setRegexGrade(scriptStorage.getRegexGrade(), tempRegex.size());
+            evaluator.setRegexGrade(scriptStorage.getRegexGrade(), regex.size());
             evaluator.setTestGrade(scriptStorage.getTCGrade(), scriptStorage.getTestCaseIOs().size());
 
-            for (Map.Entry<String, List<Regex>> p : tempRegex.entrySet()) {
+            for (Map.Entry<String, List<Regex>> p : regex.entrySet()) {
                 for (Regex r : p.getValue()) {
                     evaluator.specifyRegex(Util.fileTitle(p.getKey()), r);
                 }
@@ -207,13 +217,12 @@ public class FileProducer {
             }
 
             if(jsonStorage.questionData.isHiddenQuestion()) {
-                for (LabSessionTableData session : sessions) {
-                    String hqPath = path+"-"+session.getGroup();
+                for (String sPath : sessionPaths) {
                     if (!scriptStorage.getLabLanguage().equals("PYTHON")) {
-                        compiler.writeScript(hqPath + "/vpl_compile.sh");
+                        compiler.writeScript(sPath + "/vpl_compile.sh");
                     }
-                    runner.writeScript(hqPath+"/vpl_run.sh");
-                    evaluator.writeScript(hqPath+"/vpl_evaluate.sh");
+                    runner.writeScript(sPath+"/vpl_run.sh");
+                    evaluator.writeScript(sPath+"/vpl_evaluate.sh");
                 }
             } else {
                 if (!scriptStorage.getLabLanguage().equals("PYTHON")) {
@@ -227,4 +236,5 @@ public class FileProducer {
             return false;
         }
     }
+
 }
