@@ -13,13 +13,9 @@ import syed.code.core.Util;
 public class QuestionLevelJSONDataStorage {
     // local use only !!
     public LabLevelJSONDataStorage labData;
-    public QuestionLevelJSONDataStorage(LabLevelJSONDataStorage labData) {
-        this.labData = labData;
-        sessions = new ArrayList<>();
-    }
 
-	public String questionNumber; // int
-	public int labNumber; // int
+	public int questionNumber;
+	public int labNumber;
 	public String title;
 	public String course;
 	public ArrayList<String> files = new ArrayList<>();
@@ -33,9 +29,14 @@ public class QuestionLevelJSONDataStorage {
 	public String lengthHour = "0", lengthMinute = "0";
 	public LocalDateTime pgStart, pgEnd;
 
+    public QuestionLevelJSONDataStorage(LabLevelJSONDataStorage labData) {
+        this.labData = labData;
+        sessions = new ArrayList<>();
+    }
+
 
 	public int getQuestionNumber() {
-	    return Integer.parseInt(questionNumber);
+	    return questionNumber;
     }
 
     public int getLabNumber() {

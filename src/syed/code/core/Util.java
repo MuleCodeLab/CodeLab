@@ -11,8 +11,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -143,6 +144,19 @@ public class Util {
     public static boolean isDirectory(String path) {
         if (isValidPath(path)) return new File(path).isDirectory();
         return false;
+    }
+
+    public static String createPathIfNotAlready(String location) {
+        try {
+            Path path = Path.of(location);
+            if (Files.notExists(path)) {
+                Files.createDirectory(path);
+            }
+            return path.toString();
+        } catch(IOException e) {
+            Util.ERROR(e.getMessage());
+        }
+        return null;
     }
 
     public static String detectOS() {

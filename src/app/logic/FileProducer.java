@@ -1,15 +1,13 @@
 package app.logic;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import app.logic.storage.*;
+import app.ui.Widget;
 import michael.code.htmltools.*;
 import michael.code.jsontools.*;
 import syed.code.core.*;
@@ -20,41 +18,36 @@ import syed.code.clab.*;
 
 public class FileProducer {
 
-    private FileStructure fs;
-    private JSONDataStorage jsonStorage;
-    private HTMLDataStorage htmlStorage;
-    private ScriptsDataStorage scriptStorage;
-
-    private static final String LOCATION = "./Courses/";
+    private final JSONDataStorage jsonStorage;
+    private final HTMLDataStorage htmlStorage;
+    private final ScriptsDataStorage scriptStorage;
+    private final String location;
 
     public FileProducer(JSONDataStorage jds, HTMLDataStorage htmlds, ScriptsDataStorage sds) {
+        this("./Courses", jds, htmlds, sds);
+    }
+
+    public FileProducer(String location, JSONDataStorage jds, HTMLDataStorage htmlds, ScriptsDataStorage sds) {
+        this.location = Util.createPathIfNotAlready(location);
         this.jsonStorage = jds;
         this.htmlStorage = htmlds;
         this.scriptStorage = sds;
-        try {
-            this.fs = new FileStructure(LOCATION);
-            this.fs.setJSONData(jsonStorage);
-            this.fs.setHTMLData(htmlStorage);
-            this.fs.setScriptsData(scriptStorage);
-        } catch (IOException e) {
-            Util.ECHO(e.getMessage());
-        }
     }
 
     public boolean json() throws IOException {
+
         if (jsonStorage.isReady()) {
-            String coursePath = fs.getCourseLevelPath();
-            String labPath = fs.getLabLevelPath();
-            String questionPath = fs.getQuestionLevelPath();
+            String coursePath = getCourseLevelPath();
+            String labPath = getLabLevelPath();
+            String questionPath = getQuestionLevelPath();
 
             MuleCourseLevelJSON courseJson;
             MuleLabLevelJSON labJson;
             MuleQuestionLevelJSON questionJson;
-            MuleHiddenQuestionJSON[] hiddenQuestionJson;
 
             String courseCode = jsonStorage.courseData.getTitle();
             courseJson = new MuleCourseLevelJSON(courseCode);
-            Util.writeToFile(coursePath+"/metadata.json", courseJson.toString()); //Error: ..\MuleCodeLab\CSXXX\ (Access denied)
+            Util.writeToFile(coursePath+"/metadata.json", courseJson.toString());
 
             int labNumber = jsonStorage.labData.getLabNumber();
             String labLabel = jsonStorage.labData.getLabLabel();
@@ -63,7 +56,7 @@ public class FileProducer {
             LocalDateTime caEvalStart = jsonStorage.labData.getCAEvalStart();
             LocalDateTime caEvalEnd = jsonStorage.labData.getCAEvalEnd();
             labJson = new MuleLabLevelJSON(labLabel, labNumber, accessStart, accessEnd, caEvalStart, caEvalEnd);
-            Util.writeToFile(labPath+"/metadata.json", labJson.toString()); //Error: ..\MuleCodeLab\CSXXX\LabX (Access denied)
+            Util.writeToFile(labPath+"/metadata.json", labJson.toString());
 
             String questionTitle = jsonStorage.questionData.getTitle();
             String courseCodeQ = jsonStorage.questionData.getCourse();
@@ -73,30 +66,32 @@ public class FileProducer {
 
 
             if(jsonStorage.questionData.isHiddenQuestion()) {
-                //If question is a hidden question
                 List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
                 long sessionLength = jsonStorage.questionData.getLength();
                 LocalDateTime pgStart = jsonStorage.questionData.getPGStart();
                 LocalDateTime pgEnd = jsonStorage.questionData.getPGEnd();
-                hiddenQuestionJson = new MuleHiddenQuestionJSON[sessions.size()];
+                MuleHiddenQuestionJSON[] hiddenQuestionJson = new MuleHiddenQuestionJSON[sessions.size()];
+                String[] paths = getSessionLevelPath();
 
                 for(int i = 0; i < sessions.size(); i++) {
-
                     LabSessionTableData session = sessions.get(i);
                     String group = session.getGroup();
                     LocalDateTime startTime = session.getSessionStartTime();
-
-                    hiddenQuestionJson[i] = new MuleHiddenQuestionJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files, startTime, sessionLength, pgStart, pgEnd, group);
-
-                    questionPath = fs.getQuestionLevelPath()+"-"+group;
-                    Path questionPathObj = Paths.get(questionPath);
-                    Files.createDirectories(questionPathObj);
-                    Util.writeToFile(questionPath+"/metadata.json", hiddenQuestionJson[i].toString());
+                    hiddenQuestionJson[i] = new MuleHiddenQuestionJSON(
+                            questionTitle,
+                            courseCodeQ,
+                            labNumberQ,
+                            questionNumber,
+                            files,
+                            startTime,
+                            sessionLength,
+                            pgStart,
+                            pgEnd,
+                            group
+                    );
+                    Util.writeToFile(paths[i]+"/metadata.json", hiddenQuestionJson[i].toString());
                 }
-
-            }
-            else {
-                //Else if question is not a hidden question
+            } else {
                 questionJson = new MuleQuestionLevelJSON(questionTitle, courseCodeQ, labNumberQ, questionNumber, files);
                 Util.writeToFile(questionPath+"/metadata.json", questionJson.toString());
             }
@@ -109,7 +104,7 @@ public class FileProducer {
     public boolean html() throws IOException {
 
         if (htmlStorage.isReady()) {
-            String path = fs.getQuestionLevelPath();
+            String path = getQuestionLevelPath();
             String css = htmlStorage.getCss();
             String body = htmlStorage.getDescription();
             String[] notes = htmlStorage.getNotes();
@@ -125,14 +120,21 @@ public class FileProducer {
                 sampleIO[i][1] = sampleOutputs[i];
             }
 
-            MuleHTML html = new MuleHTML(css, jsonStorage.questionData.getTitle(), body, notes, imageUrls, sampleCodes, output, sampleIO);
+            MuleHTML html = new MuleHTML(
+                    css,
+                    jsonStorage.questionData.getTitle(),
+                    body,
+                    notes,
+                    imageUrls,
+                    sampleCodes,
+                    output,
+                    sampleIO
+            );
 
             if(jsonStorage.questionData.isHiddenQuestion()) {
-                List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
-                for (LabSessionTableData session : sessions) {
-                    String group = session.getGroup();
-                    String hqPath = path + "-" + group;
-                    Util.writeToFile(hqPath + "/description.html", html.toString());
+                String[] paths = getSessionLevelPath();
+                for (String p : paths) {
+                    Util.writeToFile(p + "/description.html", html.toString());
                 }
             }
             else {
@@ -148,19 +150,13 @@ public class FileProducer {
 
         if (scriptStorage.isReady()) {
             Map<String, String> code = scriptStorage.getCode();
-            List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
             Map<String, List<Regex>> regex = scriptStorage.getRegex();
-            List<String> sessionPaths = new ArrayList<>();
-            String path = fs.getQuestionLevelPath();
-
-            for (LabSessionTableData session : sessions) {
-                sessionPaths.add(path+"-"+session.getGroup());
-            }
-
+            String[] sessionPaths = getSessionLevelPath();
+            String path = getQuestionLevelPath();
 
             for (String filename : scriptStorage.getCodeFiles()) {
                 if (!code.containsKey(filename)) {
-                    scriptStorage.code.put(filename, ""); // no code in the given file basically
+                    scriptStorage.code.put(filename, "");
                 }
             }
 
@@ -195,11 +191,19 @@ public class FileProducer {
                     evaluator = new CEvaluator((CRunner) runner);
                 } break;
                 case "PYTHON": {
-                    labcode = new PythonCode(scriptStorage.getCode(), Util.fileTitle(scriptStorage.getMainFile()));
+                    labcode = new PythonCode(
+                            scriptStorage.getCode(),
+                            Util.fileTitle(scriptStorage.getMainFile())
+                    );
                     runner = new PythonRunner((PythonCode) labcode);
                     evaluator = new PythonEvaluator((PythonRunner) runner);
                 } break;
                 default: break;
+            }
+
+            if (labcode == null || compiler == null) {
+                Widget.ERROR("Unexpected Error!", "Restarting the program might fix the problem.");
+                return false;
             }
 
             evaluator.setCompileGrade(scriptStorage.getCompileGrade());
@@ -237,4 +241,38 @@ public class FileProducer {
         }
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public String getCourseLevelPath() {
+        return Util.createPathIfNotAlready(getLocation() +"/"+ jsonStorage.courseData.getTitle());
+    }
+
+    public String getLabLevelPath() {
+        return Util.createPathIfNotAlready(
+                getCourseLevelPath()+"/"+
+                jsonStorage.labData.getLabLabel()+
+                jsonStorage.labData.getLabNumber()
+        );
+    }
+
+    public String getQuestionLevelPath() {
+        return Util.createPathIfNotAlready(getLabLevelPath()+"/"+ jsonStorage.questionData.getTitle());
+    }
+
+    public String[] getSessionLevelPath() {
+        List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
+        List<String> sessionPaths = new ArrayList<>();
+        String qPath = getQuestionLevelPath();
+        for (LabSessionTableData session : sessions) {
+            String path = Util.createPathIfNotAlready(qPath+"-"+session.getGroup());
+            sessionPaths.add(path);
+        }
+        String[] copy = new String[sessionPaths.size()];
+        for (int i = 0; i < sessionPaths.size(); i++) {
+            copy[i] = sessionPaths.get(i);
+        }
+        return copy;
+    }
 }

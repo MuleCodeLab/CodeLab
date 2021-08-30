@@ -47,8 +47,6 @@ public class JavaEvaluator extends CodeEvaluator {
 
         script.append("\n# --------------------- STARTING GRADE -------------------\n");
         script.append("grade=0\n");
-        script.append("\n");  
-
         script.append("\n# --------------------- GLOBAL VARIABLES -------------------\n");
 
         script.append(String.format("declare -a RegexList%d=(", 1));

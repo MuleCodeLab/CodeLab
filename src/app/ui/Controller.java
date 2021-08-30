@@ -1,5 +1,7 @@
 package app.ui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,9 +21,12 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-import java.awt.*;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
+
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,16 +40,17 @@ import app.logic.LabSessionTableData;
 import app.logic.storage.JSONDataStorage;
 import app.logic.storage.HTMLDataStorage;
 import app.logic.storage.ScriptsDataStorage;
+import syed.code.core.Util;
 
 
 public class Controller {
 
-    private JSONDataStorage jsonStorage;
-    private HTMLDataStorage htmlStorage;
-    private ScriptsDataStorage scriptStorage;
-    private FileProducer fileProducer;
-    private ObservableList<LabSessionTableData> labSessionTableData;
-    private ObservableList<TestIOTableData> testIOTableData;
+    private final JSONDataStorage jsonStorage;
+    private final HTMLDataStorage htmlStorage;
+    private final ScriptsDataStorage scriptStorage;
+    private final FileProducer fileProducer;
+    private final ObservableList<LabSessionTableData> labSessionTableData;
+    private final ObservableList<TestIOTableData> testIOTableData;
 
     public Controller() throws IOException {
         jsonStorage = new JSONDataStorage();
@@ -71,7 +77,7 @@ public class Controller {
     }
 
     public void setQuestionNumber(KeyEvent e) {
-        jsonStorage.questionData.questionNumber = tf_QuestionNumber.getText().trim();
+        jsonStorage.questionData.questionNumber = Integer.parseInt(tf_QuestionNumber.getText().trim());
     }
 
     public void setQuestionTitle(KeyEvent e) {
@@ -133,16 +139,25 @@ public class Controller {
             list_CodeFileOptions_Files.getItems().add(file);
             jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
             scriptStorage.files = new ArrayList<>(list_CodeFileNames.getItems());
+        } else {
+            Widget.actionFailed("File must have a valid name");
         }
     }
 
     public void removeCodeFile(MouseEvent e) {
-        if (list_CodeFileNames.getItems().size() > 0) {
+        boolean notEmpty = list_CodeFileNames.getItems().size() > 0;
+        if (notEmpty) {
             int index = list_CodeFileNames.getSelectionModel().getSelectedIndex();
-            list_CodeFileNames.getItems().remove(index);
-            list_CodeFileOptions_Files.getItems().remove(index);
-            jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
-            scriptStorage.files = new ArrayList<>(list_CodeFileNames.getItems());
+            if (index > -1) {
+                list_CodeFileNames.getItems().remove(index);
+                list_CodeFileOptions_Files.getItems().remove(index);
+                jsonStorage.questionData.files = new ArrayList<>(list_CodeFileNames.getItems());
+                scriptStorage.files = new ArrayList<>(list_CodeFileNames.getItems());
+            } else {
+                Widget.actionFailed("Select a file to be removed");
+            }
+        } else {
+            Widget.actionFailed("No files have been added");
         }
     }
 
@@ -214,15 +229,24 @@ public class Controller {
             tc_GroupColumn.setCellValueFactory(new PropertyValueFactory<LabSessionTableData, String>("group"));
             tc_DateColumn.setCellValueFactory(new PropertyValueFactory<LabSessionTableData, String>("date"));
             tc_TimeColumn.setCellValueFactory(new PropertyValueFactory<LabSessionTableData, String>("time"));
+        } else {
+            Widget.actionFailed("Invalid session name and/or date and time");
         }
     }
 
     public void removeFromSessionsTable(MouseEvent e) {
-        int index = table_Hidden_LabSessions.getSelectionModel().getSelectedIndex();
-        if (index > -1) {
-            labSessionTableData.remove(index);
-            jsonStorage.questionData.sessions.clear();
-            jsonStorage.questionData.sessions.addAll(labSessionTableData);
+        boolean notEmpty = table_Hidden_LabSessions.getItems().size() > 0;
+        if (notEmpty) {
+            int index = table_Hidden_LabSessions.getSelectionModel().getSelectedIndex();
+            if (index > -1) {
+                labSessionTableData.remove(index);
+                jsonStorage.questionData.sessions.clear();
+                jsonStorage.questionData.sessions.addAll(labSessionTableData);
+            } else {
+                Widget.actionFailed("Select a lab session to be removed");
+            }
+        } else {
+            Widget.actionFailed("No sessions have been added");
         }
     }
 
@@ -287,18 +311,33 @@ public class Controller {
     }
 
     public void addImage(MouseEvent e) {
-        String url = tf_Images.getText();
+        String url = tf_Images.getText().trim();
         if (!url.isBlank()) {
-            htmlStorage.imagesURLs.add(url);
-            list_Images.getItems().add(url);
+            try {
+                URI link = new URI(url);
+                htmlStorage.imagesURLs.add(link.toString());
+                list_Images.getItems().add(link.toString());
+            } catch (URISyntaxException er) {
+                Widget.actionFailed("Invalid image URL");
+            }
+        } else {
+            Widget.actionFailed("Enter a valid image URL");
         }
+
     }
 
     public void removeImage(MouseEvent e) {
-        if (list_Images.getItems().size() > 0) {
+        boolean notEmpty = list_Images.getItems().size() > 0;
+        if (notEmpty) {
             int index = list_Images.getSelectionModel().getSelectedIndex();
-            list_Images.getItems().remove(index);
-            htmlStorage.imagesURLs.remove(index);
+            if (index > -1) {
+                list_Images.getItems().remove(index);
+                htmlStorage.imagesURLs.remove(index);
+            } else {
+                Widget.actionFailed("Select an image url to be removed");
+            }
+        } else {
+            Widget.actionFailed("Image URL list is empty");
         }
     }
 
@@ -307,14 +346,23 @@ public class Controller {
         if (!note.isBlank()) {
             htmlStorage.notes.add(note);
             list_Notes.getItems().add(note);
+        } else {
+            Widget.actionFailed("Note is empty");
         }
     }
 
     public void removeNote(MouseEvent e) {
-        if (list_Notes.getItems().size() > 0) {
+        boolean notEmpty = list_Notes.getItems().size() > 0;
+        if (notEmpty) {
             int index = list_Notes.getSelectionModel().getSelectedIndex();
-            list_Notes.getItems().remove(index);
-            htmlStorage.notes.remove(index);
+            if (index > -1) {
+                list_Notes.getItems().remove(index);
+                htmlStorage.notes.remove(index);
+            } else {
+                Widget.actionFailed("Select a note to be removed");
+            }
+        } else {
+            Widget.actionFailed("Note list is empty");
         }
     }
 
@@ -323,20 +371,29 @@ public class Controller {
         if (!code.isBlank()) {
             htmlStorage.codeSamples.add(code);
             list_CodeSamples.getItems().add(code);
+        } else {
+            Widget.actionFailed("Code sample is empty");
         }
     }
 
     public void removeCodeSample(MouseEvent e) {
-        if (list_CodeSamples.getItems().size() > 0) {
+        boolean notEmpty = list_CodeSamples.getItems().size() > 0;
+        if (notEmpty) {
             int index = list_CodeSamples.getSelectionModel().getSelectedIndex();
-            list_CodeSamples.getItems().remove(index);
-            htmlStorage.codeSamples.remove(index);
+            if (index > -1) {
+                list_CodeSamples.getItems().remove(index);
+                htmlStorage.codeSamples.remove(index);
+            } else {
+                Widget.actionFailed("Select a code sample to be removed");
+            }
+        } else {
+            Widget.actionFailed("Code sample list is empty");
         }
     }
 
     public void loadCodeSampleIntoEditor(MouseEvent e) {
-        if (list_CodeSamples.getItems().size() > 0) {
-            int index = list_CodeSamples.getSelectionModel().getSelectedIndex();
+        int index = list_CodeSamples.getSelectionModel().getSelectedIndex();
+        if (list_CodeSamples.getItems().size() > 0 && index > -1) {
             ta_CodeSamples.setText(list_CodeSamples.getItems().get(index));
         }
     }
@@ -367,21 +424,24 @@ public class Controller {
             list_SampleIO.getItems().add(input);
             list_SampleIO.getItems().add(output);
         } else {
-           Widget.ERROR("Invalid Input/Output.", "Cannot add empty sample input/output.");
+           Widget.ERROR("Invalid Input and/or Output.", "Cannot add empty sample input/output.");
         }
     }
 
     public void removeSampleIO(MouseEvent e) {
-        if (list_SampleIO.getItems().size() > 1) {
+        int size = list_SampleIO.getItems().size();
+        if (size > 1) {
             int index = list_SampleIO.getSelectionModel().getSelectedIndex();
-            if (index > -1 && index < list_SampleIO.getItems().size()) {
+            if (index > -1 && index < size) {
                 htmlStorage.sampleInputs.remove((index/2));
                 htmlStorage.sampleOutputs.remove((index/2));
                 list_SampleIO.getItems().remove(index);
                 list_SampleIO.getItems().remove((index % 2 == 0) ? index :index-1);
+            } else {
+                Widget.actionFailed("Select a sample IO to be removed");
             }
         } else {
-            Widget.ERROR("Cannot remove sample IO.", "Sample IO list is empty.");
+            Widget.actionFailed("Sample IO list is empty.");
         }
     }
 
@@ -413,6 +473,7 @@ public class Controller {
     public void setLabLanguage(MouseEvent e) {
         if (rb_Lang_Java.isSelected()) {
             scriptStorage.labLanguage = "JAVA";
+            setPredefinedJavaRegex();
         } else if (rb_Lang_Python.isSelected()) {
             scriptStorage.labLanguage = "PYTHON";
         } else if (rb_Lang_C.isSelected()) {
@@ -446,18 +507,19 @@ public class Controller {
         }
     }
 
-    public void setStartingCode(KeyEvent e) {
+    public void setStartingCode(MouseEvent e) {
         String code = ta_CodeFileOptions_StartCode_StartCode.getText().trim();
         String file = label_SelectedFileDisplay.getText();
         if (!code.isBlank() && !file.isBlank() && !file.equals("Filename.ext")) {
-            if (scriptStorage.code.containsKey(file)) {
-                scriptStorage.code.remove(file);
-            }
+            scriptStorage.code.remove(file);
             scriptStorage.code.put(file, code);
+            Widget.OK("Code submitted", "Code added to file " + file);
+        } else {
+            Widget.actionFailed("Code is either blank or correct file is not selected");
         }
     }
 
-    public void setPredefinedRegex(Event e) {
+    public void setPredefinedJavaRegex() {
         ObservableList<Regex> reglist = FXCollections.observableList(scriptStorage.getPredefinedRegex());
         combo_CodeFileOptions_Regexes_Predefined.setCellFactory(new Callback<>() {
             @Override
@@ -515,30 +577,38 @@ public class Controller {
     }
 
     public void removeRegex(MouseEvent e) {
-        int validIndex = list_CodeFileOptions_Regexes.getSelectionModel().getSelectedIndex();
-        if (validIndex > -1) {
-            String selectedItem = list_CodeFileOptions_Regexes.getItems().get(validIndex);
-            int splitIndex = selectedItem.indexOf("|> ");
-            String filename = selectedItem.substring(0, splitIndex);
-            String regex = selectedItem.substring(splitIndex + 4);// 4 for |>
+        boolean notEmpty = list_CodeFileOptions_Regexes.getItems().size() > 0;
+        if (notEmpty) {
+            int validIndex = list_CodeFileOptions_Regexes.getSelectionModel().getSelectedIndex();
+            if (validIndex > -1) {
+                String selectedItem = list_CodeFileOptions_Regexes.getItems().get(validIndex);
+                int splitIndex = selectedItem.indexOf("|> ");
+                String filename = selectedItem.substring(0, splitIndex);
+                String regex = selectedItem.substring(splitIndex + 4);// 4 for |>
 
-            if (!filename.isBlank() && scriptStorage.getRegex().containsKey(filename)) {
-                List<Regex> regexlist = scriptStorage.getRegex().get(filename);
-                for (Regex R : regexlist) {
-                    if (R.use().equals(regex)) {
-                        regexlist.remove(R);
-                        list_CodeFileOptions_Regexes.getItems().remove(validIndex);
-                        break;
+                if (!filename.isBlank() && scriptStorage.getRegex().containsKey(filename)) {
+                    List<Regex> regexlist = scriptStorage.getRegex().get(filename);
+                    for (Regex R : regexlist) {
+                        if (R.use().equals(regex)) {
+                            regexlist.remove(R);
+                            list_CodeFileOptions_Regexes.getItems().remove(validIndex);
+                            break;
+                        }
                     }
                 }
+            } else {
+                Widget.actionFailed("Select a regex to be removed");
             }
+        } else {
+            Widget.actionFailed("Regex list is empty");
         }
     }
 
     public void loadRegexIntoEditors(MouseEvent e) {
-        int validIndex = list_CodeFileOptions_Regexes.getSelectionModel().getSelectedIndex();
-        if (validIndex > -1) {
-            String selectedItem = list_CodeFileOptions_Regexes.getItems().get(validIndex);
+        int size = list_CodeFileOptions_Regexes.getItems().size();
+        int index = list_CodeFileOptions_Regexes.getSelectionModel().getSelectedIndex();
+        if (index > -1 && index < size) {
+            String selectedItem = list_CodeFileOptions_Regexes.getItems().get(index);
             int splitIndex = selectedItem.indexOf("|> ");
             String filename = selectedItem.substring(0, splitIndex);
             String regex = selectedItem.substring(splitIndex + 4);// 4 for |>
@@ -553,7 +623,6 @@ public class Controller {
             }
         }
     }
-
 
     public void addTestCaseIO(MouseEvent e) {
         String input = ta_TestCases_Input.getText().trim();
@@ -574,15 +643,20 @@ public class Controller {
     }
 
     public void removeTestCaseIO(MouseEvent e) {
-        int index = table_TestCases.getSelectionModel().getSelectedIndex();
-        if (index > -1) {
-            testIOTableData.remove(index);
-            scriptStorage.testCaseIOs.clear();
-            for (TestIOTableData s : testIOTableData) {
-                scriptStorage.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
+        boolean notEmpty = table_TestCases.getItems().size() > 0;
+        if (notEmpty) {
+            int index = table_TestCases.getSelectionModel().getSelectedIndex();
+            if (index > -1) {
+                testIOTableData.remove(index);
+                scriptStorage.testCaseIOs.clear();
+                for (TestIOTableData s : testIOTableData) {
+                    scriptStorage.testCaseIOs.add(new TestIO(s.getInput(), s.getOutput()));
+                }
+            } else {
+                Widget.actionFailed( "Select a TestCase IO to be removed");
             }
         } else {
-            Widget.ERROR("Cannot remove testcase IO.", "Testcase IO list is empty.");
+            Widget.actionFailed("TestCase IO list is empty");
         }
     }
 
@@ -591,7 +665,6 @@ public class Controller {
         String value = tf_GradeProportions_Compile.getText().trim();
         if (!value.isBlank()) {
             scriptStorage.compileGrade = value;
-            //tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
             showGradeProportionsSum();
         }
     }
@@ -600,7 +673,6 @@ public class Controller {
         String value = tf_GradeProportions_Regex.getText().trim();
         if (!value.isBlank()) {
             scriptStorage.regexGrade = value;
-            //tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
             showGradeProportionsSum();
         }
     }
@@ -609,7 +681,6 @@ public class Controller {
         String value = tf_GradeProportions_TestCases.getText().trim();
         if (!value.isBlank()) {
             scriptStorage.tcGrade = value;
-            //tf_GradeProportions_Sum_Uneditable.setText(Integer.toString(scriptStorage.getTotalGrade()));
             showGradeProportionsSum();
         }
     }
@@ -693,7 +764,7 @@ public class Controller {
             URI url = new URI("https://www.github.com/MuleCodeLab/CodeLab/");
             desktop.browse(url);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Widget.ERROR("Unexpected Error!", ex.getMessage());
         }
     }
 
@@ -751,8 +822,6 @@ public class Controller {
     private VBox vb_JavaFileNames;
     @FXML
     private TextField tf_CodeFileNames;
-//    @FXML
-//    private TextField tf_JavaFileNames;
     @FXML
     private Button btn_JavaFileNames_Add;
     @FXML

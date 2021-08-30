@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -29,7 +28,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
+<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="720.0">
          <children>
@@ -39,8 +38,17 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="925.0" prefWidth="600.0">
                            <children>
-                              <VBox prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox prefHeight="1200.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
+                                    <HBox alignment="CENTER" prefHeight="164.0" prefWidth="672.0">
+                                       <children>
+                                          <ImageView fx:id="img" fitHeight="156.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../data/NUIMLogo.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
                                     <VBox fx:id="vb_CourseLevelData" prefWidth="100.0" spacing="20.0" />
                                     <VBox fx:id="vb_LabLevelData" prefWidth="552.0" spacing="10.0">
                                        <children>
@@ -210,9 +218,19 @@
                                                       <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                    </tooltip>
                                                 </Label>
-                                                <TextField fx:id="tf_LabNumber" onKeyTyped="#setLabNumber" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="tf_LabNumber" onKeyTyped="#setLabNumber" promptText="'1'" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="The number of this lab in its sequence." />
+                                                   </tooltip>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="47.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="128.0" text="Question title" />
+                                                <TextField fx:id="tf_QuestionTitle" onKeyTyped="#setQuestionTitle" promptText="E.g. 'Hello World'" HBox.hgrow="ALWAYS">
+                                                   <tooltip>
+                                                      <Tooltip text="A title for the question. This may refer to the topic or the task. E.g. 'Hello World', '2D Array', etc." />
                                                    </tooltip>
                                                 </TextField>
                                              </children>
@@ -223,18 +241,11 @@
                                                 <TextField fx:id="tf_QuestionNumber" onKeyTyped="#setQuestionNumber" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="This question's number in its sequence." />
-                                                   </tooltip></TextField>
+                                                   </tooltip>
+                                                </TextField>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="47.0" prefWidth="200.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="128.0" text="Question title" />
-                                                <TextField fx:id="tf_QuestionTitle" onKeyTyped="#setQuestionTitle" promptText="E.g. 'Hello World'" HBox.hgrow="ALWAYS">
-                                                   <tooltip>
-                                                      <Tooltip text="A title for the question. This may refer to the topic or the task. E.g. 'Hello World', '2D Array', etc." />
-                                                   </tooltip></TextField>
-                                             </children>
-                                          </HBox>
+                                          <Separator prefHeight="21.0" prefWidth="672.0" />
                                           <VBox fx:id="vb_JavaFileNames" prefHeight="153.0" prefWidth="600.0" spacing="5.0">
                                              <children>
                                                 <Label text="Code file names" />
@@ -247,11 +258,11 @@
                                                          <tooltip>
                                                             <Tooltip text="File names of the code written by students. Enter a file name and click 'Add'." />
                                                          </tooltip></TextField>
-                                                      <Button fx:id="btn_JavaFileNames_Add" minWidth="60.0" mnemonicParsing="false" onMousePressed="#addCodeFile" text="Add">
+                                                      <Button fx:id="btn_JavaFileNames_Add" defaultButton="true" minWidth="60.0" mnemonicParsing="false" onMousePressed="#addCodeFile" text="Add">
                                                          <tooltip>
                                                             <Tooltip text="Enter a file name in the field to the left and click this to add it to the list below." />
                                                          </tooltip></Button>
-                                                      <Button fx:id="btn_JavaFileNames_Delete" minWidth="60.0" mnemonicParsing="false" onMousePressed="#removeCodeFile" text="Del.">
+                                                      <Button fx:id="btn_JavaFileNames_Delete" minWidth="60.0" mnemonicParsing="false" onMousePressed="#removeCodeFile" text="Delete">
                                                          <tooltip>
                                                             <Tooltip text="Select a file name from the list below and click this to remove it." />
                                                          </tooltip></Button>
@@ -263,14 +274,16 @@
                                                    </tooltip></ListView>
                                              </children>
                                           </VBox>
-                                          <CheckBox fx:id="cb_IsHiddenQuestion" allowIndeterminate="false" mnemonicParsing="false" onAction="#setQuestionHidden" prefHeight="30.0" selected="false" text="This is a hidden question">
-                                             <tooltip>
-                                                <Tooltip text="Check this box if the question will only be visible and open to evaluation during a specified lab session." />
-                                             </tooltip>
-                                             <VBox.margin>
-                                                <Insets top="24.0" />
-                                             </VBox.margin>
-                                          </CheckBox>
+                                          <Separator prefHeight="24.0" prefWidth="672.0" />
+                                          <HBox prefHeight="34.0" prefWidth="672.0">
+                                             <children>
+                                                <CheckBox fx:id="cb_IsHiddenQuestion" allowIndeterminate="false" mnemonicParsing="false" onAction="#setQuestionHidden" prefHeight="30.0" prefWidth="233.0" selected="false" text="This is a hidden question">
+                                                   <tooltip>
+                                                      <Tooltip text="Check this box if the question will only be visible and open to evaluation during a specified lab session." />
+                                                   </tooltip>
+                                                </CheckBox>
+                                             </children>
+                                          </HBox>
                                           <VBox fx:id="vb_HiddenQuestionData" disable="true" prefWidth="552.0" spacing="10.0">
                                              <children>
                                                 <VBox fx:id="vb_Hidden_LabSessions" prefHeight="233.0" prefWidth="552.0" spacing="5.0">
@@ -278,17 +291,17 @@
                                                       <Label text="Lab sessions" />
                                                       <HBox alignment="CENTER_LEFT" prefWidth="600.0" spacing="5.0">
                                                          <children>
-                                                            <TextField fx:id="tf_Hidden_LabSessions_Group" onKeyTyped="#setLabGroup" prefHeight="25.0" prefWidth="144.0" promptText="Group name e.g. 'red'" HBox.hgrow="ALWAYS">
+                                                            <TextField fx:id="tf_Hidden_LabSessions_Group" onKeyTyped="#setLabGroup" prefHeight="25.0" prefWidth="212.0" promptText="Group name e.g. 'red'" HBox.hgrow="ALWAYS">
                                                                <tooltip>
                                                                   <Tooltip text="Each lab session is accessible to only a single group of students. Enter a name for a group." />
                                                                </tooltip></TextField>
                                                             <HBox fx:id="hb_LabSessions" alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="279.0" spacing="5.0">
                                                                <children>
-                                                                  <DatePicker fx:id="dp_Hidden_LabSessionDate" onAction="#setLabSessionDate" promptText="Date of lab session">
+                                                                  <DatePicker fx:id="dp_Hidden_LabSessionDate" onAction="#setLabSessionDate" prefHeight="24.0" prefWidth="175.0" promptText="Date of lab session">
                                                                      <tooltip>
                                                                         <Tooltip text="Set the date of the lab session." />
                                                                      </tooltip></DatePicker>
-                                                                  <TextField fx:id="tf_Hidden_LabSessions_hour" onKeyTyped="#setLabSessionHour" prefHeight="25.0" prefWidth="39.0" promptText="hh">
+                                                                  <TextField fx:id="tf_Hidden_LabSessions_hour" onKeyTyped="#setLabSessionHour" prefHeight="25.0" prefWidth="40.0" promptText="hh">
                                                                      <font>
                                                                         <Font name="Consolas" size="12.0" />
                                                                      </font>
@@ -296,7 +309,7 @@
                                                                         <Tooltip text="Set the hour component (24h) of the time of the lab session." />
                                                                      </tooltip></TextField>
                                                                   <Label text=":" />
-                                                                  <TextField fx:id="tf_Hidden_LabSessions_minute" onKeyTyped="#setLabSessionMinute" prefHeight="25.0" prefWidth="39.0" promptText="mm">
+                                                                  <TextField fx:id="tf_Hidden_LabSessions_minute" onKeyTyped="#setLabSessionMinute" prefHeight="25.0" prefWidth="40.0" promptText="mm">
                                                                      <font>
                                                                         <Font name="Consolas" size="12.0" />
                                                                      </font>
@@ -305,11 +318,11 @@
                                                                      </tooltip></TextField>
                                                                </children>
                                                             </HBox>
-                                                            <Button fx:id="btn_Hidden_LabSessions_Add" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addToSessionsTable" text="Add">
+                                                            <Button fx:id="btn_Hidden_LabSessions_Add" defaultButton="true" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addToSessionsTable" text="Add">
                                                                <tooltip>
                                                                   <Tooltip text="Enter the details of a lab session in the fields to the left and click this to add the session." />
                                                                </tooltip></Button>
-                                                            <Button fx:id="btn_Hidden_LabSessions_Delete" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeFromSessionsTable" text="Del.">
+                                                            <Button fx:id="btn_Hidden_LabSessions_Delete" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeFromSessionsTable" text="Delete">
                                                                <tooltip>
                                                                   <Tooltip text="Select a lab session in the table below and click this to delete it." />
                                                                </tooltip></Button>
@@ -424,18 +437,18 @@
                                        </children>
                                     </VBox>
                                     <Separator prefWidth="200.0" />
-                                    <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                                       <buttons>
-                                          <Button fx:id="btn_JSON_Generate" mnemonicParsing="false" onMousePressed="#printJSON" onMouseReleased="#generateJSONFiles" text="Generate">
+                                    <HBox alignment="CENTER" prefHeight="56.0" prefWidth="672.0">
+                                       <children>
+                                          <Button fx:id="btn_JSON_Generate" defaultButton="true" mnemonicParsing="false" onMousePressed="#printJSON" onMouseReleased="#generateJSONFiles" prefHeight="36.0" prefWidth="99.0" text="Generate">
                                              <tooltip>
                                                 <Tooltip text="When all the details on this tab have been entered and double-checked. Click this to generate the relevant files." />
                                              </tooltip>
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
                                           </Button>
-                                       </buttons>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </ButtonBar>
+                                       </children>
+                                    </HBox>
                                  </children>
                                  <padding>
                                     <Insets bottom="32.0" left="24.0" right="24.0" top="32.0" />
@@ -472,8 +485,8 @@
                                                    <tooltip>
                                                       <Tooltip text="Enter an image URL. Images must be hosted on the web. Make sure the image is hosted at a location where it will not be removed while students are accessing this lab question. Insertion of locally stored images is not supported at this time." />
                                                    </tooltip></TextField>
-                                                <Button fx:id="btn_Images_Add" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addImage" text="Add" />
-                                                <Button fx:id="btn_Images_Delete" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeImage" text="Del.">
+                                                <Button fx:id="btn_Images_Add" defaultButton="true" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addImage" text="Add" />
+                                                <Button fx:id="btn_Images_Delete" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeImage" text="Delete">
                                                    <tooltip>
                                                       <Tooltip text="Select an item on the list and click this to remove it." />
                                                    </tooltip></Button>
@@ -491,8 +504,8 @@
                                                    <tooltip>
                                                       <Tooltip text="Is there a particular piece of information you want to highlight to students? Enter it here as a note." />
                                                    </tooltip></TextField>
-                                                <Button fx:id="btn_Notes_Add" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addNote" text="Add" />
-                                                <Button fx:id="btn_Notes_Delete" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeNote" text="Del.">
+                                                <Button fx:id="btn_Notes_Add" defaultButton="true" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addNote" text="Add" />
+                                                <Button fx:id="btn_Notes_Delete" layoutX="524.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeNote" text="Delete">
                                                    <tooltip>
                                                       <Tooltip text="Select an item on the list and click this to remove it." />
                                                    </tooltip></Button>
@@ -514,16 +527,16 @@
                                                       <Tooltip text="You may want to display some code snippets in the question description. Enter a code snippet and press 'Add'." />
                                                    </tooltip>
                                                 </TextArea>
-                                                <VBox alignment="CENTER" prefHeight="177.0" prefWidth="73.0" spacing="5.0">
+                                                <VBox alignment="CENTER" prefHeight="177.0" prefWidth="73.0" spacing="20.0">
                                                    <children>
-                                                      <Button fx:id="btn_CodeSamples_Add" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addCodeSample" text="Add" />
-                                                      <Button fx:id="btn_CodeSamples_Delete" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeCodeSample" text="Del.">
+                                                      <Button fx:id="btn_CodeSamples_Add" defaultButton="true" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addCodeSample" text="Add" />
+                                                      <Button fx:id="btn_CodeSamples_Delete" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeCodeSample" text="Delete">
                                                          <tooltip>
                                                             <Tooltip text="Select an item on the list and click this to remove it." />
                                                          </tooltip></Button>
                                                    </children>
                                                 </VBox>
-                                                <ListView fx:id="list_CodeSamples" onMousePressed="#loadCodeSampleIntoEditor" prefHeight="177.0" prefWidth="86.0" />
+                                                <ListView fx:id="list_CodeSamples" onMousePressed="#loadCodeSampleIntoEditor" prefHeight="179.0" prefWidth="180.0" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -569,7 +582,7 @@
                                                       <Tooltip text="Enter the input of the sample test case" />
                                                    </tooltip>
                                                 </TextArea>
-                                                <TextArea fx:id="ta_SampleIO_Output" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" promptText="Output" HBox.hgrow="ALWAYS">
+                                                <TextArea fx:id="ta_SampleIO_Output" layoutX="10.0" layoutY="10.0" prefHeight="176.0" prefWidth="216.0" promptText="Output" HBox.hgrow="ALWAYS">
                                                    <font>
                                                       <Font name="Consolas" size="12.0" />
                                                    </font>
@@ -577,16 +590,16 @@
                                                       <Tooltip text="Enter the output of a sample test case" />
                                                    </tooltip>
                                                 </TextArea>
-                                                <VBox alignment="CENTER" prefHeight="177.0" prefWidth="58.0" spacing="5.0">
+                                                <VBox alignment="CENTER" prefHeight="176.0" prefWidth="67.0" spacing="20.0">
                                                    <children>
-                                                      <Button fx:id="btn_SampleIO_Add" minWidth="60.0" mnemonicParsing="false" onMousePressed="#addSampleIO" text="Add" />
-                                                      <Button fx:id="btn_SampleIO_Delete" minWidth="60.0" mnemonicParsing="false" onMousePressed="#removeSampleIO" onMouseReleased="#printHTML" text="Del.">
+                                                      <Button fx:id="btn_SampleIO_Add" defaultButton="true" minWidth="60.0" mnemonicParsing="false" onMousePressed="#addSampleIO" text="Add" />
+                                                      <Button fx:id="btn_SampleIO_Delete" minWidth="60.0" mnemonicParsing="false" onMousePressed="#removeSampleIO" onMouseReleased="#printHTML" text="Delete">
                                                          <tooltip>
                                                             <Tooltip text="Select an item on the list and click this to remove it." />
                                                          </tooltip></Button>
                                                    </children>
                                                 </VBox>
-                                                <ListView fx:id="list_SampleIO" onMousePressed="#loadSampleIOIntoEditors" prefHeight="177.0" prefWidth="86.0" />
+                                                <ListView fx:id="list_SampleIO" onMousePressed="#loadSampleIOIntoEditors" prefHeight="176.0" prefWidth="179.0" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -605,11 +618,14 @@
                                        </children>
                                     </VBox>
                                     <Separator prefWidth="200.0" />
-                                    <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                                       <buttons>
-                                          <Button fx:id="btn_HTML_Generate" mnemonicParsing="false" onMousePressed="#generateHTMLFiles" text="Generate" />
-                                       </buttons>
-                                    </ButtonBar>
+                                    <HBox alignment="CENTER" prefHeight="61.0" prefWidth="672.0">
+                                       <children>
+                                          <Button fx:id="btn_HTML_Generate" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onMousePressed="#generateHTMLFiles" prefHeight="36.0" prefWidth="99.0" text="Generate">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font></Button>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children></AnchorPane>
@@ -680,7 +696,7 @@
                                                             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                <children>
                                                                   <Label text="For questions where there are multiple code files, one file must be selected as the 'Main' file, or the entry point to the program. For example, in Java questions this will be the file which contains the 'main' method." textAlignment="CENTER" wrapText="true" />
-                                                                  <Button fx:id="btn_CodeFileOptions_SetAsMain_Set" mnemonicParsing="false" onMouseReleased="#selectAsMainFile" text="Set selected file as Main" />
+                                                                  <Button fx:id="btn_CodeFileOptions_SetAsMain_Set" defaultButton="true" mnemonicParsing="false" onMouseReleased="#selectAsMainFile" text="Set selected file as Main" />
                                                                   <HBox alignment="CENTER" spacing="5.0">
                                                                      <children>
                                                                         <Label text="The Main file is:" />
@@ -704,14 +720,14 @@
                                                   <content>
                                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                          <children>
-                                                            <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                <children>
                                                                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                                                                      <children>
                                                                         <Label text="Start code" />
                                                                      </children>
                                                                   </HBox>
-                                                                  <TextArea fx:id="ta_CodeFileOptions_StartCode_StartCode" onKeyTyped="#setStartingCode" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                                  <TextArea fx:id="ta_CodeFileOptions_StartCode_StartCode" prefHeight="119.0" prefWidth="650.0" promptText="class Main {  /* code */  }" VBox.vgrow="ALWAYS">
                                                                      <font>
                                                                         <Font name="Consolas" size="12.0" />
                                                                      </font>
@@ -719,6 +735,11 @@
                                                                         <Tooltip text="If you want this file to contain code when the student first opens it, enter the code here." />
                                                                      </tooltip>
                                                                   </TextArea>
+                                                                  <Button fx:id="btn_CodeSubmit" onMouseReleased="#setStartingCode" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Submit">
+                                                                     <VBox.margin>
+                                                                        <Insets top="10.0" />
+                                                                     </VBox.margin>
+                                                                  </Button>
                                                                </children>
                                                             </VBox>
                                                          </children>
@@ -733,7 +754,7 @@
                                                                <children>
                                                                   <VBox prefHeight="187.0" prefWidth="323.0" spacing="5.0">
                                                                      <children>
-                                                                        <ComboBox fx:id="combo_CodeFileOptions_Regexes_Predefined" onMousePressed="#setPredefinedRegex" prefHeight="25.0" prefWidth="333.0" promptText="Select a predefined regex" />
+                                                                        <ComboBox fx:id="combo_CodeFileOptions_Regexes_Predefined" prefHeight="25.0" prefWidth="333.0" promptText="Select a predefined regex" />
                                                                         <VBox prefHeight="200.0" prefWidth="100.0">
                                                                            <children>
                                                                               <Label text="Regex (editable)" />
@@ -749,7 +770,7 @@
                                                                         </VBox>
                                                                         <VBox prefWidth="100.0" spacing="2.0">
                                                                            <children>
-                                                                              <Label text="Comment" />
+                                                                              <Label text="Comment (editable)" />
                                                                               <TextField fx:id="tf_CodeOptions_Regexes_Comment">
                                                                                  <tooltip>
                                                                                     <Tooltip text="Add the comment a student will see in their terminal when they evaluate and the script has found the required pattern." />
@@ -762,10 +783,10 @@
                                                                   <VBox alignment="CENTER" prefHeight="224.0" prefWidth="219.0" spacing="5.0" HBox.hgrow="ALWAYS">
                                                                      <children>
                                                                         <ListView fx:id="list_CodeFileOptions_Regexes" onMouseReleased="#loadRegexIntoEditors" prefHeight="193.0" prefWidth="219.0" VBox.vgrow="ALWAYS" />
-                                                                        <HBox prefWidth="200.0" spacing="5.0">
+                                                                        <HBox alignment="CENTER" prefWidth="200.0" spacing="5.0">
                                                                            <children>
-                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Add" mnemonicParsing="false" onMouseReleased="#addRegex" prefWidth="60.0" text="Add" />
-                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Delete" mnemonicParsing="false" onMouseReleased="#removeRegex" prefWidth="60.0" text="Del.">
+                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Add" defaultButton="true" mnemonicParsing="false" onMouseReleased="#addRegex" prefHeight="24.0" prefWidth="71.0" text="Add" />
+                                                                              <Button fx:id="btn_CodeFileOptions_Regexes_Delete" mnemonicParsing="false" onMouseReleased="#removeRegex" prefHeight="24.0" prefWidth="71.0" text="Delete">
                                                                                  <tooltip>
                                                                                     <Tooltip text="Select an item on the list and click this to remove it." />
                                                                                  </tooltip></Button>
@@ -807,10 +828,10 @@
                                                 </TextArea>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="24.0" prefWidth="643.0" spacing="5.0">
                                              <children>
-                                                <Button fx:id="btn_TestCases_Add" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addTestCaseIO" prefWidth="60.0" text="Add" />
-                                                <Button fx:id="btn_TestCases_Delete" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeTestCaseIO" prefWidth="60.0" text="Del.">
+                                                <Button fx:id="btn_TestCases_Add" defaultButton="true" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#addTestCaseIO" prefHeight="24.0" prefWidth="62.0" text="Add" />
+                                                <Button fx:id="btn_TestCases_Delete" minWidth="60.0" mnemonicParsing="false" onMouseReleased="#removeTestCaseIO" prefHeight="24.0" prefWidth="62.0" text="Delete">
                                                    <tooltip>
                                                       <Tooltip text="Select a session from the table and click this to remove it." />
                                                    </tooltip></Button>
@@ -851,7 +872,7 @@
                                                                   <Tooltip text="Percentage of the grade awarded for sucessfully compiling" />
                                                                </tooltip>
                                                             </TextField>
-                                                            <Label text="/100">
+                                                            <Label text=" / 100">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -873,7 +894,7 @@
                                                                   <Tooltip text="Percentage of the grade awarded for static evaluation i.e. passing the regex tests" />
                                                                </tooltip>
                                                             </TextField>
-                                                            <Label text="/100">
+                                                            <Label text=" / 100">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -895,7 +916,7 @@
                                                                   <Tooltip text="Portion of the grade awarded for dynamic evaluation i.e. passing the test cases" />
                                                                </tooltip>
                                                             </TextField>
-                                                            <Label text="/100">
+                                                            <Label text=" / 100">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -909,10 +930,14 @@
                                                 </VBox>
                                                 <VBox alignment="CENTER_LEFT" prefWidth="250.0">
                                                    <children>
-                                                      <Label text="Sum" />
-                                                      <HBox prefWidth="200.0">
+                                                      <HBox prefWidth="200.0" spacing="10.0">
                                                          <children>
-                                                            <TextField fx:id="tf_GradeProportions_Sum_Uneditable" editable="false" prefHeight="25.0" prefWidth="96.0">
+                                                            <Label text="Sum">
+                                                               <HBox.margin>
+                                                                  <Insets top="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="tf_GradeProportions_Sum_Uneditable" editable="false" prefHeight="25.0" prefWidth="96.0" text="0">
                                                                <font>
                                                                   <Font name="Consolas" size="12.0" />
                                                                </font>
@@ -929,11 +954,11 @@
                                        </children>
                                     </VBox>
                                     <Separator prefWidth="200.0" />
-                                    <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                                      <buttons>
-                                        <Button fx:id="btn_Scripts_GenerateAndFinish" mnemonicParsing="false" onMousePressed="#printSciptData" onMouseReleased="#generateScriptFiles" text="Generate &amp; Finish" />
-                                      </buttons>
-                                    </ButtonBar>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                        <Button fx:id="btn_Scripts_GenerateAndFinish" defaultButton="true" mnemonicParsing="false" onMousePressed="#printSciptData" onMouseReleased="#generateScriptFiles" prefHeight="36.0" prefWidth="144.0" text="Generate &amp; Finish" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
