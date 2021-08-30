@@ -28,7 +28,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
+<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="720.0">
          <children>
@@ -56,7 +56,7 @@
                                              <children>
                                                 <Label prefHeight="17.0" prefWidth="128.0" text="Lab label">
                                                    <tooltip>
-                                                      <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
+                                                      <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc.&#10;If you set this as 'Lab' for example, the first problem set of this type will be labelled &quot;Lab 01&quot; in the Workbook." />
                                                    </tooltip>
                                                 </Label>
                                                 <TextField fx:id="tf_LabLabel" onKeyTyped="#setLabLabel" promptText="E.g. 'Lab', 'Week', 'Tutorial'" HBox.hgrow="ALWAYS">
@@ -218,19 +218,9 @@
                                                       <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                    </tooltip>
                                                 </Label>
-                                                <TextField fx:id="tf_LabNumber" onKeyTyped="#setLabNumber" promptText="'1'" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="tf_LabNumber" onKeyTyped="#setLabNumber" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="The number of this lab in its sequence." />
-                                                   </tooltip>
-                                                </TextField>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="47.0" prefWidth="200.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="128.0" text="Question title" />
-                                                <TextField fx:id="tf_QuestionTitle" onKeyTyped="#setQuestionTitle" promptText="E.g. 'Hello World'" HBox.hgrow="ALWAYS">
-                                                   <tooltip>
-                                                      <Tooltip text="A title for the question. This may refer to the topic or the task. E.g. 'Hello World', '2D Array', etc." />
                                                    </tooltip>
                                                 </TextField>
                                              </children>
@@ -241,6 +231,16 @@
                                                 <TextField fx:id="tf_QuestionNumber" onKeyTyped="#setQuestionNumber" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="This question's number in its sequence." />
+                                                   </tooltip>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="47.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="128.0" text="Question title" />
+                                                <TextField fx:id="tf_QuestionTitle" onKeyTyped="#setQuestionTitle" promptText="E.g. 'Hello World'" HBox.hgrow="ALWAYS">
+                                                   <tooltip>
+                                                      <Tooltip text="A title for the question. This may refer to the topic or the task. E.g. 'Hello World', '2D Array', etc." />
                                                    </tooltip>
                                                 </TextField>
                                              </children>
@@ -735,7 +735,7 @@
                                                                         <Tooltip text="If you want this file to contain code when the student first opens it, enter the code here." />
                                                                      </tooltip>
                                                                   </TextArea>
-                                                                  <Button fx:id="btn_CodeSubmit" onMouseReleased="#setStartingCode" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Submit">
+                                                                  <Button fx:id="btn_CodeSubmit" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onMouseReleased="#setStartingCode" text="Submit">
                                                                      <VBox.margin>
                                                                         <Insets top="10.0" />
                                                                      </VBox.margin>
