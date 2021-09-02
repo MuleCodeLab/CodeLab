@@ -11,18 +11,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+
 public class Util {
 
-    private Util() {} // to hide default public constructor
+    private Util() {}
 
     public static void ECHO(Object o) {
-        System.out.println(String.valueOf(o));
+        System.out.println(o);
     }
 
     public static void ERROR(String err) {
@@ -76,7 +79,11 @@ public class Util {
             ERROR(e.getMessage());
         } finally {
             try {
-                writer.close();
+                if (writer != null) {
+                    writer.close();
+                } else {
+                    ERROR("Object writer is null." );
+                }
             } catch (IOException e) {
                 ERROR(e.getMessage());
             }

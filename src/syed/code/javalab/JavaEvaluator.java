@@ -4,8 +4,6 @@ import syed.code.core.CodeEvaluator;
 import syed.code.core.Regex;
 import syed.code.core.Util;
 
-import java.util.ArrayList;
-import java.util.Map;
 
 public class JavaEvaluator extends CodeEvaluator {
     

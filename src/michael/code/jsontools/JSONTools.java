@@ -1,8 +1,8 @@
 package michael.code.jsontools;
 
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 public class JSONTools
 {

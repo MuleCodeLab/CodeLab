@@ -1,7 +1,6 @@
 package syed.code.clab;
 
 import syed.code.core.Code;
-
 import java.util.Map;
 
 public class CCode extends Code {

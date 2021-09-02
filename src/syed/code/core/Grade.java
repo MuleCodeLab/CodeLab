@@ -5,23 +5,17 @@ public final class Grade {
     private final int total;
     private final int count;
     private final int grade;
-    private int acheived;
+    private int achieved;
 
     public Grade(int total, int count) {
-        this.acheived = 0;
+        this.achieved = 0;
         this.total = total;
         this.count = count;
-        //this.grade = this.total / this.count;
-        if(count == 0) {
-            this.grade = this.total;
-        }
-        else {
-            this.grade = this.total / this.count;
-        }
+        this.grade = (count == 0) ? this.total : this.total / this.count;
     }
     
     public void increment() {
-        this.acheived += this.acheived < this.total ? this.grade : 0;
+        this.achieved += this.achieved < this.total ? this.grade : 0;
     }
 
     public int getCount() {
@@ -33,6 +27,6 @@ public final class Grade {
     }
 
     public int finalGrade() {
-        return this.acheived;
+        return this.achieved;
     }
 }

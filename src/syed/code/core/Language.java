@@ -7,11 +7,11 @@ public abstract class Language {
     private final String extension;
     private final String mainRegex;
 
-    public Language(String cmplr, String rnr, String ext, String mr) {
-        this.compiler = cmplr;
-        this.runner = rnr;
+    public Language(String compiler, String runner, String ext, String mainRegex) {
+        this.compiler = compiler;
+        this.runner = runner;
         this.extension = ext;
-        this.mainRegex = mr;
+        this.mainRegex = mainRegex;
     }
 
     public String getCompiler()  { return this.compiler;  }

@@ -1,7 +1,5 @@
 package app.ui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +20,6 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
 
 import java.net.URI;
@@ -40,7 +37,6 @@ import app.logic.LabSessionTableData;
 import app.logic.storage.JSONDataStorage;
 import app.logic.storage.HTMLDataStorage;
 import app.logic.storage.ScriptsDataStorage;
-import syed.code.core.Util;
 
 
 public class Controller {

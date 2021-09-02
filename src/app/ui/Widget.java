@@ -29,10 +29,6 @@ public class Widget {
         return show(create(header, info, AlertType.ERROR));
     }
 
-    public static void invalidAction(String info) {
-        ERROR("Invalid Action", info);
-    }
-
     public static void actionFailed(String info) {
         ERROR("Invalid Action", info);
     }

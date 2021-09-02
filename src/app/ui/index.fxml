@@ -28,7 +28,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
+<ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="720.0">
          <children>
@@ -218,7 +218,7 @@
                                                       <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                    </tooltip>
                                                 </Label>
-                                                <TextField fx:id="tf_LabNumber" onKeyTyped="#setLabNumber" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="tf_LabNumber" promptText="E.g. '1'" onKeyTyped="#setLabNumber" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="The number of this lab in its sequence." />
                                                    </tooltip>
@@ -228,7 +228,7 @@
                                           <HBox alignment="CENTER_LEFT" prefWidth="200.0">
                                              <children>
                                                 <Label prefHeight="17.0" prefWidth="128.0" text="Question number" />
-                                                <TextField fx:id="tf_QuestionNumber" onKeyTyped="#setQuestionNumber" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="tf_QuestionNumber" promptText="E.g. '1'" onKeyTyped="#setQuestionNumber" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="This question's number in its sequence." />
                                                    </tooltip>
