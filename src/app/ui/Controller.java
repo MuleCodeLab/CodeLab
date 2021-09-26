@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.IOException;
 
 import java.net.URI;
@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import syed.code.core.Regex;
-import syed.code.core.TestIO;
+import com.syed.core.Regex;
+import com.syed.core.TestIO;
 
 import app.logic.FileProducer;
 import app.logic.TestIOTableData;

@@ -1,9 +1,8 @@
 package app.logic.storage;
 
-import syed.code.core.Util;
+import app.App;
+import com.syed.core.Util;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,9 +19,9 @@ public class HTMLDataStorage {
     public ArrayList<String> sampleOutputs;
     public String singleExpectedOutput;
 
-    public HTMLDataStorage() throws IOException {
-        Path cssPath = Path.of("src/michael/code/htmltools/style.css");
-        css = Files.readString(cssPath);
+    public HTMLDataStorage() {
+        Path cssPath = Path.of(App.PATH+"/metadata/style.css");
+        css = Util.readlines(cssPath.toString());
         description = "";
         imagesURLs = new ArrayList<>();
         notes = new ArrayList<>();

@@ -1,6 +1,6 @@
 package app.logic.storage;
 
-import syed.code.core.Util;
+import com.syed.core.Util;
 import java.time.LocalDateTime;
 
 public class LabLevelJSONDataStorage {

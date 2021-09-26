@@ -8,12 +8,13 @@ import java.util.Map;
 
 import app.logic.storage.*;
 import app.ui.Widget;
-import michael.code.htmltools.*;
-import michael.code.jsontools.*;
-import syed.code.core.*;
-import syed.code.javalab.*;
-import syed.code.pythonlab.*;
-import syed.code.clab.*;
+
+import com.michael.htmltools.*;
+import com.michael.jsontools.*;
+import com.syed.core.*;
+import com.syed.javalab.*;
+import com.syed.pythonlab.*;
+import com.syed.clab.*;
 
 
 public class FileProducer {
