@@ -1,9 +1,7 @@
-package app.logic.storage;
+package app.storage;
 
-import app.App;
 import com.syed.core.Util;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,8 +18,7 @@ public class HTMLDataStorage {
     public String singleExpectedOutput;
 
     public HTMLDataStorage() {
-        Path cssPath = Path.of(App.PATH+"/metadata/style.css");
-        css = Util.readlines(cssPath.toString());
+        css = CSS.INFO_PAGE;
         description = "";
         imagesURLs = new ArrayList<>();
         notes = new ArrayList<>();

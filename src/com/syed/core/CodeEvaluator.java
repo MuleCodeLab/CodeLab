@@ -42,7 +42,7 @@ public abstract class CodeEvaluator {
             this.specifyRegex(this.code.getMainFile(), regexes);
         }
     }
-    
+
     public void specifyRegex(String filetitle, Regex... regexes) {
         if (filetitle.endsWith(this.code.getLanguage().getExtension())) {
             filetitle = Util.fileTitle(filetitle);
@@ -107,7 +107,7 @@ public abstract class CodeEvaluator {
     public String runfile() {
         return this.runner.getRunFile();
     }
-   
+
     public void writeScript() {
         this.writeScript(this.code.getBasePath()+"vpl_evaluate.sh");
     }

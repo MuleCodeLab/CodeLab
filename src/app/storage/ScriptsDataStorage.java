@@ -1,11 +1,7 @@
-package app.logic.storage;
+package app.storage;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
-import app.App;
 import com.syed.core.Regex;
 import com.syed.core.TestIO;
 import com.syed.core.Util;
@@ -27,7 +23,6 @@ public class ScriptsDataStorage {
         regexes = new HashMap<>();
         testCaseIOs = new ArrayList<>();
         Collections.addAll(files, questionData.getFiles());
-        getPredefinedRegex();
     }
 
 
@@ -105,62 +100,6 @@ public class ScriptsDataStorage {
     public int getTotalGrade() {
         return getCompileGrade() + getRegexGrade() + getTCGrade();
     }
-
-//    public List<Regex> getPredefinedRegex() {
-//        String[] comments = Util.readlines(Main.PATH+"/src/app/data/comments.txt").split("\n");
-//        String[] regex = Util.readlines(Main.PATH+"/src/app/data/regex.txt").split("\n");
-//
-//        // [ASSUMPTION] regex and comments are the same length
-//        // conversion from java to bash format
-//        for (int i = 0; i < regex.length; i++) {
-//            regex[i] = regex[i].replace("\\", "\\\\");
-//        }
-//
-//        int size = Math.min(comments.length, regex.length);
-//        List<Regex> list = new ArrayList<>();
-//        for (int i = 0; i < size; i++) {
-//            list.add(new Regex(regex[i], comments[i]));
-//        }
-//        return  list;
-//    }
-
-    public List<Regex> getPredefinedRegex() {
-
-        ArrayList<String> comments = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(App.PATH+"/metadata/comments.txt"))) {
-            while (br.ready()) {
-                comments.add(br.readLine());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<String> regex = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(App.PATH+"/metadata/regex.txt"))) {
-            while (br.ready()) {
-                regex.add(br.readLine());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-//        String[] comments = Util.readlines("comments.txt").split("\n");
-//        String[] regex = Util.readlines("regex.txt").split("\n");
-
-//         [ASSUMPTION] regex and comments are the same length
-//         conversion from java to bash format
-        for (int i = 0; i < regex.size(); i++) {
-            regex.set(i, regex.get(i).replace("\\", "\\\\"));
-        }
-
-        int size = Math.min(comments.size(), regex.size());
-        List<Regex> list = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            list.add(new Regex(regex.get(i), comments.get(i)));
-        }
-        return  list;
-    }
-
 
     public void print() {
         Util.ECHO("Lab Language: "+getLabLanguage());

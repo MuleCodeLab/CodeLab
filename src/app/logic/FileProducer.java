@@ -1,12 +1,12 @@
 package app.logic;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import app.logic.storage.*;
+import app.storage.*;
+import app.ui.LabSessionTableData;
 import app.ui.Widget;
 
 import com.michael.htmltools.*;
@@ -16,6 +16,8 @@ import com.syed.javalab.*;
 import com.syed.pythonlab.*;
 import com.syed.clab.*;
 
+import javax.swing.*;
+
 
 public class FileProducer {
 
@@ -24,15 +26,25 @@ public class FileProducer {
     private final ScriptsDataStorage scriptStorage;
     private final String location;
 
-    public FileProducer(JSONDataStorage jds, HTMLDataStorage htmlds, ScriptsDataStorage sds) {
-        this("./Courses", jds, htmlds, sds);
+    public FileProducer(JSONDataStorage jds, HTMLDataStorage htmlds, ScriptsDataStorage sds) throws IOException {
+        this("Courses", jds, htmlds, sds);
     }
 
-    public FileProducer(String location, JSONDataStorage jds, HTMLDataStorage htmlds, ScriptsDataStorage sds) {
-        this.location = Util.createPathIfNotAlready(location);
+    private FileProducer(String folderName, JSONDataStorage jds, HTMLDataStorage htmlds, ScriptsDataStorage sds) throws IOException {
         this.jsonStorage = jds;
         this.htmlStorage = htmlds;
         this.scriptStorage = sds;
+        String appPath = new File(".").getCanonicalPath();
+        JOptionPane.showMessageDialog(null, "PATH "+appPath);
+        if (Util.isLinuxOS()) {
+            this.location = Util.path(appPath + "/Documents/" + folderName);
+        } else if (Util.isWindowsOS()) {
+            this.location = Util.path(appPath + "\\Documents\\" + folderName);
+        } else {
+            this.location = "";
+            System.exit(0);
+        }
+        JOptionPane.showMessageDialog(null, "LOC "+this.location);
     }
 
     public boolean json() throws IOException {
@@ -161,7 +173,7 @@ public class FileProducer {
                 }
             }
 
-            if(jsonStorage.questionData.isHiddenQuestion()) {
+            if (jsonStorage.questionData.isHiddenQuestion()) {
                 for (String sPath : sessionPaths) {
                     for (Map.Entry<String, String> fileAndCode : code.entrySet()) {
                         Util.writeToFile(sPath + "/" + fileAndCode.getKey(), fileAndCode.getValue());
@@ -179,27 +191,24 @@ public class FileProducer {
             CodeEvaluator evaluator = null;
 
             switch (scriptStorage.labLanguage) {
-                case "JAVA": {
+                case "JAVA" -> {
                     labcode = new JavaCode(scriptStorage.getCode(), Util.fileTitle(scriptStorage.getMainFile()));
                     compiler = new JavaCompiler((JavaCode) labcode);
                     runner = new JavaRunner((JavaCompiler) compiler);
                     evaluator = new JavaEvaluator((JavaRunner) runner);
-                } break;
-                case "C": {
+                }
+                case "C" -> {
                     labcode = new CCode(scriptStorage.getCode(), Util.fileTitle(scriptStorage.getMainFile()));
                     compiler = new CCompiler((CCode) labcode);
                     runner = new CRunner((CCompiler) compiler);
                     evaluator = new CEvaluator((CRunner) runner);
-                } break;
-                case "PYTHON": {
-                    labcode = new PythonCode(
-                            scriptStorage.getCode(),
-                            Util.fileTitle(scriptStorage.getMainFile())
-                    );
+                }
+                case "PYTHON" -> {
+                    labcode = new PythonCode(scriptStorage.getCode(), Util.fileTitle(scriptStorage.getMainFile()));
                     runner = new PythonRunner((PythonCode) labcode);
                     evaluator = new PythonEvaluator((PythonRunner) runner);
-                } break;
-                default: break;
+                }
+                default -> { }
             }
 
             if (labcode == null || compiler == null) {
@@ -247,11 +256,11 @@ public class FileProducer {
     }
 
     public String getCourseLevelPath() {
-        return Util.createPathIfNotAlready(getLocation() +"/"+ jsonStorage.courseData.getTitle());
+        return Util.path(getLocation() +"/"+ jsonStorage.courseData.getTitle());
     }
 
     public String getLabLevelPath() {
-        return Util.createPathIfNotAlready(
+        return Util.path(
                 getCourseLevelPath()+"/"+
                 jsonStorage.labData.getLabLabel()+
                 jsonStorage.labData.getLabNumber()
@@ -259,20 +268,15 @@ public class FileProducer {
     }
 
     public String getQuestionLevelPath() {
-        return Util.createPathIfNotAlready(getLabLevelPath()+"/"+ jsonStorage.questionData.getTitle());
+        return Util.path(getLabLevelPath()+"/"+ jsonStorage.questionData.getTitle());
     }
 
     public String[] getSessionLevelPath() {
-        List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
-        List<String> sessionPaths = new ArrayList<>();
         String qPath = getQuestionLevelPath();
-        for (LabSessionTableData session : sessions) {
-            String path = Util.createPathIfNotAlready(qPath+"-"+session.getGroup());
-            sessionPaths.add(path);
-        }
-        String[] copy = new String[sessionPaths.size()];
-        for (int i = 0; i < sessionPaths.size(); i++) {
-            copy[i] = sessionPaths.get(i);
+        List<LabSessionTableData> sessions = jsonStorage.questionData.getSessions();
+        String[] copy = new String[sessions.size()];
+        for (int i = 0; i < sessions.size(); i++) {
+            copy[i] = Util.path(qPath+"-"+sessions.get(i).getGroup());
         }
         return copy;
     }

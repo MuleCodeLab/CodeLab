@@ -5,7 +5,6 @@ public class MuleCourseLevelJSON
 	private String title;
 	private boolean visible;
 
-
 	//Constructors
 	public MuleCourseLevelJSON()
 	{
@@ -22,7 +21,6 @@ public class MuleCourseLevelJSON
 		this.title = title;
 		this.visible = visible;
 	}
-
 
 	// Tools
 	public String toString()

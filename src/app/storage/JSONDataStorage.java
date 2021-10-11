@@ -1,4 +1,4 @@
-package app.logic.storage;
+package app.storage;
 
 import com.syed.core.Util;
 

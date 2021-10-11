@@ -153,7 +153,7 @@ public class Util {
         return false;
     }
 
-    public static String createPathIfNotAlready(String location) {
+    public static String path(String location) {
         try {
             Path path = Path.of(location);
             if (Files.notExists(path)) {

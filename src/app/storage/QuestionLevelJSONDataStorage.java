@@ -1,6 +1,6 @@
-package app.logic.storage;
+package app.storage;
 
-import app.logic.LabSessionTableData;
+import app.ui.LabSessionTableData;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

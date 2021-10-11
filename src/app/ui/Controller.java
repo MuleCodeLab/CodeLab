@@ -1,5 +1,6 @@
 package app.ui;
 
+import app.storage.CommonJavaRegex;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-import java.awt.*;
+import java.awt.Desktop; // opening the Browser link
 import java.io.IOException;
 
 import java.net.URI;
@@ -32,11 +33,9 @@ import com.syed.core.Regex;
 import com.syed.core.TestIO;
 
 import app.logic.FileProducer;
-import app.logic.TestIOTableData;
-import app.logic.LabSessionTableData;
-import app.logic.storage.JSONDataStorage;
-import app.logic.storage.HTMLDataStorage;
-import app.logic.storage.ScriptsDataStorage;
+import app.storage.JSONDataStorage;
+import app.storage.HTMLDataStorage;
+import app.storage.ScriptsDataStorage;
 
 
 public class Controller {
@@ -516,7 +515,7 @@ public class Controller {
     }
 
     public void setPredefinedJavaRegex() {
-        ObservableList<Regex> reglist = FXCollections.observableList(scriptStorage.getPredefinedRegex());
+        ObservableList<Regex> reglist = FXCollections.observableList(CommonJavaRegex.asList());
         combo_CodeFileOptions_Regexes_Predefined.setCellFactory(new Callback<>() {
             @Override
             public ListCell<Regex> call(ListView<Regex> param) {
@@ -756,7 +755,7 @@ public class Controller {
 
     public void openRepository(ActionEvent e) {
         try {
-            Desktop desktop = java.awt.Desktop.getDesktop();
+            Desktop desktop = Desktop.getDesktop();
             URI url = new URI("https://www.github.com/MuleCodeLab/CodeLab/");
             desktop.browse(url);
         } catch (Exception ex) {
