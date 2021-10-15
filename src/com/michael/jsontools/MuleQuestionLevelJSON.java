@@ -139,11 +139,11 @@ public class MuleQuestionLevelJSON
 	}
 
 	public String numberCharsIn(String code) {
-		//Question QIDs require the course code without the letters. This method provides that.
+		//Question QIDs require the number-component of the course code (i.e. the letters removed) This method returns that
 		String out = "";
 		for(int i = 0; i < code.length(); i++) {
 			char c = code.charAt(i);
-			if(c >= 48 && c <= 58) {
+			if(c >= 48 && c <= 57) {
 				out += c;
 			}
 		}
