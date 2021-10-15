@@ -135,9 +135,20 @@ public class MuleQuestionLevelJSON
 
 	public void setQid()
 	{
-		qid = String.format("%s_L%02dQ%02d", course, labNumber, questionNumber);
+		qid = String.format("%s_l%dq%d", numberCharsIn(getCourse()), labNumber, questionNumber);
 	}
 
+	public String numberCharsIn(String code) {
+		//Question QIDs require the course code without the letters. This method provides that.
+		String out = "";
+		for(int i = 0; i < code.length(); i++) {
+			char c = code.charAt(i);
+			if(c >= 48 && c <= 58) {
+				out += c;
+			}
+		}
+		return out;
+	}
 
 	//Tools
 

@@ -102,12 +102,15 @@ public class MuleHiddenQuestionJSON extends MuleQuestionLevelJSON
 
 	public void setQid()
 	{
-		setQid( String.format("%s_L%02dQ%02dh_%s",
-					getCourse(),
-					getLabNumber(),
-					getQuestionNumber(),
-					group
-				));
+		setQid(
+			String.format(
+				"%s_l%dq%d-%s",
+				numberCharsIn(getCourse()),
+				getLabNumber(),
+				getQuestionNumber(),
+				group
+			)
+		);
 	}
 
 	//Tools
