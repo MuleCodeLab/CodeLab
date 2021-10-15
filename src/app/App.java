@@ -13,8 +13,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ui/assets/index.fxml")));
-        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("ui/assets/logo.png"))));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(
+                getClass().getResource("ui/assets/index.fxml")));
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(
+                getClass().getResourceAsStream("ui/assets/logo.png")
+        )));
         primaryStage.setTitle("MULE-CodeLab");
         primaryStage.setResizable(false);
         primaryStage.setMaximized(false);

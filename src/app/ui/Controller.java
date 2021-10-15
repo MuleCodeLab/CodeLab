@@ -209,7 +209,7 @@ public class Controller {
     }
 
     public void printJSON(MouseEvent e) {
-        jsonStorage.print();
+//        jsonStorage.print();
     }
 
     public void addToSessionsTable(MouseEvent e) {
@@ -293,7 +293,7 @@ public class Controller {
 
 
     public void printHTML(MouseEvent e) {
-        htmlStorage.print();
+//        htmlStorage.print();
     }
 
     public void setDescription(KeyEvent e) {
@@ -704,7 +704,7 @@ public class Controller {
 
 
     public void printSciptData(MouseEvent e) {
-        scriptStorage.print();
+//        scriptStorage.print();
     }
 
 
@@ -724,7 +724,7 @@ public class Controller {
             } else {
                 Widget.ERROR("Failure!","Please provide all required information.");
             }
-        } catch (IOException err) {
+        } catch (Exception err) {
             Widget.ERROR("Unexpected Error!", err.getMessage());
         }
     }

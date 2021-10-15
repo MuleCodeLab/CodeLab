@@ -2,9 +2,10 @@ package app.logic;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDateTime;
+
 import app.storage.*;
 import app.ui.LabSessionTableData;
 import app.ui.Widget;
@@ -16,7 +17,7 @@ import com.syed.javalab.*;
 import com.syed.pythonlab.*;
 import com.syed.clab.*;
 
-import javax.swing.*;
+import javax.swing.JFileChooser; // to get documents path
 
 
 public class FileProducer {
@@ -34,20 +35,20 @@ public class FileProducer {
         this.jsonStorage = jds;
         this.htmlStorage = htmlds;
         this.scriptStorage = sds;
-        String appPath = new File(".").getCanonicalPath();
-        JOptionPane.showMessageDialog(null, "PATH "+appPath);
+
+        String docPath = new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
         if (Util.isLinuxOS()) {
-            this.location = Util.path(appPath + "/Documents/" + folderName);
+            this.location = Util.path(docPath+"/Documents/"+folderName);
         } else if (Util.isWindowsOS()) {
-            this.location = Util.path(appPath + "\\Documents\\" + folderName);
+            this.location = Util.path(docPath+"\\"+folderName);
         } else {
             this.location = "";
             System.exit(0);
         }
-        JOptionPane.showMessageDialog(null, "LOC "+this.location);
+        Widget.OK("Files Path", this.location);
     }
 
-    public boolean json() throws IOException {
+    public boolean json() {
 
         if (jsonStorage.isReady()) {
             String coursePath = getCourseLevelPath();
