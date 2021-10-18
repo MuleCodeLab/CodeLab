@@ -16,7 +16,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(
                 getClass().getResource("ui/assets/index.fxml")));
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(
-                getClass().getResourceAsStream("ui/assets/logoCrop.png")
+                getClass().getResourceAsStream("ui/assets/logo.png")
         )));
         primaryStage.setTitle("MULE-CodeLab");
         primaryStage.setScene(new Scene(root, 740, 600));
