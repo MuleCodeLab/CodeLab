@@ -28,16 +28,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane hbarPolicy="NEVER"
-            maxHeight="-Infinity"
-            maxWidth="720.0"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="1383.0"
-            prefWidth="720.0"
-            xmlns="http://javafx.com/javafx/11"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="app.ui.Controller">
+<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="720.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1383.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.Controller">
   <!--   LINE 41-->
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="720.0">
 
@@ -49,13 +40,12 @@
 
                               <VBox prefHeight="1200.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-                                    <HBox alignment="CENTER" prefHeight="164.0" prefWidth="672.0">
-
-                                          <ImageView fx:id="img" fitHeight="156.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@logo.png" />
-                                             </image>
-                                          </ImageView>
+                                    <HBox alignment="CENTER" prefWidth="672.0">
+                        <ImageView fitHeight="53.0" fitWidth="139.0">
+                           <image>
+                              <Image url="@logoCrop.png" />
+                           </image>
+                        </ImageView>
 
                                     </HBox>
                                     <VBox fx:id="vb_CourseLevelData" prefWidth="100.0" spacing="20.0" />
@@ -227,7 +217,7 @@
                                                       <Tooltip text="The convention used for naming labs in your course.&#10;E.g. 'Lab', 'Week', 'Problem Set' etc." />
                                                    </tooltip>
                                                 </Label>
-                                                <TextField fx:id="tf_LabNumber" promptText="E.g. '1'" onKeyTyped="#setLabNumber" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="tf_LabNumber" onKeyTyped="#setLabNumber" promptText="E.g. '1'" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="The number of this lab in its sequence." />
                                                    </tooltip>
@@ -237,7 +227,7 @@
                                           <HBox alignment="CENTER_LEFT" prefWidth="200.0">
 
                                                 <Label prefHeight="17.0" prefWidth="128.0" text="Question number" />
-                                                <TextField fx:id="tf_QuestionNumber" promptText="E.g. '1'" onKeyTyped="#setQuestionNumber" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="tf_QuestionNumber" onKeyTyped="#setQuestionNumber" promptText="E.g. '1'" HBox.hgrow="ALWAYS">
                                                    <tooltip>
                                                       <Tooltip text="This question's number in its sequence." />
                                                    </tooltip>
